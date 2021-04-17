@@ -1,77 +1,114 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <title>Web-Forage</title>
-        <link rel="stylesheet" href="/css/style.css">
-    </head>
-    <body>
-        <div class="cont">
-          <div class="form sign-in">
-            <h2>Sign In</h2>
-            <form>
-              <label>
-                <span>Number</span>
-                <input type="text" name="number"/>
-              </label>
-              <label>
-                <span>Password</span>
-                <input type="password" name="pwd"/>
-              </label>
-              <button class="submit" type="submit">Sing In</button>
-              <p class="forgot-pass">Forgot Password</p>
-            </form>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Sign in & Sign up Form</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <div class="signin-signup">
+          <form action="#" class="sign-in-form">
+            <h2 class="title">Sign in</h2>
+            <div class="input-field">
+              <i class="fas fa-phone"></i>
+              <input type="text" placeholder="Number" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Password" />
+            </div>
+            <input type="submit" value="Login" class="btn solid" />
+            <input type="button" value="Home" class="btn solid" />
+            <p class="social-text">Or Sign in with social platforms</p>
             <div class="social-media">
-              <ul>
-                <li><img src="/images/icons/facebook.png" alt=""></li>
-                <li><img src="/images/icons/twiter.png" alt=""></li>
-                <li><img src="/images/icons/whatsapp.png" alt=""></li>
-              </ul>
+              <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-google"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
             </div>
-          </div>
-          <div class="sub-cont">
-            <div class="img">
-              <div class="img-text m-up">
-                <h2>Register Here?</h2>
-                <p>If you don't have account</p>
-              </div>
-              <div class="img-text m-in">
-                <h2>One of us?</h2>
-                <p>if you already has an account, just sign in</p>
-              </div>
-              <div class="img-btn">
-                <span class="m-up">Sign Up</span>
-                <span class="m-in">Sign In</span>
-              </div>
+          </form>
+          <form action="#" class="sign-up-form">
+            <h2 class="title">Sign up</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="Username" />
             </div>
-            <div class="form sign-up">
-              <h2>Sign Up</h2>
-              <form action="">
-                <label>
-                  <span>First_name</span>
-                  <input type="text" name="fname" placeholder="Please enter your first name" />
-                </label>
-                <label>
-                  <span>Last_name</span>
-                  <input type="text" name="lname" placeholder="Please enter your last name" />
-                </label>
-                <label>
-                  <span>Tel</span>
-                  <input type="text" name="Tel" placeholder="Please enter your phone" />
-                </label>
-                <label>
-                  <span>Password</span>
-                  <input type="password" name="pwd" />
-                </label>
-                <label>
-                  <span>confirm Password</span>
-                  <input type="password" name="pwd" />
-                </label>
-                <button type="submit" class="submit">sign Up</button>
-              </form>
+            <div class="input-field">
+              <i class="fas fa-phone"></i>
+              <input type="text" placeholder="Number" />
             </div>
-          </div>
+            <div class="input-field">
+              <i class="fas  fa-location-arrow"></i>
+              <input type="text" placeholder="Location" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Password" />
+            </div>
+            <input type="submit" class="btn" value="Sign up" />
+            <input type="button" class="btn" value="Home" />
+            <p class="social-text">Or Sign up with social platforms</p>
+            <div class="social-media">
+              <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-google"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </form>
         </div>
-        <script type="text/javascript" src="/js/script.js"></script>
-        <script src="/js/jquery-3.6.0.min.js"></script>
-    </body>
+      </div>
+
+      <div class="panels-container">
+        <div class="panel left-panel">
+          <div class="content">
+            <h3>Are you new ?</h3>
+            <p>
+              The work of thought is like drilling a well; the water is cloudy at first, then it becomes clear.
+            </p>
+            <button class="btn transparent" id="sign-up-btn">
+              Sign up
+            </button>
+          </div>
+          <img src="/images/i2.svg" class="image" alt="" />
+        </div>
+        <div class="panel right-panel">
+          <div class="content">
+            <h3>If you don't have the compte</h3>
+            <p>
+              register to take advantage of all our services.
+            </p>
+            <button class="btn transparent" id="sign-in-btn">
+              Sign in
+            </button>
+          </div>
+          <img src="/images/register.svg" class="image" alt="" />
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+  </body>
 </html>
