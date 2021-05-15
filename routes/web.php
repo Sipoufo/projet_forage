@@ -18,5 +18,14 @@ Route::get('/', function () {
 });
 
 Route::get('/facture', function () {
-    return view('facture');
+    return view('Client/facture');
 });
+
+Route::get('/home', function() {
+    return view('Client/client');
+});
+
+Route::get('/invoice', function() {
+    return view('Client/factures');
+});
+
