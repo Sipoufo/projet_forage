@@ -12,7 +12,7 @@
                     <div class="col-md-12 col-lg-2">
                         Invoice of 15/05/2021
                     </div>
-                    <a href="#" class="btn btn-info btn-icon-split col-md-12 col-lg-2 offset-lg-5 mr-3">
+                    <a href="#myModal" class="btn btn-info btn-icon-split col-md-12 col-lg-2 offset-lg-5 mr-3" role="button" class="btn btn-lg btn-primary" data-toggle="modal">
                         <span class="icon text-white-50">
                             <i class="fas fa-info-circle"></i>
                         </span>
@@ -98,7 +98,7 @@
                     <div class="col-md-12 col-lg-2 text-white">
                         Invoice of 15/05/2021
                     </div>
-                    <a href="#" class="btn btn-info col-md-12 col-lg-2 offset-lg-3 mr-3">
+                    <a href="#" class="btn btn-info col-md-12 col-lg-2 offset-lg-3 mr-3" >
                         <span class="icon text-white-50">
                             <i class="fas fa-info-circle"></i>
                         </span>
@@ -184,6 +184,9 @@
                     </div>
                 </div>
             </div>
+            
+            
+
             
 @stop
         

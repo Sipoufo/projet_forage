@@ -79,16 +79,6 @@
                     </section>
                 </section>
             </section>
-
-            <section class="card card_hide_border">
-                <section class="card-header">Envoyez un message au propriétaire</section>
-                <section class="card-body">
-                    <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
-                    <button class="btn btn-succes mt-2">
-                        envoyer
-                    </button>
-                </section>
-            </section>
             <!-- 
             <button class="mdc-button foo-button">
                 <div class="mdc-button__ripple"></div>

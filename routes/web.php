@@ -29,3 +29,11 @@ Route::get('/invoice', function() {
     return view('Client/factures');
 });
 
+Route::get('/user', function() {
+    return view('Client/user');
+});
+
+Route::get('/message', function() {
+    return view('Client/message');
+});
+

@@ -27,7 +27,7 @@
 
         <!-- Link css -->
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('fontawesome/css/all.min.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap_css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/client.css') }}">
     </head>
     <body id="body_pd">
