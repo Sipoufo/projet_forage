@@ -1,6 +1,6 @@
 @extends('Client.layout.default')
     @section('title', 'Dashboard')
-        @section('main')
+        @section('content')
             <h1>                            
                 <i class='bx bx-grid-alt'></i>
                 <span class="nav_name">Dashboard</span>
