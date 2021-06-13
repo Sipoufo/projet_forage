@@ -48,7 +48,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="/home">
+            <a class="nav-link" href="/admin/home">
             <i class="fas fa-home"></i>
             <span>Home</span></a
             >

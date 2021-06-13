@@ -14,15 +14,15 @@
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="/home" class="sign-in-form">
+          <form action="" id="login" class="sign-in-form">
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-phone"></i>
-              <input type="text" placeholder="Number" />
+              <input type="text" id="phone" placeholder="Number" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" />
+              <input type="password" id="password" placeholder="Password" />
             </div>
             <input type="submit" value="Login" class="btn solid" />
             <input type="submit" value="Home" class="btn solid" />
@@ -110,5 +110,34 @@
     </div>
 
     <script src="/js/app.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+      $("#login").submit(function (e) { 
+        var phone = $("#phone").val()
+        var password = $("#password").val()
+
+        console.log(phone)
+        console.log(password)
+        
+        $.ajax({
+          type: "GET",
+          url: "http://localhost:3000/admin/auth/login",
+          data: {
+            phone: phone,
+            password: password
+          },
+          ContentType: "application/json",
+          success: function (response) {
+            console.log(response)
+          },
+          error: function (error) {
+            console.log(error)
+          }
+        });
+
+        e.preventDefault();
+      });
+    </script>
   </body>
 </html>
