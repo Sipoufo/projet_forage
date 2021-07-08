@@ -21,7 +21,7 @@ Route::get('/facture', function () {
     return view('Client/facture');
 });
 
-Route::get('/home', function() {
+Route::post('/home', function() {
     return view('Client/client');
 });
 
@@ -37,7 +37,7 @@ Route::get('/message', function() {
     return view('Client/message');
 });
 
-Route::get('/admin/home', function() {
+Route::match(['post','get'],'/admin/home', function() {
     return view('admin/dashboard');
 });
 
@@ -47,6 +47,18 @@ Route::get('/admin/consumption', function() {
 
 Route::get('/admin/customer', function() {
     return view('admin/customer');
+});
+
+Route::get('/admin/customer/addCustomer', function() {
+    return view('admin/addCustomer');
+});
+
+Route::get('/admin/administrator', function() {
+    return view('admin/administrator');
+});
+
+Route::get('/admin/administrator/addAdministrator', function() {
+    return view('admin/addAdministrator');
 });
 
 Route::get('/admin/facture', function() {
@@ -61,11 +73,11 @@ Route::get('/admin/chat', function() {
     return view('admin/chat');
 });
 
-Route::get('/admin/add', function() {
+Route::post('/admin/add', function() {
     return view('admin/add');
 });
 
-Route::get('/admin/remove', function() {
+Route::post('/admin/remove', function() {
     return view('admin/remove');
 });
 

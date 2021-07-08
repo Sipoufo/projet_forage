@@ -14,7 +14,8 @@
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="/home" class="sign-in-form">
+          <form action="/admin/home" method="post" class="sign-in-form">
+            @csrf
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-phone"></i>
@@ -24,9 +25,8 @@
               <i class="fas fa-lock"></i>
               <input type="password" placeholder="Password" />
             </div>
-            <input type="submit" value="Login" class="btn solid" />
-            <input type="submit" value="Home" class="btn solid" />
-            <p class="social-text">Or Sign in with social platforms</p>
+            <input type="submit" value="Login" class="btn solid"/>
+            <!-- <p class="social-text">Or Sign in with social platforms</p>
             <div class="social-media">
               <a href="#" class="social-icon">
                 <i class="fab fa-facebook-f"></i>
@@ -40,9 +40,9 @@
               <a href="#" class="social-icon">
                 <i class="fab fa-linkedin-in"></i>
               </a>
-            </div>
+            </div> -->
           </form>
-          <form action="/home" class="sign-up-form">
+          <!-- <form action="/home" class="sign-up-form">
             <h2 class="title">Sign up</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
@@ -77,7 +77,7 @@
                 <i class="fab fa-linkedin-in"></i>
               </a>
             </div>
-          </form>
+          </form> -->
         </div>
       </div>
 
@@ -88,9 +88,9 @@
             <p>
               The work of thought is like drilling a well; the water is cloudy at first, then it becomes clear.
             </p>
-            <button class="btn transparent" id="sign-up-btn">
+            <!-- <button class="btn transparent" id="sign-up-btn">
               Sign up
-            </button>
+            </button> -->
           </div>
           <img src="/images/i2.svg" class="image" alt="" />
         </div>

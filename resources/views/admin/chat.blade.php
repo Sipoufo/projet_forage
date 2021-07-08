@@ -350,7 +350,7 @@
     }
 </style>
 @extends('admin.layouts.skeleton')
-@section('title', 'Dashboard')
+@section('title', 'Tchat')
 @section('content')
 
                     <!-- Page Heading -->

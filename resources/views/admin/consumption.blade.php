@@ -1,5 +1,5 @@
 @extends('admin.layouts.skeleton')
-@section('title', 'Dashboard')
+@section('title', 'Consumption')
 @section('content')
 
     <!-- Page Heading -->
