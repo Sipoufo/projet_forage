@@ -17,7 +17,8 @@
             <div class="card-body">
                 <div class="col-md-11 col-lg-7 offset-md-1 offset-lg-2">
                     <div class="p-5">
-                        <form class="user">
+                        <form method="delete" action="" class="user">
+                            @csrf
                             <div class="form-group">
                                 <select name="productName" class="form-control">
                                     <option value="tuyau">Tuyau</option>
@@ -28,8 +29,8 @@
                                 <input type="number" class="form-control form-control-user"
                                     placeholder="Quantity">
                             </div>
-                            <button href="#" class="btn btn-primary btn-user btn-block">
-                                Add
+                            <button href="#" class="btn btn-primary btn-user btn-block" type="submit">
+                                Remove
                             </button>
                         </form>
                     </div>
