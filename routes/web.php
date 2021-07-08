@@ -12,31 +12,41 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//Client
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::match(['post','get'],'/client/home', function() {
+    return view('client/dashboard');
+});
+
 Route::get('/facture', function () {
-    return view('Client/facture');
+    return view('client/facture');
 });
 
 Route::post('/home', function() {
-    return view('Client/client');
+    return view('client/client');
+});
+
+Route::get('/home', function() {
+    return view('client/client');
 });
 
 Route::get('/invoice', function() {
-    return view('Client/factures');
+    return view('client/factures');
 });
 
 Route::get('/user', function() {
-    return view('Client/user');
+    return view('client/user');
 });
 
 Route::get('/message', function() {
-    return view('Client/message');
+    return view('client/message');
 });
 
+
+//Admin route
 Route::match(['post','get'],'/admin/home', function() {
     return view('admin/dashboard');
 });
