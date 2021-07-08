@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Cards</title>
+    <title>Web Forage - @yield('title')</title>
 
     <!-- Custom fonts for this template-->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -70,10 +70,17 @@
 
         <!-- Nav Item - Customer -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/customer">
-              <i class="fas fa-address-book"></i>
-              <span>Customer</a></span>
+            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities1" aria-expanded="true" aria-controls="collapseUtilities1">
+                <i class="fas fa-address-book"></i>
+                <span>Customer</span>
             </a>
+            <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Customers</h6>
+                    <a class="collapse-item" href="/admin/customer">Manage customers</a>
+                    <a class="collapse-item" href="/admin/administrator">Manage Administrators</a>
+                </div>
+            </div>
         </li>
 
         <!-- Nav Item - Payment -->
