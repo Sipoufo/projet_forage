@@ -40,72 +40,14 @@
             <div class="sidebar-brand-icon rotate-n-15">
             <i class="far fa-grin-wink" style="font-size: 40px"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">Mon espace</div>
+            <div class="sidebar-brand-text mx-3">MENU</div>
         </a>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="/client/dashboard">
-            <i class="fas fa-home"></i>
-            <span>Home</span></a
-            >
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider" />
-
-        <!-- Heading -->
-        <div class="sidebar-heading">Information</div>
-
-        <!-- Nav Item - consumption -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/client/consumption">
-            <i class="fas fa-file-invoice-dollar"></i>
-            <span>Consumption</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - Invoice -->
-        <li class="nav-item">
-            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities1" aria-expanded="true" aria-controls="collapseUtilities1">
-                <i class="fas fa-money-bill-alt"></i>
-                <span>Invoice</span>
-            </a>
-            <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Invoices</h6>
-                    <a class="collapse-item" href="/client/invoices_paid">Invoices Paid</a>
-                    <a class="collapse-item" href="/client/unpaid_invoices">Unpaid Invoices</a>
-                </div>
-            </div>
-        </li>
-
-        <!-- Nav Item - Payment -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/client/chat">
-            <i class="fas fa-file-archive"></i>
-            <span>Notification</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - Profile Setting -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/client/setting">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Profile Setting</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - Log out -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/client/logout">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Log out</span>
-            </a>
-        </li>
+        @yield('nav')
 
         <!-- Divider -->
         <hr class="sidebar-divider" />

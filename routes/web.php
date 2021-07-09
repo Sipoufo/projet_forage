@@ -17,31 +17,43 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::match(['post','get'],'/client/home', function() {
+Route::match(['post','get'],'/home', function() {
     return view('client/dashboard');
 });
 
-Route::get('/facture', function () {
-    return view('client/facture');
+Route::get('/consumption', function() {
+    return view('client/consumption');
 });
 
-Route::post('/home', function() {
-    return view('client/client');
+// Route::get('/facture', function () {
+//     return view('client/facture');
+// });
+
+// Route::post('/home', function() {
+//     return view('client/client');
+// });
+
+// Route::get('/home', function() {
+//     return view('client/client');
+// });
+
+// Route::get('/invoice', function() {
+//     return view('client/factures');
+// });
+
+Route::get('/invoices_paid', function() {
+    return view('client/paidInvoices');
 });
 
-Route::get('/home', function() {
-    return view('client/client');
-});
-
-Route::get('/invoice', function() {
-    return view('client/factures');
+Route::get('/unpaid_invoices', function() {
+    return view('client/unpaidInvoices');
 });
 
 Route::get('/user', function() {
     return view('client/user');
 });
 
-Route::get('/message', function() {
+Route::get('/tchat', function() {
     return view('client/message');
 });
 
