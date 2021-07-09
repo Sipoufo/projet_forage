@@ -17,7 +17,8 @@
             <div class="card-body">
                 <div class="col-md-11 col-lg-7 offset-md-1 offset-lg-2">
                     <div class="p-5">
-                        <form class="user">
+                        <form method="post" action="" class="user">
+                            @csrf
                             <div class="form-group">
                                 <input type="text" class="form-control form-control-user"
                                     placeholder="Enter your product name">
@@ -34,7 +35,7 @@
                                 <input type="file" class="form-control form-control-user"
                                     placeholder="Enter your image">
                             </div>
-                            <button href="#" class="btn btn-primary btn-user btn-block">
+                            <button href="#" class="btn btn-primary btn-user btn-block" type="submit">
                                 Add
                             </button>
                         </form>

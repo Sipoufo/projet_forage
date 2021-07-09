@@ -83,11 +83,11 @@ Route::get('/admin/chat', function() {
     return view('admin/chat');
 });
 
-Route::post('/admin/add', function() {
+Route::match(['get','post'],'/admin/add', function() {
     return view('admin/add');
 });
 
-Route::post('/admin/remove', function() {
+Route::match(['get','delete'],'/admin/remove', function() {
     return view('admin/remove');
 });
 

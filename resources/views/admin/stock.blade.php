@@ -18,12 +18,12 @@
             <div class="card-body text-center">
                 <img class="img-profile rounded-circle w-75" src="/img/undraw_profile.svg" />
                 <hr /> 
-                <table>
-                    <tr>
-                        <td>Prix</td>
-                        <td>5000</td>
-                    </tr>
-                </table>
+                <div class="float-left">
+                    <h5><b>Quantity : </b>5</h5>
+                </div>
+                <div class="float-right">
+                    <h5><b>Unit : </b>5000</h5>
+                </div>
             </div>
         </div>
     </div>
