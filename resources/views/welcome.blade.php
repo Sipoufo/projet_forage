@@ -209,5 +209,34 @@
       </div>
     </div>
     <script src="/js/app.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+      $("#login").submit(function (e) { 
+        var phone = $("#phone").val()
+        var password = $("#password").val()
+
+        console.log(phone)
+        console.log(password)
+        
+        $.ajax({
+          type: "GET",
+          url: "http://localhost:3000/admin/auth/login",
+          data: {
+            phone: phone,
+            password: password
+          },
+          ContentType: "application/json",
+          success: function (response) {
+            console.log(response)
+          },
+          error: function (error) {
+            console.log(error)
+          }
+        });
+
+        e.preventDefault();
+      });
+    </script>
   </body>
 </html>
