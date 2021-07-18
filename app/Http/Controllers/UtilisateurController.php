@@ -162,9 +162,6 @@ class UtilisateurController extends Controller
     //Client
     public function allClient()
     {
-
-        // je definie l'url de connexion.
-        // $url = "http://localhost:4000/admin​/auth​/getClient"; 
         
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
@@ -183,26 +180,26 @@ class UtilisateurController extends Controller
         // var_dump($response);
 
     
-        // return view('admin/facture',['users' => $response]);
-
+        
         $curl = curl_init();
-
-        curl_setopt_array($curl,array(
-            CURLOPT_URL => 'http://localhost:4000/admin​/auth​/getClient',
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://localhost:3000/admin/auth/getClient',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization)
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
+        
         $response = curl_exec($curl);
-
         curl_close($curl);
-
         $response = json_decode($response);
-
         var_dump($response);
+        return view('admin/facture',['users' => $response]);
     }
 
     public function addInvoice()
