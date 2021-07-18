@@ -36,7 +36,7 @@ aria-hidden="true">
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="login.html">Logout</a>
+            <a class="btn btn-primary" id="logout" href="#">Logout</a>
         </div>
     </div>
 </div>
@@ -78,6 +78,20 @@ aria-hidden="true">
 <!-- Page level custom scripts -->
 <script src="/js/demo/chart-area-demo.js"></script>
 <script src="/js/demo/chart-pie-demo.js"></script>
+<script>
+    
+    $('#logout').on('click', function(){
+
+        <?php
+            $_SESSION = [];
+            session_destroy();
+            unset($_COOKIE);
+                ?>
+            window.location.href='/';
+     });
+
+</script>
+
 
 </body>
 
