@@ -1,7 +1,7 @@
 @include('Client.layout.elements.header' )
 
-<main>
+<div class="container-fluid">
         @yield('content' )
-</main>
+</div>
 
 @include('Client.layout.elements.footer' )

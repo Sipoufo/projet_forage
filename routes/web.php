@@ -13,30 +13,61 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+//Client
+Route::match(['post','get'],'/', function () {
     return view('welcome');
 });
 
-Route::get('/facture', function () {
-    return view('Client/facture');
+Route::match(['post','get'],'/home', function() {
+    return view('client/dashboard');
 });
 
-Route::post('/home', function() {
-    return view('Client/client');
+Route::get('/consumption', function() {
+    return view('client/consumption');
 });
 
-Route::get('/invoice', function() {
-    return view('Client/factures');
+// Route::get('/facture', function () {
+//     return view('client/facture');
+// });
+
+// Route::post('/home', function() {
+//     return view('client/client');
+// });
+
+// Route::get('/home', function() {
+//     return view('client/client');
+// });
+
+// Route::get('/invoice', function() {
+//     return view('client/factures');
+// });
+
+Route::get('/invoices_paid', function() {
+    return view('client/paidInvoices');
+});
+
+Route::get('/unpaid_invoices', function() {
+    return view('client/unpaidInvoices');
 });
 
 Route::get('/user', function() {
-    return view('Client/user');
+    return view('client/user');
 });
 
-Route::get('/message', function() {
-    return view('Client/message');
+Route::get('/tchat', function() {
+    return view('client/message');
 });
 
+Route::match(['post','get'],'/preview/clauses', function() {
+    return view('/clauses');
+});
+
+Route::get('/clauses', function() {
+    return view('client/clauses');
+});
+
+
+//Admin route
 Route::match(['post','get'],'/admin/home', function() {
     return view('admin/dashboard');
 });
@@ -49,7 +80,7 @@ Route::get('/admin/customer', function() {
     return view('admin/customer');
 });
 
-Route::get('/admin/customer/addCustomer', function() {
+Route::match(['get','post'],'/admin/customer/addCustomer', function() {
     return view('admin/addCustomer');
 });
 
@@ -57,7 +88,7 @@ Route::get('/admin/administrator', function() {
     return view('admin/administrator');
 });
 
-Route::get('/admin/administrator/addAdministrator', function() {
+Route::match(['get','post'],'/admin/administrator/addAdministrator', function() {
     return view('admin/addAdministrator');
 });
 
@@ -83,4 +114,8 @@ Route::match(['get','delete'],'/admin/remove', function() {
 
 Route::get('/admin/stock', function() {
     return view('admin/stock');
+});
+
+Route::get('/admin/clauses', function() {
+    return view('admin/adminClauses');
 });

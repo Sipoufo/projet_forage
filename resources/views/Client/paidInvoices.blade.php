@@ -1,5 +1,5 @@
 @extends('Client.layout.default')
-    @section('title', 'Bills')
+    @section('title', 'Invoices Paid')
     @section('nav')
         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Home">
             <a class="nav-link" href="/home">
@@ -70,7 +70,7 @@
         </li>
 
 @stop
-        @section('main')
+        @section('content')
             <h1>                            
                 <i class='bx bx-grid-alt'></i>
                 <span class="nav_name">Invoice</span>

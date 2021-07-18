@@ -1,96 +1,110 @@
-<footer>
+        </div>
+        <!-- End of Main Content -->
 
-</footer>
-<!-- Link js -->
-<script type="text/javascript" src="{{ URL::asset('js/jquery-3.3.1.min.js') }}"></script>
-<script type="text/javascript" src="{{ URL::asset('js/bootstrap_js/bootstrap.bundle.min.js') }}"></script>
-<script>
-    // === Show navbar ===
-    const showNavbar = (toggleId, navId, bodyId, headerId, headerPosId) => {
-    const toggle = document.getElementById(toggleId);
-    const nav = document.getElementById(navId)
-    const body_pd = document.getElementById(bodyId);
-    const header_pd = document.getElementById(headerId);
-    const header_pos = document.getElementById(headerPosId);
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2020</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
-        //validate that all variables exist
-        if (toggle && nav && body_pd && header_pd && header_pos) {
-            toggle.addEventListener('click', () => {
-                // show navbar
-                nav.classList.toggle('show');
-                //change icon
-                toggle.classList.toggle('bx-x');
-                //add padding to header menu
-                header_pos.classList.toggle('showToggle');
-                //add padding to body
-                body_pd.classList.toggle('body-pd');
-                //add padding to header
-                body_pd.classList.toggle('header-pd');
-            })
-        }
-    }
+        </div>
+        <!-- End of Content Wrapper -->
 
-    showNavbar('header-toggle','nav-bar','body_pd','header','header-pos');
+        </div>
+        <!-- End of Page Wrapper -->
 
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    // link Active 
-    const linkColor = document.querySelectorAll('.nav_link');
+        <!-- Logout Modal -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" id="logout" href="#">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    function colorLink() {
-        if (linkColor) {
-            linkColor.forEach( (l) => l.classList.remove('active'));
-            this.classList.add('active');
-        }
-    }
+        <!-- Paid Modal-->
+        <div class="modal fade" id="activeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Active</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Do you really want to put it as payment ?</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-success" href="#">Paid</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    linkColor.forEach((l) => l.addEventListener('click', colorLink));
+        <!-- Bootstrap core JavaScript-->
+        <script src="/vendor/jquery/jquery.min.js"></script>
+        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    //profile show
-    const showProfile = (profileUserId, settingId) => {
+        <!-- Core plugin JavaScript-->
+        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        const toggle = document.getElementById(profileUserId);
-        const nav = document.getElementById(settingId)
-        if (toggle && nav) {
-            toggle.addEventListener('click', () => {
-                nav.classList.toggle('show_menu_account');
+        <!-- Custom scripts for all pages-->
+        <script src="/js/sb-admin-2.min.js"></script>
+
+        <!-- Page level plugins -->
+        <script src="/vendor/chart.js/Chart.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="/js/demo/chart-area-demo.js"></script>
+        <script src="/js/demo/chart-pie-demo.js"></script>
+
+        <script>
+    
+            $('#logout').on('click', function(){
+
+                <?php
+
+                    $url = "http://localhost:3000/client/auth/logout";
+
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $response = curl_exec($ch);
+                    curl_close($ch);
+                    $response = json_decode($response);
+                    //var_dump($response);  
+                       if ($response->status == 200){ ?>
+                         window.location.href='/';
+                <?php  }else{ 
+                        $err = $response->error; ?>
+
+                        alert('<?= $err ?>');
+                <?php } ?>
             });
-        }
-    }
 
-    showProfile('profileUser','setting');
+        </script>
 
-    const notif = document.querySelectorAll('.not'); // ici je prend tout les elements qui ont la classe theme
-    const message = document.getElementById('sms');
-    // ici item represente chacun de mes elements de theme
-    if (message) {
-        console.log("echo  ");
-    }
-    notif.forEach( (item ) => {
-        item.addEventListener('click', (event) => {
-            switch (event.target.id) {
-                case "bx":
-                    console.log("boo " + message);
-                    message.classList.toggle('showNotify');
-                    break;
-                case "not":
-                    console.log("boo");
-                    message.classList.toggle('showNotify');
-                    break;
-                case "bx1":
-                    console.log("boo " + message);
-                    message.classList.toggle('showNotify');
-                    break;
-                default:
-                    null;
-                    break;
-            }
-        });
-    });
-</script>
-<script type="text/javascript" src="{{ URL::asset('js/client.js') }}"></script>
-<script src="https://kit.fontawesome.com/7328ff3444.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+    </body>
+
 </html>

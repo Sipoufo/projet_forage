@@ -1,75 +1,76 @@
 @extends('Client.layout.default')
 @section('title', 'Message')
-@section ('nav')
+@section('nav')
+        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Home">
+            <a class="nav-link" href="/home">
+            <i class="fas fa-home"></i>
+            <span>Home</span></a
+            >
+        </li>
 
-    <nav class="nav">
-        <div>
-            <a href="#" class="nav_logo">
-                <i class='bx bx-layer nav_logo-icon'></i>
-                <span class="nav_logo-name">
-                    Christian Kepya
-                </span>
+        <!-- Divider -->
+        <hr class="sidebar-divider" />
+
+        <!-- Heading -->
+        <div class="sidebar-heading">Informations</div>
+
+        <!-- Nav Item - consumption -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/consumption" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Consumption">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>Consumption</span>
             </a>
+        </li>
 
-            <div class="nav_list">
-                <a href="/home" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" title="Home">
-                    <i class='bx bx-grid-alt nav_icon'></i>
-                    <span class="nav_name">Home</span>
-                </a>
-
-                <a href="/user" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" title="Profile">
-                    <i class='bx bx-user nav_icon'></i>
-                    <span class="nav_name">User</span>
-                </a>
-                
-                <a href="/invoice" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" title="Bills">
-                    <i class='fas fa-file-invoice-dollar nav_icon'></i>
-                    <span class="nav_name">Invoice</span>
-                </a>
-                
-                <a href="/receipt" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" title="Receipt">
-                    <i class='fas fa-receipt nav_icon'></i>
-                    <span class="nav_name">Receipt</span>
-                </a>
-
-                <a href="/message" class="nav_link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Message">
-                    <i class='bx bx-message-square-detail nav_icon'></i>
-                    <span class="nav_name">Messages</span>
-                </a>
-            </div>
-        </div>
-
-        <section class="nav_notify_button" id="notify">
-            <i class='bx bx-bell nav_icon not'>
-                <i class='bx bx-radio-circle bx-burst nav_notify_radio_position' style='color:#ffe200' id="bx1"></i>
-                <i class='bx bxs-circle nav_notify_circle_position' style='color:#ffe200' id="bx"></i>
-            </i>
-            <span class="nav_name not" id="not">Notification</span>
-        </section>
-
-        <section class="hide_menu_account card" id="sms">
-            <section class="card-header espace">
-                <span class="font-12 col-xs-6 font-semi-bold mr-4">Nouvelles notifications</span>
-                <a class="mark-notification-read col-xs-6 text-right font-12 font-semi-bold" href="javascript:;"> Marquer comme lu</a>
-            </section>
-            <a href="google.com" class="noti pl-4 pr-4 pt-3 pb-3">
-                <div class="user_i"><i class='bx bx-user bxUser'></i></div>
-                <div class="forage">
-                    <div>Bienvenue sur ForageManager</div>
-                    <div style="font-size: 12px;">il y'a deux minute</div>
+        <!-- Nav Item - Invoice -->
+        <li class="nav-item">
+            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities1" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
+                <i class="fas fa-money-bill-alt"></i>
+                <span>Invoice</span>
+            </a>
+            <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Invoices</h6>
+                    <a class="collapse-item" href="/invoices_paid" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">Invoices Paid</a>
+                    <a class="collapse-item" href="/unpaid_invoices" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Unpaid Invoices</a>
                 </div>
-            </a>
-            <hr>
-        </section>
+            </div>
+        </li>
 
-        <a href="#" class="nav_link">
-            <i class='bx bx-log-out nav_icon'></i>
-            <span class="nav_name">Log out</span>
-        </a>
-    </nav>
+        <!-- Nav Item - Payment -->
+        <li class="nav-item active">
+            <a class="nav-link collapsed" href="/tchat" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Notification">
+            <i class="fas fa-file-archive"></i>
+            <span>Notification</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Profile Setting -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Profile Setting</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Policy -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/clauses" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
+            <i class="fas fa-list"></i>
+            <span>Confidentiality Clauses</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Log out -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Log Out" href="#" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Log out</span>
+            </a>
+        </li>
 
 @stop
-@section('main')
+@section('content')
 
 <style>
 
