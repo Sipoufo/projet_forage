@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UtilisateurController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,22 @@ Route::match(['post','get'],'/home', function() {
 Route::get('/consumption', function() {
     return view('client/consumption');
 });
+
+Route::get('/paidInvoice', function() {
+    return view('client/consumption');
+});
+
+//[AuthController::class, 'login']
+Route::get('/allInvoice', 'App\Http\Controllers\UtilisateurController@allInvoicesOfClient');
+
+Route::get('/avanceInvoice', function() {
+    return view('client/consumption');
+});
+/*
+Route::get('/consumption/monthly', function() {
+    $data = "donné";
+    return view('client/consumption') -> with('donne', $data);
+});*/
 
 // Route::get('/facture', function () {
 //     return view('client/facture');
@@ -83,9 +100,9 @@ Route::get('/admin/administrator/addAdministrator', function() {
     return view('admin/addAdministrator');
 });
 
-Route::get('/admin/facture', function() {
-    return view('admin/facture');
-});
+Route::get('/admin/facture',[UtilisateurController::class, 'allClient']);
+
+Route::post('/admin/facture',[UtilisateurController::class, 'addInvoice']);
 
 Route::get('/admin/status', function() {
     return view('admin/status');
