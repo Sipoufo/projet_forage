@@ -23,7 +23,7 @@
         </a>
 
         <!-- Logout Modal -->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <!-- <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Paid Modal-->
         <div class="modal fade" id="activeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -78,32 +78,6 @@
         <!-- Page level custom scripts -->
         <script src="/js/demo/chart-area-demo.js"></script>
         <script src="/js/demo/chart-pie-demo.js"></script>
-
-        <script>
-    
-            $('#logout').on('click', function(){
-
-                <?php
-
-                    $url = "http://localhost:3000/client/auth/logout";
-
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $response = curl_exec($ch);
-                    curl_close($ch);
-                    $response = json_decode($response);
-                    //var_dump($response);  
-                       if ($response->status == 200){ ?>
-                         window.location.href='/';
-                <?php  }else{ 
-                        $err = $response->error; ?>
-
-                        alert('<?= $err ?>');
-                <?php } ?>
-            });
-
-        </script>
 
     </body>
 

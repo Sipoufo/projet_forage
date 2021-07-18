@@ -105,7 +105,7 @@
 
         <!-- Nav Item - Log out -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="modal" data-target="#logoutModal">
+            <a class="nav-link collapsed" href="/logout">
             <i class="fas fa-sign-out-alt"></i>
             <span>Log out</span>
             </a>
@@ -136,6 +136,7 @@
                     $birthday = htmlspecialchars($_POST['birthdate']);
                     $email = htmlspecialchars($_POST['email']);
                     $phone = htmlspecialchars($_POST['phone']);
+                    $home = htmlspecialchars($_POST['home']);
                     $identifier = htmlspecialchars($_POST['meter_identifier']);
                     $password = htmlspecialchars($_POST['password']);
                     $confirmpassword = htmlspecialchars($_POST['confirmpassword']);
@@ -226,6 +227,7 @@
                             'phone' => $phone,
                             'password' => $password,
                             'email' => $email,
+                            "description" => $home,
                             "IdCompteur" => $identifier,
                         );
                         $data_json = json_encode($data);
@@ -245,7 +247,7 @@
                         //print_r($response);
                         if ($response->status == 200){
                             $messageOK = "Action Done Successfully";
-                            $firstname = $lastname = $birthday = $email = $phone = $identifier = $password = $confirmpassword = "";
+                            $firstname = $lastname = $birthday = $email = $home = $phone = $identifier = $password = $confirmpassword = "";
                         }else{
                             $messageErr = ucfirst($response->error);
                         }
@@ -292,6 +294,11 @@
                     <input type="number" class="form-control" placeholder="phone number" id="phone" name="phone" value="<?= isset($err)? $phone : '' ?>" required>                
                 </div>
                 <div class="displayError"><?= isset($phoneErr) ? $phoneErr : ''?></div>
+
+                <div class="input-group mt-3">
+                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
+                    <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="<?= isset($err)? $home : '' ?>" required>                
+                </div>
                   
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-water'></i></span></div>
