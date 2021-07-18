@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 //Client
-Route::get('/', function () {
+Route::match(['post','get'],'/', function () {
     return view('welcome');
 });
 
@@ -57,6 +58,14 @@ Route::get('/tchat', function() {
     return view('client/message');
 });
 
+Route::match(['post','get'],'/preview/clauses', function() {
+    return view('/clauses');
+});
+
+Route::get('/clauses', function() {
+    return view('client/clauses');
+});
+
 
 //Admin route
 Route::match(['post','get'],'/admin/home', function() {
@@ -71,7 +80,7 @@ Route::get('/admin/customer', function() {
     return view('admin/customer');
 });
 
-Route::get('/admin/customer/addCustomer', function() {
+Route::match(['get','post'],'/admin/customer/addCustomer', function() {
     return view('admin/addCustomer');
 });
 
@@ -79,7 +88,7 @@ Route::get('/admin/administrator', function() {
     return view('admin/administrator');
 });
 
-Route::get('/admin/administrator/addAdministrator', function() {
+Route::match(['get','post'],'/admin/administrator/addAdministrator', function() {
     return view('admin/addAdministrator');
 });
 
@@ -105,4 +114,8 @@ Route::match(['get','delete'],'/admin/remove', function() {
 
 Route::get('/admin/stock', function() {
     return view('admin/stock');
+});
+
+Route::get('/admin/clauses', function() {
+    return view('admin/adminClauses');
 });

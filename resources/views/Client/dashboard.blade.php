@@ -53,9 +53,17 @@
             </a>
         </li>
 
+        <!-- Nav Item - Policy -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/clauses" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
+            <i class="fas fa-list"></i>
+            <span>Confidentiality Clauses</span>
+            </a>
+        </li>
+
         <!-- Nav Item - Log out -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Log Out">
+            <a class="nav-link collapsed" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Log Out" href="#" data-toggle="modal" data-target="#logoutModal">
             <i class="fas fa-sign-out-alt"></i>
             <span>Log out</span>
             </a>
@@ -525,5 +533,4 @@
         </div>
 
     </div>
-
 @stop
