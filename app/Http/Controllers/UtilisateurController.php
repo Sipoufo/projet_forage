@@ -173,36 +173,40 @@ class UtilisateurController extends Controller
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
 
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, $url);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
-        // $users = curl_exec($ch);
-        // curl_close($ch);
-        // $response = json_decode($users);
-        // var_dump($response);
-
-    
-        // return view('admin/facture',['users' => $response]);
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl,array(
-            CURLOPT_URL => 'http://localhost:4000/admin​/auth​/getClient',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization)
-        ));
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-
-        $response = json_decode($response);
-
-        var_dump($response);
+        $ch = curl_init();
+        try {
+            curl_setopt($ch, CURLOPT_URL, "http://localhost:4000/admin​/auth​/getAdmin");
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Content-Type: application/json;charset=utf-8",
+                "authorization: ".$Authorization
+            ));
+            curl_setopt($ch, CURLOPT_HEADER, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);   
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);         
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_MAXREDIRS, 2);
+            curl_setopt($ch, CURLOPT_NOBODY, true);
+            
+            $response = curl_exec($ch);
+            
+            if (curl_errno($ch)) {
+                echo curl_error($ch);
+                die();
+            }
+            
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if($http_code == intval(200)){
+                echo "Ressource valide";
+            }
+            else{
+                echo "Ressource introuvable : " . $http_code;
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        } finally {
+            curl_close($ch);
+        }
     }
 
     public function addInvoice()
