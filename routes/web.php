@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/logout', function() {
+    return view('logout');
+});
+
+
+
 //Client
 Route::match(['post','get'],'/', function () {
     return view('welcome');

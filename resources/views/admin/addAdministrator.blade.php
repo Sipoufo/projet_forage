@@ -105,7 +105,7 @@
 
         <!-- Nav Item - Log out -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="modal" data-target="#logoutModal">
+            <a class="nav-link collapsed" href="/logout">
             <i class="fas fa-sign-out-alt"></i>
             <span>Log out</span>
             </a>
@@ -212,6 +212,13 @@
                         $password = md5(sha1($password));
 
                         $url = "http://localhost:4000/admin/auth/register";
+                        $alltoken = $_COOKIE['token'];
+                        $alltokentab = explode(';', $alltoken);
+                        $token = $alltokentab[0];
+                        $tokentab = explode('=',$token);
+                        $tokenVal = $tokentab[1];
+                        $Authorization = 'Bearer '.$tokenVal;
+
                         $data = array(
                             'name' => $firstname.' '.$lastname,
                             'birthday' => $birthday,
@@ -223,7 +230,7 @@
             
                         $ch = curl_init();
                         curl_setopt($ch, CURLOPT_URL, $url);
-                        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
                         curl_setopt($ch, CURLOPT_POST, 1);
                         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -231,20 +238,13 @@
                         curl_close($ch); 
 
                         $response = json_decode($response);
-                        //$informations = $response->result;
-                        //$location = $informations->localisation;
-                        print_r($response);
-                        // echo $response->status;
-                        // print_r($informations);
-                        // echo $informations->profile;
 
-                        //echo $response->status.' '.$response->result->profile.' '.$response->result->localisation->longitude;
-                        // if ($response->status == 200){
-                        //     $messageOK = "Action Done Successfully";
-                        //     $firstname = $lastname = $birthday = $email = $phone = $password = $confirmpassword = "";
-                        // }else{
-                        //     $messageErr = ucfirst($response->error);
-                        // }
+                        if ($response->status == 200){
+                            $messageOK = "Action Done Successfully";
+                            $firstname = $lastname = $birthday = $email = $phone = $password = $confirmpassword = "";
+                        }else{
+                            $messageErr = ucfirst($response->error);
+                        }
                     }
                 }
             ?>

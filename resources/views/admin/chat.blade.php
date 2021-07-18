@@ -450,7 +450,7 @@
 
         <!-- Nav Item - Log out -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="modal" data-target="#logoutModal">
+            <a class="nav-link collapsed" href="/logout">
             <i class="fas fa-sign-out-alt"></i>
             <span>Log out</span>
             </a>

@@ -1,3 +1,32 @@
+<?php 
+    
+    $url = "http://localhost:4000/admin/auth/getAdmin";
+    $alltoken = $_COOKIE['token'];
+    $alltokentab = explode(';', $alltoken);
+    $token = $alltokentab[0];
+    $tokentab = explode('=',$token);
+    $tokenVal = $tokentab[1];
+    $Authorization = 'Bearer '.$tokenVal;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    $response = json_decode($response,true);
+    // var_dump($response); 
+    $informations = $response['result'];
+
+    foreach($informations as $key => $value){
+        
+    }
+
+    // echo md5(sha1('Azerty12'));
+       // if ($response->status == 200){ 
+       //  }
+?>
+
+
 @extends('admin.layouts.skeleton')
 @section('title', 'Customer')
 <style>
@@ -105,7 +134,7 @@
 
         <!-- Nav Item - Log out -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="modal" data-target="#logoutModal">
+            <a class="nav-link collapsed" href="/logout">
             <i class="fas fa-sign-out-alt"></i>
             <span>Log out</span>
             </a>

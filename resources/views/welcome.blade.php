@@ -49,6 +49,7 @@
             session_start();
 
             $_SESSION['id'] = $userdata['_id'];
+            $_SESSION['name'] = $userdata['name'];
 
             setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
 
@@ -63,6 +64,7 @@
               session_start();
 
               $_SESSION['id'] = $userdata['_id'];
+              $_SESSION['name'] = $userdata['name'];
 
               setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
 

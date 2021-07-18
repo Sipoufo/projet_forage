@@ -23,7 +23,7 @@
 </a>
 
 <!-- Logout Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
 <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -40,7 +40,7 @@ aria-hidden="true">
         </div>
     </div>
 </div>
-</div>
+</div> -->
 
 <!-- Paid Modal-->
 <div class="modal fade" id="activeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -78,19 +78,6 @@ aria-hidden="true">
 <!-- Page level custom scripts -->
 <script src="/js/demo/chart-area-demo.js"></script>
 <script src="/js/demo/chart-pie-demo.js"></script>
-<script>
-    
-    $('#logout').on('click', function(){
-
-        <?php
-            $_SESSION = [];
-            session_destroy();
-            unset($_COOKIE);
-                ?>
-            window.location.href='/';
-     });
-
-</script>
 
 
 </body>
