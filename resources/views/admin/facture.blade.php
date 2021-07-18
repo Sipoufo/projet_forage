@@ -125,7 +125,7 @@
         
                     <select name="idClient" id="idClient">
                         <?php 
-                            foreach($users as $p) echo '<option value='.$p[0].'>'.$p[1].'</option>';
+                            foreach($users as $p){echo '<option value='.$p.'>'.$p.'</option>';} 
                         ?>
                     </select>
                 </div>

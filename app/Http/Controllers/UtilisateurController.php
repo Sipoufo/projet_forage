@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
+use League\CommonMark\Inline\Element\Code;
 use PhpParser\Node\Stmt\Echo_;
 use Ramsey\Uuid\Type\Integer;
 
@@ -48,11 +49,41 @@ class UtilisateurController extends Controller
 
     public function allInvoiceWhichHaveNotPaid()
     {
-        # code...
+        // je definie l'url de connexion.
+        $url = "http://localhost:4000/admin​/facture​/getFactureAdvance"; 
+
+        // Initialisez une session CURL.
+        $ch = curl_init();  
+        
+        // Récupérer le contenu de la page
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+        
+        //Saisir l'URL et la transmettre à la variable.
+        curl_setopt($ch, CURLOPT_URL, $url); 
+
+        //Exécutez la requête 
+        $invoices = curl_exec($ch); 
+
+        //Afficher le résultat
+        echo $invoices; 
+        
+        //Je ferme la connexion et je libere les ressources
+        curl_close($ch);
+        
+        $response = json_decode($invoices);
+        var_dump($response);
+
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        echo 'HTTP code: ' . $httpcode;
+
+        //return view('admin/dashboard',['invoices' => $invoices]);
     }
 
-    public function paidFacture($idFacture)
+    public function paidFacture()
     {
+        $idFacture = $_POST['newIndex'];
+        
         // je definie l'url de connexion.
         $url = "http://localhost:3000/client/facture/paid/"+$idFacture;
         // je definie la donnée de ma facture.
@@ -133,92 +164,113 @@ class UtilisateurController extends Controller
     {
 
         // je definie l'url de connexion.
-        $url = "http://localhost:4000/admin​/auth​/getClient"; 
+        // $url = "http://localhost:4000/admin​/auth​/getClient"; 
+        
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
 
-        // Initialisez une session CURL.
-        $ch = curl_init();  
-        
-        // Récupérer le contenu de la page
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-        
-        //Saisir l'URL et la transmettre à la variable.
-        curl_setopt($ch, CURLOPT_URL, $url); 
+        // $ch = curl_init();
+        // curl_setopt($ch, CURLOPT_URL, $url);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        // $users = curl_exec($ch);
+        // curl_close($ch);
+        // $response = json_decode($users);
+        // var_dump($response);
 
-        //Exécutez la requête 
-        $users = curl_exec($ch); 
+    
+        // return view('admin/facture',['users' => $response]);
 
-        //Afficher le résultat
-        echo $users; 
-        
-        //Je ferme la connexion et je libere les ressources
-        curl_close($ch);
-        
-        $response = json_decode($users);
+        $curl = curl_init();
+
+        curl_setopt_array($curl,array(
+            CURLOPT_URL => 'http://localhost:4000/admin​/auth​/getClient',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization)
+        ));
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $response = json_decode($response);
+
         var_dump($response);
-
-        return view('admin/facture',['users' => $response]);
-        
     }
 
     public function addInvoice()
     {
         echo "dump";
         if(isset($_POST['connect']))
-    {
-        $newIndex = $_POST['newIndex'];
-        $oldIndex = $_POST['lastIndex'];
+        {
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            $Authorization = 'Bearer '.$tokenVal;
 
-        $consommation = $oldIndex - $newIndex;
-        $montantConsommation = $_POST['priceKW'];
+            $newIndex = $_POST['newIndex'];
+            $oldIndex = $_POST['lastIndex'];
 
-        $montantTotal = $consommation * $montantConsommation;
+            $consommation = $oldIndex - $newIndex;
+            $montantConsommation = $_POST['priceKW'];
 
-        $dataLimitePaid = $_POST['dataLimitePaid'];
-        
-        $dateReleveOldIndex = $_POST['newIndex'];
+            $montantTotal = $consommation * $montantConsommation;
 
-        $idClient = $_POST['idClient'];
+            $dataLimitePaid = $_POST['dataLimitePaid'];
+            
+            $dateReleveOldIndex = $_POST['newIndex'];
+
+            $idClient = $_POST['idClient'];
 
 
-        // je definie l'url de connexion.
-        $url = "http://localhost:4000/admin/facture/"+$idClient;
-        // je definie la donnée de ma facture.
-        $facture = array(
-            'newIndex' => $newIndex,
-            'oldIndex' => $oldIndex,
-            'consommation' => $consommation,
-            'montantConsommation' => $montantConsommation,
-            'montantTotal' => $montantTotal,
-            'dataLimitePaid' => $dataLimitePaid,
-            'dateReleveOldIndex' => new Date,
-        );
+            // je definie l'url de connexion.
+            $url = "http://localhost:4000/admin/facture/"+$idClient;
+            // je definie la donnée de ma facture.
+            $facture = array(
+                'newIndex' => $newIndex,
+                'oldIndex' => $oldIndex,
+                'consommation' => $consommation,
+                'montantConsommation' => $montantConsommation,
+                'montantTotal' => $montantTotal,
+                'dataLimitePaid' => $dataLimitePaid,
+                'dateReleveOldIndex' => new Date,
+            );
 
-        // j'encode cette donnée là'.
-        $data_json = json_encode($facture);
+            // j'encode cette donnée là'.
+            $data_json = json_encode($facture);
 
-        // Initialisez une session CURL.
-        $ch = curl_init();
+            // Initialisez une session CURL.
+            $ch = curl_init();
 
-        // Je definie les propriétés de connexion
-        //CURLOPT_URL : permet de definir l'url
-        curl_setopt($ch, CURLOPT_URL, $url);
+            // Je definie les propriétés de connexion
+            //CURLOPT_URL : permet de definir l'url
+            curl_setopt($ch, CURLOPT_URL, $url);
 
-        /*
-            on renseignement l'option "CURLOPT_HEADER" avec "true" comme valeur
-            pour inclure l'en-tête dans la réponse
-        */
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            /*
+                on renseignement l'option "CURLOPT_HEADER" avec "true" comme valeur
+                pour inclure l'en-tête dans la réponse
+            */
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
 
-        //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
-        curl_setopt($ch, CURLOPT_POST, 1);
-        
-        //j'insere la donnée à etre envoyé
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
-        //enfin d'avoir un retour sur l'etat de la requette on a CURLOPT_RETURNTRANSFER = true
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response  = curl_exec($ch);
-        var_dump($response);
-        curl_close($ch);
+            //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
+            curl_setopt($ch, CURLOPT_POST, 1);
+            
+            //j'insere la donnée à etre envoyé
+            curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+            //enfin d'avoir un retour sur l'etat de la requette on a CURLOPT_RETURNTRANSFER = true
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response  = curl_exec($ch);
+            var_dump($response);
+            curl_close($ch);
+        }
     }
-}
 }
