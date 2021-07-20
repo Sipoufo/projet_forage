@@ -44,7 +44,7 @@
           $expiretab =  explode('=', $expire);
           $timeout  = $expiretab[1];
 
-          if($userdata['profile'] == 'admin'){ //It's an administrator
+          if($userdata['profile'] != 'admin'){ //It's an administrator
 
             session_start();
 

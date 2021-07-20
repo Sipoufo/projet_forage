@@ -162,29 +162,17 @@ class UtilisateurController extends Controller
     //Client
     public function allClient()
     {
-        
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, $url);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
-        // $users = curl_exec($ch);
-        // curl_close($ch);
-        // $response = json_decode($users);
-        // var_dump($response);
-
-    
         
         $curl = curl_init();
         
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://localhost:3000/admin/auth/getClient',
+            CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -198,13 +186,26 @@ class UtilisateurController extends Controller
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
-        var_dump($response);
-        return view('admin/facture',['users' => $response]);
+    
+        $i=0;
+        $users = array();
+
+        foreach($response as $key => $value){
+            if($i >= 1){
+                //echo $value;
+                $users = $value;
+                //dump($value);
+            }
+            $i = $i + 1;
+            //dump($key);
+        }
+
+        //dump($users);
+        return view('admin/facture',['users' => $users]);
     }
 
     public function addInvoice()
     {
-        echo "dump";
         if(isset($_POST['connect']))
         {
             $alltoken = $_COOKIE['token'];
@@ -227,10 +228,11 @@ class UtilisateurController extends Controller
             $dateReleveOldIndex = $_POST['newIndex'];
 
             $idClient = $_POST['idClient'];
-
+            
+            echo $idClient;
 
             // je definie l'url de connexion.
-            $url = "http://localhost:4000/admin/facture/"+$idClient;
+            $url = "http://localhost:4000/admin/facture/".$idClient;
             // je definie la donnée de ma facture.
             $facture = array(
                 'newIndex' => $newIndex,
@@ -239,7 +241,7 @@ class UtilisateurController extends Controller
                 'montantConsommation' => $montantConsommation,
                 'montantTotal' => $montantTotal,
                 'dataLimitePaid' => $dataLimitePaid,
-                'dateReleveOldIndex' => new Date,
+                'dateReleveOldIndex' => $dataLimitePaid,
             );
 
             // j'encode cette donnée là'.
@@ -268,6 +270,51 @@ class UtilisateurController extends Controller
             $response  = curl_exec($ch);
             var_dump($response);
             curl_close($ch);
+
+            $messageErr = null;
+            $messageOK = null;
+
+            $response = json_decode($response);
+
+            if ($response->status == 200){
+                $messageOK = "Action Done Successfully";
+            }else{
+                $messageErr = ucfirst($response->error);
+            }
+
+
+            $curl = curl_init();
+        
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+            
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $response = json_decode($response);
+        
+            $i=0;
+            $users = array();
+    
+            foreach($response as $key => $value){
+                if($i >= 1){
+                    //echo $value;
+                    $users = $value;
+                    //dump($value);
+                }
+                $i = $i + 1;
+                //dump($key);
+            }
+
+            return view('admin/facture',['users' => $users,'messageOK' => $messageOK,'messageErr' => $messageErr]);
         }
     }
 }
