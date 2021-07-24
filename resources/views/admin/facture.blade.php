@@ -121,20 +121,27 @@
     </div>
     <div class="card-body">
         <div class="container">
+            
+            <?php if (isset($messageOK)){?>
+                    <div class="alert alert-success alert-dismissible fade show"><i class="fas fa-check-circle"></i> <?= $messageOK ?> 
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    </div>
+            <?php } ?>
+            <?php if (isset($messageErr)){?>
+                    <div class="alert alert-danger alert-dismissible fade show"><i class="fas fa-exclamation-triangle"></i><?= $messageErr ?> 
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    </div>
+            <?php } ?>
+            
             <form method="post" action="/admin/facture" class="col-lg-8 offset-lg-2">
-                    <?php 
-						if (!empty($_error)) {
-							echo '<div class="text-danger">'.$error.'</div>';
-						}
-					?>
                 {{csrf_field()}}
                 <div class="form-group mb-3">
                     <div class="input-group">Personnel</div>
         
-                    <select name="idClient" id="idClient">
-                        <?php 
-                            foreach($users as $p) echo '<option value='.$p[0].'>'.$p[1].'</option>';
-                        ?>
+                    <select name="idClient" id="idClient" class="form-control">
+                        @foreach($users as $user)
+                            <option value={{$user -> _id}}>{{ $user -> name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group mb-3">
