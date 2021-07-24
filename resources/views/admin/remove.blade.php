@@ -97,6 +97,14 @@
             </a>
         </li>
 
+        <!-- Nav Item - profile -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/profile">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+            </a>
+        </li>
+
         <!-- Nav Item - Log out -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/logout">
@@ -122,7 +130,7 @@
             <div class="card-body">
                 <div class="col-md-11 col-lg-7 offset-md-1 offset-lg-2">
                     <div class="p-5">
-                        <form method="delete" action="" class="user">
+                        <form method="delete" action="/admin/remove" class="user">
                             @csrf
                             <div class="form-group">
                                 <select name="productName" class="form-control">

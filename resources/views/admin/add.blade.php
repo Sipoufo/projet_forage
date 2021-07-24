@@ -89,11 +89,19 @@
             </div>
         </li>
 
-        <!-- Nav Item - Payment -->
+        <!-- Nav Item - Clauses -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/admin/clauses">
             <i class="fas fa-list"></i>
             <span>Confidentiality Clauses</span>
+            </a>
+        </li> 
+
+        <!-- Nav Item - profile -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/profile">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
             </a>
         </li>
 
@@ -122,7 +130,7 @@
             <div class="card-body">
                 <div class="col-md-11 col-lg-7 offset-md-1 offset-lg-2">
                     <div class="p-5">
-                        <form method="post" action="" class="user">
+                        <form method="post" action="/admin/add/store" class="user">
                             @csrf
                             <div class="form-group">
                                 <input type="text" class="form-control form-control-user"

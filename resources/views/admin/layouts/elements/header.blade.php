@@ -1,5 +1,3 @@
-<?php session_start(); ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,7 +67,7 @@
 
             <!-- Main Content -->
             <div id="content">
-
+                
                 <!-- Topbar -->
                 <nav class=" navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <!-- Sidebar Toggle (Topbar) -->
@@ -266,17 +264,39 @@
                         aria-haspopup="true"
                         aria-expanded="false"
                         >
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-                            ><?= $_SESSION['name']?></span
-                        >
-                        <img
-                            class="img-profile rounded-circle"
-                            src="/img/undraw_profile.svg"
-                        />
+
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                            @if(Session::has('name'))
+                                {{ Session::get('name') }}
+                            @else
+                                {{ _('UserXX') }}
+                            @endif
+                        </span>
+
+                            @if(Session::has('photo'))
+
+                                @php
+                                    $photo = url('storage/'.Session::get('photo'))
+                                @endphp
+                                <img
+                                    class="img-profile rounded-circle"
+                                    src="{{ $photo }}"
+                                />
+                            @else
+                                @php
+                                    $photo = '/img/undraw_profile.svg'
+                                @endphp
+                                <img
+                                    class="img-profile rounded-circle"
+                                    src="{{ $photo }}"
+                                />
+                            @endif
+
+                        
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class=" dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown" >
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="/admin/profile">
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Profile
                         </a>

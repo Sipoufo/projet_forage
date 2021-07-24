@@ -1,32 +1,3 @@
-<?php 
-    
-    $url = "http://localhost:4000/admin/auth/getAdmin";
-    $alltoken = $_COOKIE['token'];
-    $alltokentab = explode(';', $alltoken);
-    $token = $alltokentab[0];
-    $tokentab = explode('=',$token);
-    $tokenVal = $tokentab[1];
-    $Authorization = 'Bearer '.$tokenVal;
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    $response = json_decode($response,true);
-    // var_dump($response); 
-    $informations = $response['result'];
-
-    foreach($informations as $key => $value){
-        
-    }
-
-    // echo md5(sha1('Azerty12'));
-       // if ($response->status == 200){ 
-       //  }
-?>
-
-
 @extends('admin.layouts.skeleton')
 @section('title', 'Customer')
 <style>
@@ -132,6 +103,14 @@
             </a>
         </li>
 
+        <!-- Nav Item - profile -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/profile">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+            </a>
+        </li>
+
         <!-- Nav Item - Log out -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/logout">
@@ -151,239 +130,87 @@
     <div class="row">
         <!-- Earnings (Monthly) Card Example -->
         <!-- Basic Card Example -->
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 bg-success">
-    
-                        <h6 class="m-0 font-weight-bold text-white" style="font-size:25px;">Sipoufo Yvan
+    <?php 
+        if($customers['status'] == 200){ 
 
-                        <a href="#" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
-                            <span class="icon"  style="color:white;">
-                                <i class="fas fa-trash"></i>
-                            </span>
-                        </a>
+            $informations = $customers['result'];
 
-                        <a href="#" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                            <span class="icon"  style="color:white;">
-                                <i class="fas fa-edit"></i>
-                            </span>
-                        </a>
+            foreach($informations as $key => $info) { 
+                $location = $info['localisation'];
+                $description = $location['description'];
+                $status = $info['status'];   
+            ?>
+            <div class="col-md-6 col-lg-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 bg-success">
+            
+                                <h6 class="m-0 font-weight-bold text-white" style="font-size:25px;"><?=$info['name']?>
 
-                        </h6>
-                </div>
-                <div class="card-body text-center">
-                    <img class="img-profile rounded-circle w-75" src="/img/undraw_profile.svg" />
-                    <hr /> 
-                    <table>
-                        <tr>
-                            <td>Nom : </td>
-                            <td>Sipoufo Djiodom Loïc Yvan</td>
-                        </tr>
-                        <tr>
-                            <td>Number: </td>
-                            <td>695914926</td>
-                        </tr>
-                        <tr>
-                            <td>Address: </td>
-                            <td>Cameroun, Douala, Cite des palmier</td>
-                        </tr>
-                    </table>
-                    <a href="#" class="btn btn-warning btn-icon-split text-center" style="margin-top:10px;">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </span>
-                        <span class="text">Block</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 bg-danger">
-    
-                        <h6 class="m-0 font-weight-bold text-white" style="font-size:25px;">Sipoufo Yvan
-
-                        <a href="#" class="btn bg-danger float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
-                            <span class="icon"  style="color:white;">
-                                <i class="fas fa-trash"></i>
-                            </span>
-                        </a>
-
-                        <a href="#" class="btn bg-danger float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                            <span class="icon"  style="color:white;">
-                                <i class="fas fa-edit"></i>
-                            </span>
-                        </a>
-
-                        </h6>
-                </div>
-                <div class="card-body text-center">
-                    <img class="img-profile rounded-circle w-75" src="/img/undraw_profile.svg" />
-                    <hr /> 
-                    <table>
-                        <tr>
-                            <td>Nom : </td>
-                            <td>Sipoufo Djiodom Loïc Yvan</td>
-                        </tr>
-                        <tr>
-                            <td>Number: </td>
-                            <td>695914926</td>
-                        </tr>
-                        <tr>
-                            <td>Address: </td>
-                            <td>Cameroun, Douala, Cite des palmier</td>
-                        </tr>
-                    </table>
-                    <a href="#" class="btn btn-success btn-icon-split text-center" style="margin-top:10px;">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </span>
-                        <span class="text">Enabled</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 bg-success">
-    
-                        <h6 class="m-0 font-weight-bold text-white" style="font-size:25px;">Sipoufo Yvan
-
-                        <a href="#" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
-                            <span class="icon"  style="color:white;" >
-                                <i class="fas fa-trash"></i>
-                            </span>
-                        </a>
-
-                        <a href="#" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                            <span class="icon"  style="color:white;">
-                                <i class="fas fa-edit"></i>
-                            </span>
-                        </a>
-
-                        </h6>
-                </div>
-                <div class="card-body text-center">
-                    <img class="img-profile rounded-circle w-75" src="/img/undraw_profile.svg" />
-                    <hr /> 
-                    <table>
-                        <tr>
-                            <td>Nom : </td>
-                            <td>Sipoufo Djiodom Loïc Yvan</td>
-                        </tr>
-                        <tr>
-                            <td>Number: </td>
-                            <td>695914926</td>
-                        </tr>
-                        <tr>
-                            <td>Address: </td>
-                            <td>Cameroun, Douala, Cite des palmier</td>
-                        </tr>
-                    </table>
-                    <a href="#" class="btn btn-warning btn-icon-split text-center" style="margin-top:10px;">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </span>
-                        <span class="text">Block</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 bg-danger">
-    
-                        <h6 class="m-0 font-weight-bold text-white" style="font-size:25px;">Sipoufo Yvan
-
-                        <a href="#" class="btn bg-danger float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
-                            <span class="icon"  style="color:white;">
-                                <i class="fas fa-trash"></i>
-                            </span>
-                        </a>
-
-                        <a href="#" class="btn bg-danger float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                            <span class="icon"  style="color:white;">
-                                <i class="fas fa-edit"></i>
-                            </span>
-                        </a>
-
-                        </h6>
-                </div>
-                <div class="card-body text-center">
-                    <img class="img-profile rounded-circle w-75" src="/img/undraw_profile.svg" />
-                    <hr /> 
-                    <table>
-                        <tr>
-                            <td>Nom : </td>
-                            <td>Sipoufo Djiodom Loïc Yvan</td>
-                        </tr>
-                        <tr>
-                            <td>Number: </td>
-                            <td>695914926</td>
-                        </tr>
-                        <tr>
-                            <td>Address: </td>
-                            <td>Cameroun, Douala, Cite des palmier</td>
-                        </tr>
-                    </table>
-                    <a href="#" class="btn btn-success btn-icon-split text-center" style="margin-top:10px;">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </span>
-                        <span class="text">Enabled</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-
-        
-        <!-- <div class="col-md-6 col-lg-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 bg-danger">
-                    <h6 class="m-0 font-weight-bold text-white">Sipoufo Yvan</h6>
-                </div>
-                <div class="card-body text-center">
-                    <img class="img-profile rounded-circle w-75" src="/img/undraw_profile.svg" />
-                    <hr /> 
-                    <table>
-                        <tr>
-                            <td>Nom : </td>
-                            <td>Sipoufo Djiodom Loïc Yvan</td>
-                        </tr>
-                        <tr>
-                            <td>Number: </td>
-                            <td>695914926</td>
-                        </tr>
-                        <tr>
-                            <td>Address: </td>
-                            <td>Cameroun, Douala, Cite des palmier</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="#" class="btn btn-success btn-icon-split">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                    </span>
-                                    <span class="text">Activate</span>
-                                </a>
-                            </td>
-                            <td>
-                                <a href="#" class="btn btn-danger btn-icon-split">
-                                    <span class="icon text-white-50">
+                                <a href="#" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                                    <span class="icon"  style="color:white;">
                                         <i class="fas fa-trash"></i>
                                     </span>
-                                    <span class="text">Delete</span>
                                 </a>
-                            </td>
-                        </tr>
-                    </table>
+
+                                <a href="#" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                    <span class="icon"  style="color:white;">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                </a>
+
+                                </h6>
+                        </div>
+                        <?php 
+                            if(!empty($info['profileImage'])){
+                                $image = url('storage/'.$info['profileImage']);
+                            }else{
+                                $image = "/img/undraw_profile.svg";
+                            }
+
+                        ?>
+                        <div class="card-body text-center"><img class="img-profile rounded-circle w-75" src='<?= $image ?>' />
+                            <hr /> 
+                            <table>
+                                <tr>
+                                    <td>Nom : </td>
+                                    <td><?=$info['name'] ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Number: </td>
+                                    <td><?= $info['phone'] ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Address: </td>
+                                    <td><?= $description ?></td>
+                                </tr>
+                            </table>
+
+                            <?php 
+                                if($status == 1){ ?>
+
+                                    <a href="#" class="btn btn-success btn-icon-split text-center" style="margin-top:10px;">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </span>
+                                        <span class="text">Active</span>
+                                    </a>
+                            <?php }else{ ?>
+
+                                <a href="#" class="btn btn-warning btn-icon-split text-center" style="margin-top:10px;">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </span>
+                                <span class="text">Block</span>
+                                </a>
+
+                            <?php } ?>
+                            
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div> -->
+     <?php } 
+        }
+     ?>       
     </div> 
 
 @stop

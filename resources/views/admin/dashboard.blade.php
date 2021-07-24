@@ -97,6 +97,14 @@
             </a>
         </li>
 
+        <!-- Nav Item - profile -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/profile">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+            </a>
+        </li>
+
         <!-- Nav Item - Log out -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/logout">
@@ -123,7 +131,6 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
   Report</a
 >
 </div>
-
 <!-- Content Row -->
 <div class="row">
 <!-- Earnings (Monthly) Card Example -->

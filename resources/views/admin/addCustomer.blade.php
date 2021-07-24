@@ -1,11 +1,5 @@
 @extends('admin.layouts.skeleton')
 @section('title', 'Add a Customer')
-<style>
-    .displayError{
-        color : red;
-        font-size: 15px;
-    }
-</style>
 @section('nav')
         <li class="nav-item">
             <a class="nav-link" href="/admin/home">
@@ -103,6 +97,22 @@
             </a>
         </li>
 
+        <!-- Nav Item - profile -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/profile">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - profile -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/profile">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+            </a>
+        </li>
+
         <!-- Nav Item - Log out -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/logout">
@@ -113,216 +123,96 @@
 @stop
 @section('content')
 
-<div class="card mb-4">
-    <div class="card-header">
-        Add a customer 
-    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            Add a customer 
+        </div>
     <div class="card-body">
         <div class="container">
             <!-- form validation -->
 
-            <?php 
-
-                if (isset($_POST['submit'])){
-
-                    //variables validation
-                    $phoneOk = $passwordOk = $confirmpasswordOk = '';
-                    $phoneErr = $passwordErr = $confirmpasswordErr = $err = '';
-                    // $phoneOk = $passwordOk = $confirmpasswordOk = $uploadOk = '';
-                   // $phoneErr = $passwordErr = $confirmpasswordErr = $uploadErr = $err = '';
-
-                    $firstname = htmlspecialchars($_POST['firstname']);
-                    $lastname = htmlspecialchars($_POST['lastname']);
-                    $birthday = htmlspecialchars($_POST['birthdate']);
-                    $email = htmlspecialchars($_POST['email']);
-                    $phone = htmlspecialchars($_POST['phone']);
-                    $home = htmlspecialchars($_POST['home']);
-                    $identifier = htmlspecialchars($_POST['meter_identifier']);
-                    $password = htmlspecialchars($_POST['password']);
-                    $confirmpassword = htmlspecialchars($_POST['confirmpassword']);
-                    
-
-                    if (strlen($phone) > 9 || strlen($phone) < 9){
-                        $phoneErr = "Nine digit numbers expected";
-                    }else{
-                        $phoneOk = "Ok";
-                    }
-
-                    if (preg_match('/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,15}$/',$password)){
-                        $passwordOk = "Ok";
-                    }else{
-                        $passwordErr = "Between 8 and 15 characters - Minimum one uppercase letter and one number digit - Minimum one special character !@#$%^&*-";
-                    }
-
-                    if ($password == $confirmpassword){
-                        $confirmpasswordOk = "Ok";
-                    }else{
-                        $confirmpasswordErr = "Enter the same password";
-                    }
-
-                    // if(isset($_FILES["photo"]["name"])){
-
-                    //     if ($_FILES["photo"]["name"] != ''){
-
-                    //         define ('SITE_ROOT', realpath(dirname(__FILE__)));
-
-                    //         $target_dir = "\uploads\administrators";
-                    //         $target_file = basename($_FILES["photo"]["name"]);
-                    //         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-                    //         $check = getimagesize($_FILES["photo"]["tmp_name"]);
-    
-                            // Check if image file is a actual image or fake image
-                            // if($check == false) {
-                            //     $uploadErr = "File is not an image.";  
-                            // }else{
-                                //Check the file type
-                                // if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
-                                //     $uploadErr = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-                                // }else{
-                                    // Check file size
-                                    // if ($_FILES["photo"]["size"] > 500000) {
-                                    //     $uploadErr = "Files over 500Ko are not accepted";
-                                    // }else{
-                                        //if everything is Ok, upload the file
-                                        // if (move_uploaded_file($_FILES["photo"]["tmp_name"], SITE_ROOT.$target_dir."\/".$target_file)) {
-                                        //     $uploadOk = "Ok";
-                                        //     $image = $target_dir.'\/'.$target_file;
-                                        // } else {
-                                        //     $uploadErr = "Sorry, there was an error uploading your file.";
-                                        // }
-                            //         }
-                            //     }
-                            // }
-                        // }else{
-                        //     $image = '';
-                        // }
-
-                    // }
-
-                    // if ($phoneErr || $passwordErr || $confirmpasswordErr || $uploadErr){
-                    //     $err = "err";
-                    // }
-
-                    if (!empty($phoneErr) || !empty($passwordErr) || !empty($confirmpasswordErr)){
-                        $err = "err";
-                    }
-                    
-                    //if($phoneOk == "Ok" && $passwordOk == "Ok" && $confirmpasswordOk == "Ok" && $uploadOk == "Ok") {
-                    if($phoneOk == "Ok" && $passwordOk == "Ok" && $confirmpasswordOk == "Ok") {
-
-                       
-                        $password = md5(sha1($password));
-
-                        $url = "http://localhost:4000/client/auth/register";
-                        $alltoken = $_COOKIE['token'];
-                        $alltokentab = explode(';', $alltoken);
-                        $token = $alltokentab[0];
-                        $tokentab = explode('=',$token);
-                        $tokenVal = $tokentab[1];
-                        $Authorization = 'Bearer '.$tokenVal;
-
-                        $data = array(
-                            'name' => $firstname.' '.$lastname,
-                            'birthday' => $birthday,
-                            'phone' => $phone,
-                            'password' => $password,
-                            'email' => $email,
-                            "description" => $home,
-                            "IdCompteur" => $identifier,
-                        );
-                        $data_json = json_encode($data);
-                        //print_r($data_json);
+            @if(Session::has('message'))
+                <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+                    {{ Session::get('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             
-                        $ch = curl_init();
-                        curl_setopt($ch, CURLOPT_URL, $url);
-                        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
-                        curl_setopt($ch, CURLOPT_POST, 1);
-                        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $response  = curl_exec($ch);
-                        curl_close($ch); 
-
-                        $response = json_decode($response);
-                        
-                        //print_r($response);
-                        if ($response->status == 200){
-                            $messageOK = "Action Done Successfully";
-                            $firstname = $lastname = $birthday = $email = $home = $phone = $identifier = $password = $confirmpassword = "";
-                        }else{
-                            $messageErr = ucfirst($response->error);
-                        }
-                    }
-                }
-            ?>
-
-
-            <?php if (isset($messageOK)){?>
-                <div class="alert alert-success alert-dismissible fade show"><i class="fas fa-check-circle"></i> <?= $messageOK ?> 
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                </div>
-           <?php } ?>
-           <?php if (isset($messageErr)){?>
-                <div class="alert alert-danger alert-dismissible fade show"><i class="fas fa-exclamation-triangle"></i><?= $messageErr ?> 
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                </div>
-           <?php } ?>
-           
-            <form method="post" action="" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
+             <form method="post" action="/admin/customer/addCustomer/store" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
                 @csrf
-                <div class="input-group">
+                <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-address-book'></i></span></div>
-                    <input type="text" class="form-control" placeholder="first name" id="firstname" name="firstname" value="<?= isset($err)? $firstname : '' ?>" required>                          
+                    <input type="text" class="form-control @error('firstname') is-invalid @enderror" placeholder="first name" id="firstname" name="firstname" value="{{ old('firstname') }}" required>
+                        @error('firstname')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror                          
                 </div>
                 
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-address-book'></i></span></div>
-                    <input type="text" class="form-control" placeholder="last name" id="lastname" name="lastname" value="<?= isset($err)? $lastname : '' ?>" required>                       
+                    <input type="text" class="form-control @error('lastname') is-invalid @enderror" placeholder="last name" id="lastname" name="lastname" value="{{ old('lastname') }}" required>
+                        @error('lastname')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror                       
                 </div>
-                
+
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-birthday-cake'></i></span></div>
-                    <input type="date" class="form-control" id="birth_date" name="birthdate" value="<?= isset($err)? $birthday : '' ?>" required>                         
+                    <input type="date" class="form-control" id="birth_date" name="birthdate" value="{{ old('birthdate') }}" required>                         
                 </div>
                  
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">@</span></div>
-                    <input type="email" class="form-control" placeholder="email" name="email" id="email" value="<?= isset($err)? $email : '' ?>">                    
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="{{ old('email') }}">                    
+                     @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                     @enderror  
                 </div>
                 
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-phone-volume'></i></span></div>
-                    <input type="number" class="form-control" placeholder="phone number" id="phone" name="phone" value="<?= isset($err)? $phone : '' ?>" required>                
+                    <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="{{ old('phone') }}" required>                
+                    @error('phone')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
-                <div class="displayError"><?= isset($phoneErr) ? $phoneErr : ''?></div>
 
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
-                    <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="<?= isset($err)? $home : '' ?>" required>                
+                    <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="{{ old('home') }}" required>                
                 </div>
                   
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-water'></i></span></div>
-                    <input type="text" class="form-control" placeholder="Water meter identifier" id="meter_identifier" name="meter_identifier" value="<?= isset($err)? $identifier : '' ?>" required>                  
+                    <input type="text" class="form-control" placeholder="Water meter identifier" id="identifier" name="identifier" value="{{ old('identifier') }}" required>                  
                 </div>
                   
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control" placeholder="Enter the password" id="password" name="password" value="<?= isset($err)? $password : '' ?>" required>                  
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter the password" id="password" name="password" value="{{ old('password') }}" required>                  
+                    @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
-                <div class="displayError"><?= isset($passwordErr) ? $passwordErr : ''?></div>
                 
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="<?= isset($err)? $confirmpassword : '' ?>" required>                  
+                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="{{ old('confirmpassword') }}" required>                  
+                    @error('confirmpassword')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
-                <div class="displayError"><?= isset($confirmpasswordErr) ? $confirmpasswordErr : ''?></div>
-               
-                <!-- <div class="input-group mt-3">
+
+                <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-image'></i></span></div>
-                    <input type="FILE" class="form-control" id="photo" name="photo">                  
+                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image">    
+                    @error('image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror              
                 </div>
-                <div class="displayError"><?= isset($uploadErr) ? $uploadErr : ''?></div> -->
-                
+
                 <div class="row float-right mt-3">
                     <a href="#">
                         <button class="btn btn-primary" name="submit" type="submit">Register</button>
@@ -338,4 +228,3 @@
 </div>
 
 @stop
-

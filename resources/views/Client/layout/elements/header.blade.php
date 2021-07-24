@@ -1,5 +1,3 @@
-<?php session_start(); ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -264,13 +262,31 @@
                         aria-haspopup="true"
                         aria-expanded="false"
                         >
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-                            ><?= $_SESSION['name']?></span
-                        >
-                        <img
-                            class="img-profile rounded-circle"
-                            src="/img/undraw_profile.svg"
-                        />
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                            @if(Session::has('name'))
+                                {{ Session::get('name') }}
+                            @else
+                                 {{ _('UserXX') }} 
+                            @endif
+                        </span>
+                             @if(Session::has('photo'))
+
+                                @php
+                                    $photo = url('storage/'.Session::get('photo'))
+                                @endphp
+                                <img
+                                    class="img-profile rounded-circle"
+                                    src="{{ $photo }}"
+                                />
+                            @else
+                                @php
+                                    $photo = '/img/undraw_profile.svg'
+                                @endphp
+                                <img
+                                    class="img-profile rounded-circle"
+                                    src="{{ $photo }}"
+                                />
+                            @endif
                         </a>
                         <!-- Dropdown - User Information -->
                         <div
