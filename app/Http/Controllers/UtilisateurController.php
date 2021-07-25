@@ -318,7 +318,7 @@ class UtilisateurController extends Controller
             return view('admin/facture',['users' => $users,'messageOK' => $messageOK,'messageErr' => $messageErr]);
         }
     }
-    }
+    
 
     public function previewClauses(){
         return view('clauses');
@@ -334,6 +334,7 @@ class UtilisateurController extends Controller
             setcookie(session_name(),"",time()-3600);
             setcookie('token', "",time()-3600 ,"/",null,false,true);
             $_COOKIE = [];
+            Session::forget('profile');
             Session::flash('position', 'You have to accept the search for your position - Activate the localisation in your browser');
             return redirect()->route('welcome');
 
@@ -374,7 +375,13 @@ class UtilisateurController extends Controller
                 if(array_key_exists('profileImage', $userdata)){
                     $request->session()->put('photo',$userdata['profileImage']);
                 }
-                return redirect()->route('clientHome');
+
+                if($userdata['profile'] != 'user'){
+                    return redirect()->route('adminHome');
+                }else{
+                    return redirect()->route('clientHome');
+                } 
+               
             }
         }
 

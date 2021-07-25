@@ -114,7 +114,7 @@
         </li>
 @stop
 @section('content')
-
+  
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Administrators</h1> 
@@ -137,6 +137,11 @@
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            @if(Session::has('profile'))
+                @if(Session::get('profile') == "superAdmin")
+                    <th>Active/Blocked</th>
+                @endif
+            @endif
             <th>Registered_at</th>
             <th>Actions</th> 
           </tr>
@@ -162,6 +167,22 @@
             <td><?= $name ?></td>
             <td><?= $email ?></td>
             <td><?= $phone ?></td>
+            @if(Session::has('profile'))
+                @if(Session::get('profile') == "superAdmin")
+                    <td>
+                        @if($info['status'] == true)
+                            <a href="#">
+                            <button class="btn btn-sm btn-space btn-success rounded-pill"><span class="icon mdi mdi-checkbox-marked-circle-outline"></span>Active</button>
+                            </a>
+                        
+                        @else
+                            <a href="#">
+                            <button class="btn btn-sm btn-space btn-danger rounded-pill"><span class="icon mdi mdi-checkbox-marked-circle-outline"></span>Blocked</button>
+                            </a>
+                        @endif
+                    </td>
+                @endif
+            @endif
             <td><?= $registered_at ?></td>
             <td>
                     @if(Session::has('profile'))

@@ -16,6 +16,9 @@
     
       <hr>
       <br>
+      @if(Session::has('profile'))
+        @if(Session::get('profile') != "user")
+
       <div class="row">
         <div class="col-xs-12 col-md-4">
           <h4>Website editor  :</h4>
@@ -51,6 +54,9 @@
         </div>
       </div>
       <br>
+      
+        @endif
+      @endif
       <div class="row">
         <div class="col-xs-12 col-md-6">
           <h2 class="text-primary"> Legal Notice </h2>

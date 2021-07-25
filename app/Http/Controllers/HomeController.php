@@ -57,24 +57,9 @@ class HomeController extends Controller
 	        $expiretab =  explode('=', $expire);
 	        $timeout  = $expiretab[1];
 
-	        if($userdata['profile'] != 'user'){ //It's an administrator
+	        $location = $userdata['localisation'];
 
-	        	$request->session()->put('id',$userdata['_id']);
-	        	$request->session()->put('name',$userdata['name']);
-	        	$request->session()->put('profile',$userdata['profile']);
-
-	        	if(array_key_exists('profileImage', $userdata)){
-	        		$request->session()->put('photo',$userdata['profileImage']);
-	        	}
-	            setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
-
-	            return redirect()->route('adminHome');
-
-	        }else{ //It's a client
-
-	            $location = $userdata['localisation'];
-
-	            if(!empty($location['longitude']) && !empty($location['latitude'])){
+	        if(!empty($location['longitude']) && !empty($location['latitude'])){
 
 	              $request->session()->put('id',$userdata['_id']);
 	        	  $request->session()->put('name',$userdata['name']);
@@ -85,14 +70,19 @@ class HomeController extends Controller
 	        	  }
 	        	  // $request->session()->put('photo',$userdata['profileImage']);
 
-	              setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);  
-	              return redirect()->route('clientHome');
-
-	            }else{
 	              setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
+
+	              if($userdata['profile'] != 'user'){
+	              	return redirect()->route('adminHome');
+	              }else{
+	              	return redirect()->route('clientHome');
+	              } 
+	              
+	        }else{
+	        	  $request->session()->put('profile',$userdata['profile']);
+				  setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
 	              return redirect()->route('seeClauses');
-	            }
-	          }
+	        }
 	    }else{
 	        $err  = $informations['error'];
 	        Session::flash('message', $err);

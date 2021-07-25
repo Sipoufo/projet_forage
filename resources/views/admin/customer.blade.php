@@ -130,6 +130,17 @@
     <div class="row">
         <!-- Earnings (Monthly) Card Example -->
         <!-- Basic Card Example -->
+        @if(Session::has('error'))
+            <div class="alert alert-danger alert-dismissible fade show">
+                <i class="fas fa-exclamation-triangle"></i>
+                {{ Session::get('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>  
+        @endif
+
+
     <?php 
         if($customers['status'] == 200){ 
 
@@ -146,13 +157,13 @@
             
                                 <h6 class="m-0 font-weight-bold text-white" style="font-size:25px;"><?=$info['name']?>
 
-                                <a href="#" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                                <a href="/admin/customer/delete/<?= $info['_id'] ?>" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
                                     <span class="icon"  style="color:white;">
                                         <i class="fas fa-trash"></i>
                                     </span>
                                 </a>
 
-                                <a href="#" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                <a href="/admin/customer/edit/<?= $info['_id'] ?>" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
                                     <span class="icon"  style="color:white;">
                                         <i class="fas fa-edit"></i>
                                     </span>
@@ -188,7 +199,7 @@
                             <?php 
                                 if($status == 1){ ?>
 
-                                    <a href="#" class="btn btn-success btn-icon-split text-center" style="margin-top:10px;">
+                                    <a href="/admin/customer/block/<?= $info['_id'] ?>" class="btn btn-success btn-icon-split text-center" style="margin-top:10px;">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-exclamation-triangle"></i>
                                         </span>
@@ -196,7 +207,7 @@
                                     </a>
                             <?php }else{ ?>
 
-                                <a href="#" class="btn btn-warning btn-icon-split text-center" style="margin-top:10px;">
+                                <a href="/admin/customer/activate/<?= $info['_id'] ?>" class="btn btn-warning btn-icon-split text-center" style="margin-top:10px;">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-exclamation-triangle"></i>
                                 </span>

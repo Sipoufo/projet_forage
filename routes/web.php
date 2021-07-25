@@ -144,4 +144,12 @@ Route::get('/admin/editProfile',[AdminController::class, 'adminEditProfile'])->n
 
 Route::match(['get','put'],'/admin/update',[AdminController::class, 'updateAdmin'])->name('updateAdmin');
 
-// Route::put('/admin/update',[AdminController::class, 'updateAdmin'])->name('updateAdmin');
+Route::match(['get','put'],'/admin/customer/block/{id}',[ManageAdminController::class, 'blockCustomer'])->name('blockCustomer');
+
+Route::match(['get','put'],'/admin/customer/activate/{id}',[ManageAdminController::class, 'activateCustomer'])->name('activateCustomer');
+
+Route::get('/admin/customer/edit/{id}',[ManageAdminController::class, 'editCustomer'])->name('editCustomer');
+
+Route::match(['get','put'],'/admin/customer/saveCustomer/{id}',[ManageAdminController::class, 'saveCustomer'])->name('saveCustomer');
+
+Route::match(['get','put'],'/admin/customer/delete/{id}',[ManageAdminController::class, 'deleteCustomer'])->name('deleteCustomer');
