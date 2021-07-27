@@ -142,3 +142,7 @@ Route::get('/admin/stock', function() {
 Route::get('/admin/clauses', function() {
     return view('admin/adminClauses');
 });
+
+Route::get('/admin/map', function() {
+    return view('admin/map');
+});

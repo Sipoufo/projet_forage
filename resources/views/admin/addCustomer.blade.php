@@ -97,6 +97,14 @@
 
         <!-- Nav Item - Payment -->
         <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/map">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Map</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Payment -->
+        <li class="nav-item">
             <a class="nav-link collapsed" href="/admin/clauses">
             <i class="fas fa-list"></i>
             <span>Confidentiality Clauses</span>

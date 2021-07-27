@@ -99,6 +99,14 @@
             </div>
         </li>
 
+        <!-- Nav Item - Payment -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/map">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Map</span>
+            </a>
+        </li>
+
         <!-- Nav Item - Notification -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/admin/chat">

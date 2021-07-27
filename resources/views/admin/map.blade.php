@@ -1,5 +1,24 @@
 @extends('admin.layouts.skeleton')
-@section('title', 'Bill')
+@section('title', 'Add an Administrator')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+crossorigin=""/>
+<style>
+    .displayError{
+        color : red;
+        font-size: 15px;
+    }
+    #mapid {
+        height: 80%;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
 @section('nav')
         <li class="nav-item">
             <a class="nav-link" href="/admin/home">
@@ -23,7 +42,7 @@
         </li>
 
         <!-- Nav Item - Customer -->
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities1" aria-expanded="true" aria-controls="collapseUtilities1">
                 <i class="fas fa-address-book"></i>
                 <span>Customer</span>
@@ -38,7 +57,7 @@
         </li>
 
         <!-- Nav Item - Payment -->
-        <li class="nav-item active">
+        <li class="nav-item">
             <a
             class="nav-link collapsed"
             href="#"
@@ -73,7 +92,7 @@
         </li>
 
         <!-- Nav Item - Stock -->
-        <li class="nav-item ">
+        <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                 aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-folder"></i>
@@ -114,64 +133,53 @@
         </li>
 @stop
 @section('content')
-
+<?php 
+    $alltoken = $_COOKIE['token'];
+    $alltokentab = explode(';', $alltoken);
+    $token = $alltokentab[0];
+    $tokentab = explode('=',$token);
+    $tokenVal = $tokentab[1];
+    $Authorization = 'Bearer '.$tokenVal;   
+?>
 <div class="card mb-4">
+    <input type="text" id="headerAPI" value="<?php echo $Authorization ?>">
     <div class="card-header">
-        Add an Invoice
+        Map
     </div>
-    <div class="card-body">
-        <div class="container">
-            
-            <?php if (isset($messageOK)){?>
-                    <div class="alert alert-success alert-dismissible fade show"><i class="fas fa-check-circle"></i> <?= $messageOK ?> 
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    </div>
-            <?php } ?>
-            <?php if (isset($messageErr)){?>
-                    <div class="alert alert-danger alert-dismissible fade show"><i class="fas fa-exclamation-triangle"></i><?= $messageErr ?> 
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    </div>
-            <?php } ?>
-            
-            <form method="post" action="/admin/facture" class="col-lg-8 offset-lg-2">
-                {{csrf_field()}}
-                <div class="form-group mb-3">
-                    <div class="input-group">Personnel</div>
-        
-                    <select name="idClient" id="idClient" class="form-control">
-                        @foreach($users as $user)
-                            <option value={{$user -> _id}}>{{ $user -> name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group mb-3">
-                    <div class="input-group">New index</div>
-                    <input type="number" class="form-control" placeholder="new index" id="newIndex" name="newIndex" required>                  
-                </div>
-                <div class="form-group mb-3">
-                    <div class="input-group">Last index</div>
-                    <input type="number" class="form-control" placeholder="last index" id="lastIndex" name="lastIndex" required>                  
-                </div>
-                <div class="form-group mb-3">
-                    <div class="input-group">Price of KW</div>
-                    <input type="number" class="form-control" placeholder="price of kilo wath" id="priceKW" name="priceKW" required>                  
-                </div>
-                <div class="form-group mb-3">
-                    <div class="input-group">Limit date of paiement</div>
-                    <input type="date" class="form-control" id="dataLimitePaid" name="dataLimitePaid" placeholder="limit date of payement" required>                  
-                </div>
-            
-                <div class="row float-right">
-                    <a href="#">
-                        <button class="btn btn-primary" name="connect" type="submit">Register</button>
-                    </a>
-                    <a href="/admin/administrator">
-                        <button class="btn btn-secondary ml-2" type="button">Cancel</button>
-                    </a>
-                </div>
-                
-            </form>
-        </div>
-    </div>
-</div>
-@stop
+</div> 
+<div id="mapid"></div>
+<script src="/js/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>  
+<script type='text/javascript'> 
+    $( document ).ready(function() {
+        // var header = ("#headerAPI").val();
+        // alert(header)
+        var settings = {
+            "url": "http://localhost:4000/admin/auth/getClient",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZmEzMDg2M2YxZWY1MTBjY2YzYzE2MyIsImlhdCI6MTYyNzI0MjM2NiwiZXhwIjoxNjI3NTAxNTY2fQ.8k6f3NJ4f0vmf5PEjWXQ9YQ_1LvpiIP_lsb6ZoAqWTs"
+            },
+        };
+        var client
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+            client = response;
+        });
+        var mymap = L.map('mapid').setView([5.48464445289128, 10.442020316114435], 18);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'sk.eyJ1Ijoic2lwb2YyNCIsImEiOiJja3JqbjVlYjUwNDZyMnVwY2s4NjlnbmhqIn0.4ZJUEirSuUiu-ywAHeJ3rQ'
+        }).addTo(mymap);
+        var admin = L.marker([5.48564445289128, 10.443020316114435]).addTo(mymap).bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();;
+        var user1 = L.marker([5.48464446, 10.4420204]).addTo(mymap);
+    });
+    
+</script>
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+@stop 
