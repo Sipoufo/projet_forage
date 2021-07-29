@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\UtilisateurController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ManageAdminController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LogoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,20 +18,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/logout', function() {
-    return view('logout');
-});
+// Global routes 
+Route::get('/logout',[LogoutController::class, 'logout']);
+
+Route::get('/',[HomeController::class, 'sign_in'])->name('welcome');
+
+Route::post('/login',[HomeController::class, 'login']);
+
+Route::get('/forgot_password',[HomeController::class, 'forgot_password']);
+
+Route::post('/reset',[HomeController::class, 'reset']);
 
 
 
 //Client
-Route::match(['post','get'],'/', function () {
-    return view('welcome');
-});
 
-Route::match(['post','get'],'/home', function() {
-    return view('client/dashboard');
-});
+Route::get('/home',[HomeController::class, 'clientHome'])->name('clientHome');
 
 Route::get('/consumption', function() {
     return view('client/consumption');
@@ -81,9 +87,13 @@ Route::get('/tchat', function() {
     return view('client/message');
 });
 
-Route::match(['post','get'],'/preview/clauses', function() {
-    return view('/clauses');
-});
+// Route::match(['post','get'],'/preview/clauses', function() {
+//     return view('/clauses');
+// });
+
+Route::get('/preview/clauses',[UtilisateurController::class, 'previewClauses'])->name('seeClauses');
+
+Route::post('/preview/clauses/validation',[UtilisateurController::class, 'validClauses']);
 
 Route::get('/clauses', function() {
     return view('client/clauses');
@@ -91,53 +101,56 @@ Route::get('/clauses', function() {
 
 
 //Admin route
-Route::match(['post','get'],'/admin/home', function() {
-    return view('admin/dashboard');
-});
 
-Route::get('/admin/consumption', function() {
-    return view('admin/consumption');
-});
+Route::get('/admin/home',[HomeController::class, 'adminHome'])->name('adminHome');
 
-Route::get('/admin/customer', function() {
-    return view('admin/customer');
-});
+Route::get('/admin/consumption',[AdminController::class, 'adminConsumption'])->name('adminConsumption');
 
-Route::match(['get','post'],'/admin/customer/addCustomer', function() {
-    return view('admin/addCustomer');
-});
+Route::get('/admin/customer',[ManageAdminController::class, 'viewCustomers']);
 
-Route::get('/admin/administrator', function() {
-    return view('admin/administrator');
-});
+Route::get('/admin/customer/addCustomer',[ManageAdminController::class, 'addCustomers']);
 
-Route::match(['get','post'],'/admin/administrator/addAdministrator', function() {
-    return view('admin/addAdministrator');
-});
+Route::post('/admin/customer/addCustomer/store',[ManageAdminController::class, 'storeCustomers']);
+
+Route::get('/admin/administrator',[ManageAdminController::class, 'viewAdministrators']);
+
+Route::get('/admin/administrator/addAdministrator',[ManageAdminController::class, 'addAdministrators']);
+
+Route::post('/admin/administrator/addAdministrator/store',[ManageAdminController::class, 'storeAdministrators']);
 
 Route::get('/admin/facture',[UtilisateurController::class, 'allClient']);
 
 Route::post('/admin/facture',[UtilisateurController::class, 'addInvoice']);
 
-Route::get('/admin/status', function() {
-    return view('admin/status');
-});
+Route::get('/admin/status',[AdminController::class, 'adminStatus'])->name('adminStatus');
 
-Route::get('/admin/chat', function() {
-    return view('admin/chat');
-});
+Route::get('/admin/chat',[AdminController::class, 'adminChat'])->name('adminChat');
 
-Route::match(['get','post'],'/admin/add', function() {
-    return view('admin/add');
-});
+Route::get('/admin/add',[AdminController::class, 'adminAdd'])->name('adminAdd');
 
-Route::match(['get','delete'],'/admin/remove', function() {
-    return view('admin/remove');
-});
+Route::post('/admin/add/store',[AdminController::class, 'storeProduct'])->name('adminAddStore');
 
-Route::get('/admin/stock', function() {
-    return view('admin/stock');
-});
+Route::get('/admin/remove',[AdminController::class, 'adminRemove'])->name('adminRemove');
+
+Route::delete('/admin/remove',[AdminController::class, 'deleteProduct'])->name('adminDelete');
+
+Route::get('/admin/stock',[AdminController::class, 'adminStock'])->name('adminStock');
+
+Route::get('/admin/clauses',[AdminController::class, 'adminClauses'])->name('adminClauses');
+
+Route::get('/admin/profile',[AdminController::class, 'adminProfile'])->name('adminProfile');
+
+Route::get('/admin/editProfile',[AdminController::class, 'adminEditProfile'])->name('adminEditProfile');
+
+Route::match(['get','put'],'/admin/update',[AdminController::class, 'updateAdmin'])->name('updateAdmin');
+
+Route::match(['get','put'],'/admin/customer/block/{id}',[ManageAdminController::class, 'blockCustomer'])->name('blockCustomer');
+
+Route::match(['get','put'],'/admin/customer/activate/{id}',[ManageAdminController::class, 'activateCustomer'])->name('activateCustomer');
+
+Route::get('/admin/customer/edit/{id}',[ManageAdminController::class, 'editCustomer'])->name('editCustomer');
+
+Route::match(['get','put'],'/admin/customer/saveCustomer/{id}',[ManageAdminController::class, 'saveCustomer'])->name('saveCustomer');
 
 Route::get('/admin/clauses', function() {
     return view('admin/adminClauses');
@@ -146,3 +159,4 @@ Route::get('/admin/clauses', function() {
 Route::get('/admin/map', function() {
     return view('admin/map');
 });
+Route::match(['get','put'],'/admin/customer/delete/{id}',[ManageAdminController::class, 'deleteCustomer'])->name('deleteCustomer');

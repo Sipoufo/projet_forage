@@ -1,46 +1,3 @@
-<?php 
-
-    if(isset($_POST['submit'])) {
-
-      $latitude = $_POST['lat'];
-      $longitude = $_POST['lng'];
-
-      if(empty($latitude) || empty($longitude)){
-
-          echo "<script>alert('Access refused to the application - Autorise the location in your navigator');</script>";
-          echo "<script>window.location.href='/';</script>";
-
-      }else{
-          $url = "http://localhost:3000/localisation/id";
-          $data = array(
-              'longitude' => $longitude,
-              'latitude' => $latitude,
-          );
-          $data_json = json_encode($data);
-          //print_r($data_json); 
-          echo "<script>window.location.href='/home';</script>";
-
-
-          // $ch = curl_init();
-          // curl_setopt($ch, CURLOPT_URL, $url);
-          // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-          // curl_setopt($ch, CURLOPT_POST, 1);
-          // curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
-          // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-          // $response  = curl_exec($ch);
-          // curl_close($ch);
-
-          // if($response){
-          //   echo "<script>window.location.href='/home';</script>";
-          // }
-      }
-
-    }  
-
-      
-?>
- 
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,6 +16,9 @@
     
       <hr>
       <br>
+      @if(Session::has('profile'))
+        @if(Session::get('profile') != "user")
+
       <div class="row">
         <div class="col-xs-12 col-md-4">
           <h4>Website editor  :</h4>
@@ -94,6 +54,9 @@
         </div>
       </div>
       <br>
+      
+        @endif
+      @endif
       <div class="row">
         <div class="col-xs-12 col-md-6">
           <h2 class="text-primary"> Legal Notice </h2>
@@ -125,7 +88,7 @@
       <div class="row">
         <div class="col-xs-12 col-md-4"></div>
         <div class="col-xs-12 col-md-4 text-center">
-            <form method="post" action="">
+            <form method="post" action="/preview/clauses/validation">
               @csrf
               <div class="input-field">
                 <input type="checkbox" class="form-check-input" name="location" id="location" required> 
