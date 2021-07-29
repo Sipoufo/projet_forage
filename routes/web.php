@@ -157,6 +157,7 @@ Route::get('/admin/clauses', function() {
 });
 
 Route::get('/admin/map', function() {
-    return view('admin/map');
+    return view('admin/maps');
 });
+
 Route::match(['get','put'],'/admin/customer/delete/{id}',[ManageAdminController::class, 'deleteCustomer'])->name('deleteCustomer');

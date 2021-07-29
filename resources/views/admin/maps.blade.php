@@ -147,8 +147,8 @@ crossorigin=""/><!-- Make sure you put this AFTER Leaflet's CSS -->
 <div class="card mb-4">
     <div class="card-header">
         Map
-        <form style="float: right">
-            <input type="text" value="<?php echo $Authorization?>" id="authorization" hidden>
+        <form style="float: right" hidden>
+            <input type="text" value="<?php echo $Authorization?>" id="authorization">
             <button type="submit" class="btn btn-primary">Actuliser</button>
         </form>
     </div>
@@ -158,8 +158,9 @@ crossorigin=""/><!-- Make sure you put this AFTER Leaflet's CSS -->
 <script type='text/javascript'> 
     let client = [];
     let NumClient;
+    let admin;
     const autho = document.getElementById('authorization').value;
-    alert(autho);
+    
     var settings = {
         "url": "http://localhost:4000/admin/auth/getClient",
         "method": "GET",
@@ -175,8 +176,21 @@ crossorigin=""/><!-- Make sure you put this AFTER Leaflet's CSS -->
         NumClient = response.result.length;
     });
     
+    var adminS = {
+        "url": "http://localhost:4000/admin/auth/getAdminByToken",
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Authorization": autho
+        },
+    };
+    $.ajax(adminS).done(function (response) {
+        admin = response.result
+        console.log(response);
+    });
+    
     $( document ).ready(function() {
-        var mymap = L.map('mapid').setView([5.48464445289128, 10.442020316114435], 18);
+        var mymap = L.map('mapid').setView([5.48464445289128, 10.442020316114435], 16);
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
@@ -186,16 +200,23 @@ crossorigin=""/><!-- Make sure you put this AFTER Leaflet's CSS -->
         accessToken: 'sk.eyJ1Ijoic2lwb2YyNCIsImEiOiJja3JqbjVlYjUwNDZyMnVwY2s4NjlnbmhqIn0.4ZJUEirSuUiu-ywAHeJ3rQ'
         }).addTo(mymap);
 
-        L.circle([5.48464445289128, 10.442020316114435], {
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.5,
-            radius: 500
-        }).addTo(mymap);
+        var greenIcon = L.icon({
+            iconUrl: '/img/pointeur3.png',
+            iconSize:     [32, 32], 
+            iconAnchor:   [22, 94], 
+            popupAnchor:  [-3, -76] 
+        });
+        var adminIcon = L.icon({
+            iconUrl: '/img/pointeur1.png',
+            iconSize:     [32, 32], 
+            iconAnchor:   [22, 94], 
+            popupAnchor:  [-3, -76] 
+        });
+
+        L.marker([admin.localisation.longitude, admin.localisation.latitude], {icon: adminIcon}).addTo(mymap).bindPopup("<h4>Admin</h4>").openPopup();
         
         for (let i = 0; i < NumClient; i++) {
             if (client[i].localisation.latitude && client[i].localisation.longitude) {
-                console.log(client);
                 const description = function () {
                     if (client[i].localisation.description == undefined) {
                         return null
@@ -203,7 +224,7 @@ crossorigin=""/><!-- Make sure you put this AFTER Leaflet's CSS -->
                         return client[i].localisation.description
                     }
                 }
-                L.marker([client[i].localisation.longitude, client[i].localisation.latitude]).addTo(mymap).bindPopup(client[i].localisation.description).openPopup();
+                L.marker([client[i].localisation.longitude, client[i].localisation.latitude], {icon: greenIcon}).addTo(mymap).bindPopup(client[i].localisation.description).openPopup();
             }
             
         }
