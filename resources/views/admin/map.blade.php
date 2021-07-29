@@ -2,7 +2,10 @@
 @section('title', 'Add an Administrator')
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
 integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-crossorigin=""/>
+crossorigin=""/><!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
 <style>
     .displayError{
         color : red;
@@ -142,31 +145,37 @@ crossorigin=""/>
     $Authorization = 'Bearer '.$tokenVal;   
 ?>
 <div class="card mb-4">
-    <input type="text" id="headerAPI" value="<?php echo $Authorization ?>">
     <div class="card-header">
         Map
+        <form style="float: right">
+            <input type="text" value="<?php echo $Authorization?>" id="authorization" hidden>
+            <button type="submit" class="btn btn-primary">Actuliser</button>
+        </form>
     </div>
 </div> 
 <div id="mapid"></div>
 <script src="/js/jquery-3.6.0.min.js"></script>
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>  
 <script type='text/javascript'> 
+    let client = [];
+    let NumClient;
+    const autho = document.getElementById('authorization').value;
+    alert(autho);
+    var settings = {
+        "url": "http://localhost:4000/admin/auth/getClient",
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Authorization": autho
+        },
+    };
+    $.ajax(settings).done(function (response) {
+        for (let j = 0; j < response.result.length; j++) {
+            client.push(response.result[j]);   
+        }
+        NumClient = response.result.length;
+    });
+    
     $( document ).ready(function() {
-        // var header = ("#headerAPI").val();
-        // alert(header)
-        var settings = {
-            "url": "http://localhost:4000/admin/auth/getClient",
-            "method": "GET",
-            "timeout": 0,
-            "headers": {
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZmEzMDg2M2YxZWY1MTBjY2YzYzE2MyIsImlhdCI6MTYyNzI0MjM2NiwiZXhwIjoxNjI3NTAxNTY2fQ.8k6f3NJ4f0vmf5PEjWXQ9YQ_1LvpiIP_lsb6ZoAqWTs"
-            },
-        };
-        var client
-        $.ajax(settings).done(function (response) {
-            console.log(response);
-            client = response;
-        });
         var mymap = L.map('mapid').setView([5.48464445289128, 10.442020316114435], 18);
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -176,10 +185,31 @@ crossorigin=""/>
         zoomOffset: -1,
         accessToken: 'sk.eyJ1Ijoic2lwb2YyNCIsImEiOiJja3JqbjVlYjUwNDZyMnVwY2s4NjlnbmhqIn0.4ZJUEirSuUiu-ywAHeJ3rQ'
         }).addTo(mymap);
-        var admin = L.marker([5.48564445289128, 10.443020316114435]).addTo(mymap).bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();;
-        var user1 = L.marker([5.48464446, 10.4420204]).addTo(mymap);
+
+        L.circle([5.48464445289128, 10.442020316114435], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 500
+        }).addTo(mymap);
+        
+        for (let i = 0; i < NumClient; i++) {
+            if (client[i].localisation.latitude && client[i].localisation.longitude) {
+                console.log(client);
+                const description = function () {
+                    if (client[i].localisation.description == undefined) {
+                        return null
+                    } else {
+                        return client[i].localisation.description
+                    }
+                }
+                L.marker([client[i].localisation.longitude, client[i].localisation.latitude]).addTo(mymap).bindPopup(client[i].localisation.description).openPopup();
+            }
+            
+        }
+        
     });
-    
+        
 </script>
 <!-- Make sure you put this AFTER Leaflet's CSS -->
 @stop 
