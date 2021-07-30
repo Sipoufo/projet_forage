@@ -1,5 +1,5 @@
 @extends('admin.layouts.skeleton')
-@section('title', 'EditProfile')
+@section('title', 'EditCustomer')
 @section('nav')
         <li class="nav-item">
             <a class="nav-link" href="/admin/home">
@@ -82,9 +82,9 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Stock Information</h6>
-                    <a class="collapse-item" href="/admin/add">Add</a>
-                    <a class="collapse-item" href="/admin/remove">Remove</a>
-                    <a class="collapse-item" href="/admin/stock">Stock</a>
+                    <a class="collapse-item" href="/admin/products_types">Products type</a>
+                    <a class="collapse-item" href="/admin/manage_products">Manage products</a>
+                    <a class="collapse-item" href="/admin/stock/1">Stock</a>
                 </div>
             </div>
         </li>
@@ -174,22 +174,6 @@
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-water'></i></span></div>
                     <input type="text" class="form-control" placeholder="Water meter identifier" id="identifier" name="identifier" value="<?= $data['IdCompteur']?>" required>                  
                 </div>
-                  
-                <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter the password" id="password" name="password" value="{{ old('password') }}" required>                  
-                    @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                
-                <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="{{ old('confirmpassword') }}" required>                  
-                    @error('confirmpassword')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
 
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-image'></i></span></div>
@@ -198,16 +182,16 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror              
                 </div>
-                <input type="hidden" name="profileImage" id="profileImage" value="<?= $info['profileImage']?>"/>
+                <input type="hidden" name="profileImage" id="profileImage" value="<?= $data['profileImage']?>"/>
                 <input type="hidden" name="lat" id="lat" value="<?= $localisation['latitude']?>"/> 
                 <input type="hidden" name="lng" id="lng" value="<?= $localisation['longitude']?>"/>
 
                 <div class="row float-right mt-3"> 
                     <a href="/admin/customer">
-                        <button class="btn btn-secondary ml-2" type="button">Cancel</button>
+                        <button class="btn btn-secondary" type="button">Cancel</button>
                     </a>
                     <a href="#">
-                        <button class="btn btn-primary" name="submit" type="submit">Proceed</button>
+                        <button class="btn btn-primary ml-2" name="submit" type="submit">Proceed</button>
                     </a>
                 </div>
                 

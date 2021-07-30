@@ -1,5 +1,5 @@
 @extends('admin.layouts.skeleton')
-@section('title', 'Add a Customer')
+@section('title', 'EditAdmin')
 @section('nav')
         <li class="nav-item">
             <a class="nav-link" href="/admin/home">
@@ -73,7 +73,7 @@
         </li>
 
         <!-- Nav Item - Stock -->
-        <li class="nav-item ">
+        <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                 aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-folder"></i>
@@ -91,25 +91,9 @@
 
         <!-- Nav Item - Payment -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/map">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Map</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - Payment -->
-        <li class="nav-item">
             <a class="nav-link collapsed" href="/admin/clauses">
             <i class="fas fa-list"></i>
             <span>Confidentiality Clauses</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - profile -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/profile">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
             </a>
         </li>
 
@@ -133,7 +117,7 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            Add a customer 
+            Edit an administrator 
         </div>
     <div class="card-body">
         <div class="container">
@@ -148,32 +132,25 @@
                 </div>
             @endif
             
-             <form method="post" action="/admin/customer/addCustomer/store" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
+             <form method="post" action="/admin/administrator/saveAdmin/<?= $data['_id']?>" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-address-book'></i></span></div>
-                    <input type="text" class="form-control @error('firstname') is-invalid @enderror" placeholder="first name" id="firstname" name="firstname" value="{{ old('firstname') }}" required>
-                        @error('firstname')
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="name" id="name" name="name" value="<?= $data['name']?>" required>
+                        @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror                          
-                </div>
-                
-                <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-address-book'></i></span></div>
-                    <input type="text" class="form-control @error('lastname') is-invalid @enderror" placeholder="last name" id="lastname" name="lastname" value="{{ old('lastname') }}" required>
-                        @error('lastname')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror                       
                 </div>
 
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-birthday-cake'></i></span></div>
-                    <input type="date" class="form-control" id="birth_date" name="birthdate" value="{{ old('birthdate') }}" required>                         
+                    <input type="date" class="form-control" id="birth_date" name="birthdate" value="<?= $data['birthday']?>" required>                         
                 </div>
                  
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">@</span></div>
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="{{ old('email') }}">                    
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="<?= $data['email']?>">                    
                      @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                      @enderror  
@@ -181,52 +158,37 @@
                 
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-phone-volume'></i></span></div>
-                    <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="{{ old('phone') }}" required>                
+                    <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="<?= $data['phone']?>" required>                
                     @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
+                <?php $localisation = $data['localisation']; 
+                ?>  
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
-                    <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="{{ old('home') }}" required>                
-                </div>
-                  
-                <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-water'></i></span></div>
-                    <input type="text" class="form-control" placeholder="Water meter identifier" id="identifier" name="identifier" value="{{ old('identifier') }}" required>                  
-                </div>
-                  
-                <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter the password" id="password" name="password" value="{{ old('password') }}" required>                  
-                    @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                
-                <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="{{ old('confirmpassword') }}" required>                  
-                    @error('confirmpassword')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="<?= $localisation['description']?>" required>                
                 </div>
 
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-image'></i></span></div>
-                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image">    
-                    @error('image')
+                    <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo">    
+                    @error('photo')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror              
                 </div>
 
-                <div class="row float-right mt-3">
-                    <a href="#">
-                        <button class="btn btn-primary" name="submit" type="submit">Register</button>
+                <input type="hidden" name="profileImage" id="profileImage" value="<?= $data['profileImage']?>"/>
+                <input type="hidden" name="lat" id="lat" value="<?= $localisation['latitude']?>"/> 
+                <input type="hidden" name="lng" id="lng" value="<?= $localisation['longitude']?>"/>
+
+                <div class="row float-right mt-3"> 
+                    <a href="/admin/administrator">
+                        <button class="btn btn-secondary" type="button">Cancel</button>
                     </a>
-                    <a href="/admin/customer">
-                        <button class="btn btn-secondary ml-2" type="button">Cancel</button>
+                    <a href="#">
+                        <button class="btn btn-primary ml-2" name="submit" type="submit">Proceed</button>
                     </a>
                 </div>
                 

@@ -89,21 +89,13 @@
             </div>
         </li>
 
-        <!-- Nav Item - Payment -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/map">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Map</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - Payment -->
+        <!-- Nav Item - Clauses -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/admin/clauses">
             <i class="fas fa-list"></i>
             <span>Confidentiality Clauses</span>
             </a>
-        </li>
+        </li> 
 
         <!-- Nav Item - profile -->
         <li class="nav-item">
@@ -126,42 +118,76 @@
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Manage Products</h1>
+    <a href="/admin/manage_products/remove" class="btn btn-primary"> Remove a product </a>
 </div>
 
 <div class="row">
+
     <!-- Detail Part -->
     <div class="col-lg-12">
         <div class="card mb-4">
             <div class="card-header">
-                Remove a product
+                Add a product
             </div>
             <div class="card-body">
+
+                @if(Session::has('message'))
+                    <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+                        {{ Session::get('message') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
                 <div class="col-md-11 col-lg-7 offset-md-1 offset-lg-2">
                     <div class="p-5">
-                        <form method="" action="" class="user">
+                        <form method="post" action="/admin/manage_products/add" class="user" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <select name="productName" class="form-control">
-                                    <option value="tuyau">Tuyau</option>
-                                    <option value="visse">Visse</option>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    name="name" placeholder="Enter your product name" value="{{ old('name') }}" required>
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div> 
+                            <div class="form-group">
+                                <select name="type" id="type" class="form-control">
+                                    <option value="Electricity">Electricity</option>
+                                    <option value="Water Maintenance">Water Maintenance</option>  
                                 </select>
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control form-control-user"
-                                    placeholder="Quantity">
+                                <input type="number" class="form-control @error('quantity') is-invalid @enderror"
+                                    name="quantity" placeholder="Quantity" value="{{ old('quantity') }}" required>
+                                    @error('quantity')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                             </div>
-
-                            <div class="row float-right mt-3">
-                                <a href="#">
-                                    <button href="#" class="btn btn-primary btn-user" name="submit" type="submit">
-                                        Remove
-                                    </button>
-                                </a>
-                                <a href="/admin/manage_products">
-                                    <button class="btn btn-secondary btn-user ml-2" type="button">Cancel</button>
-                                </a>
+                            <div class="form-group">
+                                <input type="number" class="form-control @error('unitprice') is-invalid @enderror"
+                                    name="unitprice" placeholder="Unit price" value="{{ old('unitprice') }}" required>
+                                    @error('unitprice')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                             </div>
-                            
+                            <div class="form-group">
+                                <input type="text" class="form-control @error('description') is-invalid @enderror"
+                                    name="description" placeholder="Enter the description of the product" value="{{ old('description') }}" required>
+                                    @error('description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div>
+                            <div class="form-group">
+                                <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                    name="image" placeholder="Enter your image" required>
+                                    @error('image')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div>
+                            <button href="#" class="btn btn-primary btn-user btn-block" type="submit">
+                                Proceed
+                            </button>
                         </form>
                     </div>
                 </div>
