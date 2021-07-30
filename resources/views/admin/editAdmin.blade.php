@@ -1,5 +1,5 @@
 @extends('admin.layouts.skeleton')
-@section('title', 'EditCustomer')
+@section('title', 'EditAdmin')
 @section('nav')
         <li class="nav-item">
             <a class="nav-link" href="/admin/home">
@@ -117,7 +117,7 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            Edit a customer 
+            Edit an administrator 
         </div>
     <div class="card-body">
         <div class="container">
@@ -132,7 +132,7 @@
                 </div>
             @endif
             
-             <form method="post" action="/admin/customer/saveCustomer/<?= $data['_id']?>" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
+             <form method="post" action="/admin/administrator/saveAdmin/<?= $data['_id']?>" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="input-group mt-3">
@@ -164,15 +164,11 @@
                     @enderror
                 </div>
 
-                <?php $localisation = $data['localisation']; ?>  
+                <?php $localisation = $data['localisation']; 
+                ?>  
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
                     <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="<?= $localisation['description']?>" required>                
-                </div>
-                  
-                <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-water'></i></span></div>
-                    <input type="text" class="form-control" placeholder="Water meter identifier" id="identifier" name="identifier" value="<?= $data['IdCompteur']?>" required>                  
                 </div>
 
                 <div class="input-group mt-3">
@@ -182,12 +178,13 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror              
                 </div>
+
                 <input type="hidden" name="profileImage" id="profileImage" value="<?= $data['profileImage']?>"/>
                 <input type="hidden" name="lat" id="lat" value="<?= $localisation['latitude']?>"/> 
                 <input type="hidden" name="lng" id="lng" value="<?= $localisation['longitude']?>"/>
 
                 <div class="row float-right mt-3"> 
-                    <a href="/admin/customer">
+                    <a href="/admin/administrator">
                         <button class="btn btn-secondary" type="button">Cancel</button>
                     </a>
                     <a href="#">

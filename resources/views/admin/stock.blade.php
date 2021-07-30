@@ -82,9 +82,9 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Stock Information</h6>
-                    <a class="collapse-item" href="/admin/add">Add</a>
-                    <a class="collapse-item" href="/admin/remove">Remove</a>
-                    <a class="collapse-item" href="/admin/stock">Stock</a>
+                    <a class="collapse-item" href="/admin/products_types">Products type</a>
+                    <a class="collapse-item" href="/admin/manage_products">Manage products</a>
+                    <a class="collapse-item" href="/admin/stock/1">Stock</a>
                 </div>
             </div>
         </li>
@@ -120,27 +120,292 @@
     <h1 class="h3 mb-0 text-gray-800">Product</h1> 
 </div>
 
+@if(Session::has('message'))
+    <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+        {{ Session::get('message') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
 <div class="row">
     <!-- Earnings (Monthly) Card Example -->
     <!-- Basic Card Example -->
-    <div class="col-md-6 col-lg-4">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 bg-success">
-                <h6 class="m-0 font-weight-bold text-white">Tuyau</h6>
-            </div>
-            <div class="card-body text-center">
-                <img class="img-profile rounded-circle w-75" src="/img/undraw_profile.svg" />
-                <hr /> 
-                <div class="float-left">
-                    <h5><b>Quantity : </b>5</h5>
+
+    <?php 
+
+        if($materials['status'] == 200){
+
+            $data = $materials['result'];  //table informations returned
+            $allmaterials = $data['docs']; //table of materials
+
+            $totalDocs = $data['totalDocs']; //number of materials in the database
+            $limit = $data['limit']; // limit of materials on a page
+            $totalPages = $data['totalPages']; //number of pages 
+            $page = $data['page']; //current page
+            $pagingCounter = $data['pagingCounter']; //paging counter
+            $hasPrevPage = $data['hasPrevPage']; //boolean if previous page exists
+            $hasNextPage = $data['hasNextPage']; //boolean if next page exists
+            $prevPage = $data['prevPage']; //index of the previous page
+            $nextPage = $data['nextPage']; //index of the next page
+
+            if(empty($hasPrevPage)){
+                $hasPrevPage = 0;
+            }
+
+            if(empty($hasNextPage)){
+                $hasNextPage = 0;
+            }
+
+            if(empty($prevPage)){
+                $prevPage = 0;
+            }
+
+            if(empty($nextPage)){
+                $nextPage = 0;
+            }
+
+            // print_r($allmaterials);
+            // echo $totalDocs,$totalPages,$limit,$page,$pagingCounter,$hasPrevPage,$hasNextPage,$prevPage,$nextPage;
+
+            foreach ($allmaterials as $material){
+
+    ?>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-success">
+
+                    <h6 class="m-0 font-weight-bold text-white" style="font-size:25px;"><?= $material['name'] ?>
+
+                    <a href="#" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                        <span class="icon"  style="color:white;">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                    </a>
+
+                    <a href="#productModal" data-toggle="modal" data-target="#productModal" edit="<?= $material['_id'] ?>" class="btn bg-success float-right productModal" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                        <span class="icon"  style="color:white;">
+                            <i class="fas fa-edit"></i>
+                        </span>
+                    </a>
+
+                    </h6>
                 </div>
-                <div class="float-right">
-                    <h5><b>Unit : </b>5000</h5>
+                <div class="card-body text-center">
+                    <img class="img-profile rounded-circle w-75" src="<?= url('storage/'.$material['picture'])?>" />
+                    <hr /> 
+                    <div class="float-left">
+                        <h5><b>Quantity : </b><?= $material['quantity']?></h5>
+                    </div>
+                    <div class="float-right">
+                        <h5><b>Unit : </b><?= $material['prixUnit']?></h5>
+                    </div>
                 </div>
             </div>
         </div>
+
+    <?php 
+            } 
+        }
+    ?>
+
+        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update a product </h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="/admin/stock/update" class="user">
+                            @csrf
+                            @method('PUT')
+
+                            <input type="hidden" name="id" id="id" value="">
+
+                            <div class="form-group">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    id="name" name="name" placeholder="Enter your product name" value="" required>
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div> 
+                            <div class="form-group">
+                                <select name="type" id="type" class="form-control">
+                                    <option value="Electricity">Electricity</option>
+                                    <option value="Water Maintenance">Water Maintenance</option>  
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control @error('quantity') is-invalid @enderror"
+                                    id="quantity" name="quantity" placeholder="Quantity" value="" required>
+                                    @error('quantity')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control @error('unitprice') is-invalid @enderror"
+                                    id="unitprice" name="unitprice" placeholder="Unit price" value="" required>
+                                    @error('unitprice')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control @error('description') is-invalid @enderror"
+                                    id="description" name="description" placeholder="Enter the description of the product" value="" required>
+                                    @error('description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div>
+                            <div class="form-group">
+                                <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                    name="image" placeholder="Enter your image">
+                                <input type="hidden" name="oldimage" id="oldimage" value="">
+                                    @error('image')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div>
+                            
+                            <hr>
+                            <div class="row float-right mt-3">
+                                <a href="#">
+                                    <button href="#" class="btn btn-primary btn-user" name="submit" type="submit">
+                                        Proceed
+                                    </button>
+                                </a>
+                                <a href="#">
+                                    <button class="btn btn-secondary btn-user ml-2" type="button" data-dismiss="modal">Cancel</button>
+                                </a>
+                            </div>
+                        </form>
+                        
+                    </div>
+                   <!--  <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" type="submit" id="edit" href="#">Proceed</a>
+                    </div> -->
+                </div>
+           </div>
+    </div>
+
+
+</div>
+
+<div class="row">
+
+    <div class="container">
+
+        <div class="float-right">
+
+            <?php 
+
+                //previous page 
+                if($hasPrevPage == 0){
+                    $prevDisabled = 'disabled';
+                    $prevAriadisabled = 'true';
+                    $prevHref = '#';
+                }else{
+                    $prevDisabled = '';
+                    $prevAriadisabled = '';
+                    $prevHref = '/admin/stock/'.$prevPage;
+                }
+
+                //next page
+                if($hasNextPage == 0){
+                    $nextDisabled = 'disabled';
+                    $nextAriadisabled = 'true';
+                    $nextHref = '#';
+                }else{
+                    $nextDisabled = '';
+                    $nextAriadisabled = '';
+                    $nextHref = '/admin/stock/'.$nextPage;
+                }
+
+            ?>
+
+             <!-- Pagination -->
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <li class="page-item <?= $prevDisabled?>">
+                      <a class="page-link" href="<?=$prevHref?>" aria-label="Previous" aria-disabled="<?=$prevAriadisabled?>">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <?php 
+                        for($i=1; $i<=$totalPages; $i++){
+
+                            if($page == $i){
+                                $active = 'active';
+                                $ariacurrent = 'page'; 
+                            }else{
+                                $active = '';
+                                $ariacurrent = '';
+                            }
+                    ?>
+                    <li class="page-item <?= $active ?>" aria-current="<?= $ariacurrent ?>"><a class="page-link" href="/admin/stock/<?= $i ?>"><?= $i ?></a></li>
+                    <?php } ?>
+                    
+                    <li class="page-item <?=$nextDisabled?>">
+                      <a class="page-link" href="<?= $nextHref ?>" aria-label="Next" aria-disabled="<?=$nextAriadisabled?>">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+
+        </div>
+
     </div>
     
 </div>
+
+<script>
+    $(document).ready(function() {
+        $("body").on('click', '.productModal', function(event) {
+            event.preventDefault();
+            // body...
+            var id = $(this).attr('edit');  
+
+            <?php
+
+                $alltoken = $_COOKIE['token'];
+                $alltokentab = explode(';', $alltoken);
+                $token = $alltokentab[0];
+                $tokentab = explode('=',$token);
+                $tokenVal = $tokentab[1];
+                $Authorization = 'Bearer '.$tokenVal;
+            ?>
+                    
+            $.ajax({
+
+                url: "<?= 'http://localhost:4000/stock/' ?>" + id,
+                headers: { 'Authorization': '<?= $Authorization ?>', 'Content-Type': 'application/json' },
+
+                success: function(success) {
+                    // var obj = $.parseJSON(success);
+                    var obj = success;
+                    // var result = JSON.stringify(obj.result);
+                    var result = obj['result'];
+                    // console.log(result['_id']);
+                    //console.log(obj['result']);
+                    $("#id").val(result['_id']);
+                    $("#name").val(result['name']);
+                    $("#type").val(result['type']);
+                    $("#quantity").val(result['quantity']);
+                    $("#unitprice").val(result['prixUnit']);
+                    $("#description").val(result['description']);
+                    $("#oldimage").val(result['picture']);
+                }
+
+            
+            })
+                
+        })
+    });
+</script>
 
 @stop

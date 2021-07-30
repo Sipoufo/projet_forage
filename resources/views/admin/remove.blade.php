@@ -1,5 +1,5 @@
 @extends('admin.layouts.skeleton')
-@section('title', 'Remove product')
+@section('title', 'Manage products')
 @section('nav')
         <li class="nav-item">
             <a class="nav-link" href="/admin/home">
@@ -82,9 +82,9 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Stock Information</h6>
-                    <a class="collapse-item" href="/admin/add">Add</a>
-                    <a class="collapse-item" href="/admin/remove">Remove</a>
-                    <a class="collapse-item" href="/admin/stock">Stock</a>
+                    <a class="collapse-item" href="/admin/products_types">Products type</a>
+                    <a class="collapse-item" href="/admin/manage_products">Manage products</a>
+                    <a class="collapse-item" href="/admin/stock/1">Stock</a>
                 </div>
             </div>
         </li>
@@ -117,7 +117,7 @@
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Remove</h1>
+    <h1 class="h3 mb-0 text-gray-800">Manage Products</h1>
 </div>
 
 <div class="row">
@@ -125,12 +125,12 @@
     <div class="col-lg-12">
         <div class="card mb-4">
             <div class="card-header">
-                Remove product
+                Remove a product
             </div>
             <div class="card-body">
                 <div class="col-md-11 col-lg-7 offset-md-1 offset-lg-2">
                     <div class="p-5">
-                        <form method="delete" action="/admin/remove" class="user">
+                        <form method="" action="" class="user">
                             @csrf
                             <div class="form-group">
                                 <select name="productName" class="form-control">
@@ -142,9 +142,18 @@
                                 <input type="number" class="form-control form-control-user"
                                     placeholder="Quantity">
                             </div>
-                            <button href="#" class="btn btn-primary btn-user btn-block" type="submit">
-                                Remove
-                            </button>
+
+                            <div class="row float-right mt-3">
+                                <a href="#">
+                                    <button href="#" class="btn btn-primary btn-user" name="submit" type="submit">
+                                        Remove
+                                    </button>
+                                </a>
+                                <a href="/admin/manage_products">
+                                    <button class="btn btn-secondary btn-user ml-2" type="button">Cancel</button>
+                                </a>
+                            </div>
+                            
                         </form>
                     </div>
                 </div>

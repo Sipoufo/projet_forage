@@ -88,9 +88,9 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Stock Information</h6>
-                    <a class="collapse-item" href="/admin/add">Add</a>
-                    <a class="collapse-item" href="/admin/remove">Remove</a>
-                    <a class="collapse-item" href="/admin/stock">Stock</a>
+                    <a class="collapse-item" href="/admin/products_types">Products type</a>
+                    <a class="collapse-item" href="/admin/manage_products">Manage products</a>
+                    <a class="collapse-item" href="/admin/stock/1">Stock</a>
                 </div>
             </div>
         </li>
@@ -176,6 +176,11 @@
                     @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                </div>
+
+                <div class="input-group mt-3">
+                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
+                    <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="{{ old('home') }}" required>                
                 </div>
                   
                 <div class="input-group mt-3">

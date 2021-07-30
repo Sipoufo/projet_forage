@@ -82,9 +82,9 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Stock Information</h6>
-                    <a class="collapse-item" href="/admin/add">Add</a>
-                    <a class="collapse-item" href="/admin/remove">Remove</a>
-                    <a class="collapse-item" href="/admin/stock">Stock</a>
+                    <a class="collapse-item" href="/admin/products_types">Products type</a>
+                    <a class="collapse-item" href="/admin/manage_products">Manage products</a>
+                    <a class="collapse-item" href="/admin/stock/1">Stock</a>
                 </div>
             </div>
         </li>
@@ -127,7 +127,8 @@
 
     <?php if($administrators['status'] == 200){ 
 
-            $informations = $administrators['result']; ?>
+            $informations = $administrators['result']; 
+            ?>
 
     <div class="container">
       <table class="table table-striped table-light table-hover table-sm table-responsive-lg text-center">
@@ -161,6 +162,14 @@
                     }else{
                         $image = "/img/undraw_profile.svg";
                     }
+
+                    $status = $info['status'];
+                    if(empty($status)){
+                        $status = 0;
+                    } 
+
+                    $delete = $info['isDelete'];
+                    
             ?>
           <tr style="background-color:white;color:black;">
             <td><img class="img-profile" src='<?= $image ?>' height="40" width="40"/></td>
@@ -170,16 +179,31 @@
             @if(Session::has('profile'))
                 @if(Session::get('profile') == "superAdmin")
                     <td>
-                        @if($info['status'] == true)
-                            <a href="#">
-                            <button class="btn btn-sm btn-space btn-success rounded-pill"><span class="icon mdi mdi-checkbox-marked-circle-outline"></span>Active</button>
-                            </a>
-                        
-                        @else
-                            <a href="#">
-                            <button class="btn btn-sm btn-space btn-danger rounded-pill"><span class="icon mdi mdi-checkbox-marked-circle-outline"></span>Blocked</button>
-                            </a>
-                        @endif
+                       <?php
+
+                        if($delete){
+                            $state = 'Deleted';
+                        }elseif($status == 1){
+                            $class='btn-success';
+                            $state = 'Active';
+                        }
+                        else{
+                            $class='btn-warning';
+                            $state = 'Blocked';
+                        }
+
+                        if($delete == 1){ ?>
+
+                            <span class="text"><?= $state ?></span>
+
+                  <?php }else{ ?>
+
+                        <a href="/admin/administrator/block/<?= $info['_id']?>/<?= $status ?>">
+                        <button class="btn btn-sm btn-space <?= $class ?> rounded-pill"><?= $state ?></button>
+                        </a>
+
+                  <?php }?>
+
                     </td>
                 @endif
             @endif
@@ -192,18 +216,25 @@
                             {{ _('No action') }}
                     
                         @else
+                            @if($delete)
+                                {{ _('Deleted') }}
+        
+                            @else
+                            
+                            <a href="/admin/administrator/edit/<?= $info['_id']?>" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                <span class="icon">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                            </a>
 
-                            <a href="#" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                            <a href="/admin/administrator/delete/<?= $info['_id']?>" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
                                 <span class="icon">
                                     <i class="fas fa-trash"></i>
                                 </span>
                             </a>
 
-                            <a href="#" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                                <span class="icon">
-                                    <i class="fas fa-edit"></i>
-                                </span>
-                            </a>
+                            
+                            @endif
                         @endif
                     @endif
             </td>

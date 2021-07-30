@@ -1,5 +1,5 @@
 @extends('admin.layouts.skeleton')
-@section('title', 'Add product')
+@section('title', 'Manage products')
 @section('nav')
         <li class="nav-item">
             <a class="nav-link" href="/admin/home">
@@ -82,9 +82,9 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Stock Information</h6>
-                    <a class="collapse-item" href="/admin/add">Add</a>
-                    <a class="collapse-item" href="/admin/remove">Remove</a>
-                    <a class="collapse-item" href="/admin/stock">Stock</a>
+                    <a class="collapse-item" href="/admin/products_types">Products type</a>
+                    <a class="collapse-item" href="/admin/manage_products">Manage products</a>
+                    <a class="collapse-item" href="/admin/stock/1">Stock</a>
                 </div>
             </div>
         </li>
@@ -117,39 +117,76 @@
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Add</h1>
+    <h1 class="h3 mb-0 text-gray-800">Manage Products</h1>
+    <a href="/admin/manage_products/remove" class="btn btn-primary"> Remove a product </a>
 </div>
 
 <div class="row">
+
     <!-- Detail Part -->
     <div class="col-lg-12">
         <div class="card mb-4">
             <div class="card-header">
-                Add product
+                Add a product
             </div>
             <div class="card-body">
+
+                @if(Session::has('message'))
+                    <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+                        {{ Session::get('message') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
                 <div class="col-md-11 col-lg-7 offset-md-1 offset-lg-2">
                     <div class="p-5">
-                        <form method="post" action="/admin/add/store" class="user">
+                        <form method="post" action="/admin/manage_products/add" class="user" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-user"
-                                    placeholder="Enter your product name">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    name="name" placeholder="Enter your product name" value="{{ old('name') }}" required>
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div> 
+                            <div class="form-group">
+                                <select name="type" id="type" class="form-control">
+                                    <option value="Electricity">Electricity</option>
+                                    <option value="Water Maintenance">Water Maintenance</option>  
+                                </select>
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control form-control-user"
-                                    placeholder="Quantity">
+                                <input type="number" class="form-control @error('quantity') is-invalid @enderror"
+                                    name="quantity" placeholder="Quantity" value="{{ old('quantity') }}" required>
+                                    @error('quantity')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control form-control-user"
-                                    placeholder="Unit price">
+                                <input type="number" class="form-control @error('unitprice') is-invalid @enderror"
+                                    name="unitprice" placeholder="Unit price" value="{{ old('unitprice') }}" required>
+                                    @error('unitprice')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                             </div>
                             <div class="form-group">
-                                <input type="file" class="form-control form-control-user"
-                                    placeholder="Enter your image">
+                                <input type="text" class="form-control @error('description') is-invalid @enderror"
+                                    name="description" placeholder="Enter the description of the product" value="{{ old('description') }}" required>
+                                    @error('description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div>
+                            <div class="form-group">
+                                <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                    name="image" placeholder="Enter your image" required>
+                                    @error('image')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                             </div>
                             <button href="#" class="btn btn-primary btn-user btn-block" type="submit">
-                                Add
+                                Proceed
                             </button>
                         </form>
                     </div>

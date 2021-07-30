@@ -59,30 +59,48 @@ class HomeController extends Controller
 
 	        $location = $userdata['localisation'];
 
-	        if(!empty($location['longitude']) && !empty($location['latitude'])){
+	        if($userdata['isDelete'] == 1){
 
-	              $request->session()->put('id',$userdata['_id']);
-	        	  $request->session()->put('name',$userdata['name']);
-	        	  $request->session()->put('profile',$userdata['profile']);
+	        	Session::flash('message', 'You account doesn\'t exist anymore');
+	        	return redirect()->back();
 
-	        	  if(array_key_exists('profileImage', $userdata)){
-	        		$request->session()->put('photo',$userdata['profileImage']);
-	        	  }
-	        	  // $request->session()->put('photo',$userdata['profileImage']);
-
-	              setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
-
-	              if($userdata['profile'] != 'user'){
-	              	return redirect()->route('adminHome');
-	              }else{
-	              	return redirect()->route('clientHome');
-	              } 
-	              
 	        }else{
-	        	  $request->session()->put('profile',$userdata['profile']);
-				  setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
-	              return redirect()->route('seeClauses');
+
+	        	if($userdata['status'] != 1){
+
+	        	Session::flash('message', 'You have been blocked!');
+	        	return redirect()->back();
+
+	        	}else{
+
+			        if(!empty($location['longitude']) && !empty($location['latitude'])){
+
+			              $request->session()->put('id',$userdata['_id']);
+			        	  $request->session()->put('name',$userdata['name']);
+			        	  $request->session()->put('profile',$userdata['profile']);
+
+			        	  if(array_key_exists('profileImage', $userdata)){
+			        		$request->session()->put('photo',$userdata['profileImage']);
+			        	  }
+			        	  // $request->session()->put('photo',$userdata['profileImage']);
+
+			              setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
+
+			              if($userdata['profile'] != 'user'){
+			              	return redirect()->route('adminHome');
+			              }else{
+			              	return redirect()->route('clientHome');
+			              } 
+			              
+			        }else{
+			        	  $request->session()->put('profile',$userdata['profile']);
+						  setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
+			              return redirect()->route('seeClauses');
+			        }
+	        	}
+
 	        }
+
 	    }else{
 	        $err  = $informations['error'];
 	        Session::flash('message', $err);

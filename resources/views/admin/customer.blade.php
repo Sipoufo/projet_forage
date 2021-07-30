@@ -88,9 +88,9 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Stock Information</h6>
-                    <a class="collapse-item" href="/admin/add">Add</a>
-                    <a class="collapse-item" href="/admin/remove">Remove</a>
-                    <a class="collapse-item" href="/admin/stock">Stock</a>
+                    <a class="collapse-item" href="/admin/products_types">Products type</a>
+                    <a class="collapse-item" href="/admin/manage_products">Manage products</a>
+                    <a class="collapse-item" href="/admin/stock/1">Stock</a>
                 </div>
             </div>
         </li>
@@ -127,21 +127,21 @@
         <a href="/admin/customer/addCustomer" class="btn btn-primary"> Add a customer </a>
     </div>
 
+    @if(Session::has('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ Session::get('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>  
+    @endif
+
     <div class="row">
         <!-- Earnings (Monthly) Card Example -->
         <!-- Basic Card Example -->
-        @if(Session::has('error'))
-            <div class="alert alert-danger alert-dismissible fade show">
-                <i class="fas fa-exclamation-triangle"></i>
-                {{ Session::get('error') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>  
-        @endif
-
-
-    <?php 
+    
+        <?php 
         if($customers['status'] == 200){ 
 
             $informations = $customers['result'];
@@ -149,21 +149,41 @@
             foreach($informations as $key => $info) { 
                 $location = $info['localisation'];
                 $description = $location['description'];
-                $status = $info['status'];   
+                $status = $info['status'];
+                $delete = $info['isDelete'];
+
+                if($delete){
+                    $card='bg-danger';
+                    $state = 'Deleted';
+                }elseif($status == 1){
+                    $card='bg-success';
+                    $class='btn-success';
+                    $state = 'Active';
+                }
+                else{
+                    $card='bg-warning';
+                    $class='btn-warning';
+                    $state = 'Blocked';
+                }
+
+                if(empty($status)){
+                    $status = 0;
+                }
+
             ?>
             <div class="col-md-6 col-lg-4">
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3 bg-success">
+                        <div class="card-header py-3 <?= $card ?>">
             
                                 <h6 class="m-0 font-weight-bold text-white" style="font-size:25px;"><?=$info['name']?>
 
-                                <a href="/admin/customer/delete/<?= $info['_id'] ?>" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                                <a href="/admin/customer/delete/<?= $info['_id'] ?>" class="btn <?= $card ?> float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
                                     <span class="icon"  style="color:white;">
                                         <i class="fas fa-trash"></i>
                                     </span>
                                 </a>
 
-                                <a href="/admin/customer/edit/<?= $info['_id'] ?>" class="btn bg-success float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                <a href="/admin/customer/edit/<?= $info['_id'] ?>" class="btn <?= $card ?> float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
                                     <span class="icon"  style="color:white;">
                                         <i class="fas fa-edit"></i>
                                     </span>
@@ -195,33 +215,26 @@
                                     <td><?= $description ?></td>
                                 </tr>
                             </table>
-
-                            <?php 
-                                if($status == 1){ ?>
-
-                                    <a href="/admin/customer/block/<?= $info['_id'] ?>" class="btn btn-success btn-icon-split text-center" style="margin-top:10px;">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-exclamation-triangle"></i>
-                                        </span>
-                                        <span class="text">Active</span>
-                                    </a>
+                            <?php
+                                if($delete){ ?>
+                                    <span class="text" style="font-size:25px;color:black;"><?= $state ?></span>       
                             <?php }else{ ?>
 
-                                <a href="/admin/customer/activate/<?= $info['_id'] ?>" class="btn btn-warning btn-icon-split text-center" style="margin-top:10px;">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                </span>
-                                <span class="text">Block</span>
+                                <a href="/admin/customer/block/<?= $info['_id']?>/<?= $status ?>" class="btn <?= $class ?> btn-icon-split text-center" style="margin-top:10px;">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </span>
+                                    <span class="text" style="margin:auto;"><?= $state ?></span>
                                 </a>
 
                             <?php } ?>
-                            
                         </div>
                     </div>
                 </div>
      <?php } 
         }
      ?>       
+    
     </div> 
 
 @stop
