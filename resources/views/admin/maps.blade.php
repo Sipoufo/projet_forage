@@ -12,7 +12,7 @@ crossorigin=""/><!-- Make sure you put this AFTER Leaflet's CSS -->
         font-size: 15px;
     }
     #mapid {
-        height: 80%;
+        height: 75%;
     }
     /* Optional: Makes the sample page fill the window. */
     html,
@@ -208,7 +208,7 @@ crossorigin=""/><!-- Make sure you put this AFTER Leaflet's CSS -->
         });
         var adminIcon = L.icon({
             iconUrl: '/img/pointeur1.png',
-            iconSize:     [38, 95], // size of the icon
+            iconSize:     [38, 45], // size of the icon
             shadowSize:   [50, 64], // size of the shadow
             iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
             shadowAnchor: [4, 62],  // the same for the shadow

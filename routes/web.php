@@ -6,6 +6,7 @@ use App\Http\Controllers\ManageAdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\ManageClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +34,7 @@ Route::post('/reset',[HomeController::class, 'reset']);
 
 //Client
 
-Route::get('/home',[HomeController::class, 'clientHome'])->name('clientHome');
+Route::get('/home',[ManageClientController::class, 'dashboard'])->name('clientHome');
 
 Route::get('/consumption', function() {
     return view('client/consumption');
@@ -146,9 +147,15 @@ Route::match(['get','put'],'/admin/update',[AdminController::class, 'updateAdmin
 
 Route::match(['get','put'],'/admin/customer/block/{id}/{status}',[ManageAdminController::class, 'blockCustomer'])->name('blockCustomer');
 
+Route::match(['get','put'],'/admin/administrator/block/{id}/{status}',[ManageAdminController::class, 'blockAdmin'])->name('blockAdmin');
+
 Route::get('/admin/customer/edit/{id}',[ManageAdminController::class, 'editCustomer'])->name('editCustomer');
 
+Route::get('/admin/administrator/edit/{id}',[ManageAdminController::class, 'editAdmin'])->name('editAdmin');
+
 Route::match(['get','put'],'/admin/customer/saveCustomer/{id}',[ManageAdminController::class, 'saveCustomer'])->name('saveCustomer');
+
+Route::match(['get','put'],'/admin/administrator/saveAdmin/{id}',[ManageAdminController::class, 'saveAdmin'])->name('saveAdmin');
 
 // Route::get('/admin/clauses', function() {
 //     return view('admin/adminClauses');
@@ -159,3 +166,5 @@ Route::get('/admin/map', function() {
 });
 
 Route::match(['get','put'],'/admin/customer/delete/{id}',[ManageAdminController::class, 'deleteCustomer'])->name('deleteCustomer');
+
+Route::match(['get','put'],'/admin/administrator/delete/{id}',[ManageAdminController::class, 'deleteAdmin'])->name('deleteAdmin');

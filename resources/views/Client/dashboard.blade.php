@@ -71,36 +71,6 @@
 
 @stop
 @section('content')
-<?php
-    $alltoken = $_COOKIE['token'];
-    $alltokentab = explode(';', $alltoken);
-    $token = $alltokentab[0];
-    $tokentab = explode('=',$token);
-    $tokenVal = $tokentab[1];
-    $Authorization = 'Bearer '.$tokenVal; 
-
-    $curl = curl_init();
-
-    curl_setopt_array($curl, array(
-    CURLOPT_URL => 'http://localhost:4000/client/auth/dashboard',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    CURLOPT_HTTPHEADER => array(
-        'Authorization:'.$Authorization,
-    ),
-    ));
-
-    $response = curl_exec($curl);
-    $informations = json_decode($response, true);
-
-    curl_close($curl);
-    // echo ($response);
-?>
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -333,11 +303,10 @@
                     <h6 class="m-0 font-weight-bold text-primary">About Your Account</h6>
                 </div>
                 <div class="card-body container-fluid">
-                    <p>Owner's Name : Sipof Yvan</p>
-                    <p>Customer's Name : Christian kepya</p>
-                    <p>Meter Number : UIX2024</p>
-                    <p>Subscription Price : 50000Franc CFA</p>
-                    <p>Subscription Date : 25 juin 2019</p>
+                    <p>Name : <?= $informations['result']['client']['name']; ?></p>
+                    <p>Phone : <?= $informations['result']['client']['phone']; ?></p>
+                    <p>Email : <?= $informations['result']['client']['email']; ?></p>
+                    <p>Id compteur : <?= $informations['result']['client']['IdCompteur']; ?></p>
                 </div>
             </div>
         </div>
