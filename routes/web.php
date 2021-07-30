@@ -150,19 +150,12 @@ Route::get('/admin/customer/edit/{id}',[ManageAdminController::class, 'editCusto
 
 Route::match(['get','put'],'/admin/customer/saveCustomer/{id}',[ManageAdminController::class, 'saveCustomer'])->name('saveCustomer');
 
+// Route::get('/admin/clauses', function() {
+//     return view('admin/adminClauses');
+// });
+
+Route::get('/admin/map', function() {
+    return view('admin/maps');
+});
+
 Route::match(['get','put'],'/admin/customer/delete/{id}',[ManageAdminController::class, 'deleteCustomer'])->name('deleteCustomer');
-
-Route::match(['get','put'],'/admin/administrator/block/{id}/{status}',[ManageAdminController::class, 'blockAdmin'])->name('blockAdmin');
-
-Route::get('/admin/administrator/edit/{id}',[ManageAdminController::class, 'editAdmin'])->name('editAdmin');
-
-Route::match(['get','put'],'/admin/administrator/saveAdmin/{id}',[ManageAdminController::class, 'saveAdmin'])->name('saveAdmin');
-
-Route::match(['get','put'],'/admin/administrator/delete/{id}',[ManageAdminController::class, 'deleteAdmin'])->name('deleteAdmin');
-
-// Route::get('/admin/stock/get/{id}',[AdminController::class, 'getProduct'])->name('getProduct');
-
-Route::match(['get','put'],'/admin/stock/update',[AdminController::class, 'updateProduct'])->name('updateProduct');
-
-
-
