@@ -153,7 +153,8 @@ class HomeController extends Controller
         foreach($response as $key => $value){
             if($i >= 1){
                 //echo $value;
-                $invoicesAdvenced = $value;
+				array_push($invoicesAdvenced,$value);
+                //$invoicesAdvenced = $value;
                 //dump($value);
             }
             $i = $i + 1;
@@ -165,7 +166,7 @@ class HomeController extends Controller
 			$invoicesAdvenced = array();
 		}
 		
-		//dump($invoicesAdvenced);
+		dump($invoicesAdvenced);
     	return view('admin/dashboard',['invoices' => $invoicesAdvenced]);
     }
 
