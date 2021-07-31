@@ -38,6 +38,10 @@ Route::get('/home',[ManageClientController::class, 'dashboard'])->name('clientHo
 
 Route::get('/user',[ManageClientController::class, 'setting'])->name('userSetting');
 
+Route::get('/user/editProfile',[ManageClientController::class, 'updateUser'])->name('userEditProfile');
+
+Route::match(['get','put'],'/client/update',[ManageClientController::class, 'update'])->name('updateClient');
+
 Route::get('/consumption', function() {
     return view('client/consumption');
 });
@@ -106,7 +110,9 @@ Route::get('/admin/home',[HomeController::class, 'adminHome'])->name('adminHome'
 Route::get('/admin/consumption',[AdminController::class, 'allInvoices'])->name('allInvoices');
 
 Route::get('/admin/detail-consumption/{invoice_id}/edit',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
+
 Route::post('/admin/facture/{invoice_id}',[AdminController::class, 'updateInvoice'])->name('updateInvoice');
+
 Route::get('/admin/paid/{invoice_id}',[AdminController::class, 'finishToPaidInvoice'])->name('finishToPaidInvoice');
 
 Route::get('/admin/customer',[ManageAdminController::class, 'viewCustomers']);

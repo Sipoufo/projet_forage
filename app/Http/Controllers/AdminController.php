@@ -282,7 +282,7 @@ class AdminController extends Controller{
         // echo $url;
         // print_r($response);
         $userdata = $response['result'];
-        return view('admin/profile',['info' => $userdata]);
+        return view('admin/profile',['data' => $userdata]);
     }
 
     public function adminEditProfile(Request $request){
