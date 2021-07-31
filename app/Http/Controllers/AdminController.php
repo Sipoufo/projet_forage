@@ -694,12 +694,11 @@ class AdminController extends Controller{
     }
 
     //finish to paid invoice
-    public function finishToPaidInvoice()
+    public function finishToPaidInvoice($invoice_id)
     {
-        $idFacture = $_POST['idFacture'];
-        
+        echo " v ".$invoice_id;
         // je definie l'url de connexion.
-        $url = "http://localhost:4000/admin/facture/statusPaidFacture/"+$idFacture;
+        $url = "http://localhost:4000/admin/facture/statusPaidFacture/".$invoice_id;
         // je definie la donnée de ma facture.
         $facture = array(
             'status' => true
@@ -711,6 +710,14 @@ class AdminController extends Controller{
         // Initialisez une session CURL.
         $ch = curl_init();
 
+        
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
         // Je definie les propriétés de connexion
         //CURLOPT_URL : permet de definir l'url
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -719,7 +726,7 @@ class AdminController extends Controller{
             on renseignement l'option "CURLOPT_HEADER" avec "true" comme valeur
             pour inclure l'en-tête dans la réponse
         */
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
 
         //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
         curl_setopt($ch, CURLOPT_PUT, 1);
@@ -731,6 +738,81 @@ class AdminController extends Controller{
         $response  = curl_exec($ch);
         var_dump($response);
         curl_close($ch);
+
+        echo "ok";
+    }
+
+    //finish to paid invoice
+    public function updateInvoice($invoice_id)
+    {
+        echo " v ".$invoice_id;
+        if(isset($_POST['connect']))
+        {
+            // je definie l'url de connexion.
+            $url = "http://localhost:4000/admin/facture/one/".$invoice_id;
+
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            $Authorization = 'Bearer '.$tokenVal;
+
+            $newIndex = $_POST['newIndex'];
+            $penalty = $_POST['penalty'];
+            $observation = $_POST['observation'];
+            $dateSpicy = $_POST['dateSpicy'];
+            $amountPaid = $_POST['amountPaid'];
+            
+            // je definie la donnée de ma facture.
+            $facture = array(
+                "newIndex"  => $newIndex,
+                "observation" => $observation,
+                "penalite"  => $penalty,
+                "montantVerse"  => $amountPaid,
+                "dateReleveNewIndex"  => $dateSpicy
+            );
+
+            // j'encode cette donnée là'.
+            $data_json = json_encode($facture);
+
+            // Initialisez une session CURL.
+            $ch = curl_init();
+
+            // Je definie les propriétés de connexion
+            //CURLOPT_URL : permet de definir l'url
+            curl_setopt($ch, CURLOPT_URL, $url);
+
+            /*
+                on renseignement l'option "CURLOPT_HEADER" avec "true" comme valeur
+                pour inclure l'en-tête dans la réponse
+            */
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+
+            //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
+            curl_setopt($ch, CURLOPT_PUT, 1);
+            
+            //j'insere la donnée à etre envoyé
+            curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+            //enfin d'avoir un retour sur l'etat de la requette on a CURLOPT_RETURNTRANSFER = true
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response  = curl_exec($ch);
+            var_dump($response);
+            curl_close($ch);
+
+            $messageErr = null;
+            $messageOK = null;
+
+            $response = json_decode($response);
+
+            if ($response->status == 200){
+                $messageOK = "Action Done Successfully";
+            }else{
+                $messageErr = ucfirst($response->error);
+            }
+
+            echo "ok";
+        }
     }
 
     public function allClient()
