@@ -77,79 +77,91 @@
             </h1>
 
             <!-- Default Card Example -->
-            <div class="card mb-4 containter-fluid">
-                <div class="card-header row">
-                    <div class="col-md-12 col-lg-12">
-                        Invoice of 15/05/2021
+            <?php
+                $lengthPaid = count($data['result']);
+                for ($i=0; $i < $lengthPaid; $i++) { 
+            ?>
+                <div class="card mb-4 containter-fluid">
+                    <div class="card-header row">
+                        <div class="col-md-12 col-lg-12">
+                            <?php
+                                $datesb = $data['result'][$i]['facture']['createdAt'];
+                                echo (substr($datesb, 0, 10));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-lg-3 col-6 mb-4">
+                            <div class="card shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Index (New - Old)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $data['result'][$i]['facture']['newIndex'] ?> - <?= $data['result'][$i]['facture']['oldIndex'] ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6 mb-4">
+                            <div class="card shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Consumption M<sup>3</sup></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $data['result'][$i]['facture']['consommation'] ?> m<sup>3</sup></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6 mb-4">
+                            <div class="card shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                unit price</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $data['result'][$i]['facture']['fraisEntretien'] ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6 mb-4">
+                            <div class="card shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                amount of consumption</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $data['result'][$i]['facture']['montantConsommation'] ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card-body row">
-                    <div class="col-lg-3 col-6 mb-4">
-                        <div class="card shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Index (New - Old)</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">543 - 210</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6 mb-4">
-                        <div class="card shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Consumption M<sup>3</sup></div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">60 m<sup>3</sup></div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6 mb-4">
-                        <div class="card shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Amount paid</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">12000</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6 mb-4">
-                        <div class="card shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            total amount</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">12000</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <?php
+                    # code...
+                }
+            ?>
             
 @stop
         

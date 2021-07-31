@@ -42,6 +42,8 @@ Route::get('/user/editProfile',[ManageClientController::class, 'updateUser'])->n
 
 Route::match(['get','put'],'/client/update',[ManageClientController::class, 'update'])->name('updateClient');
 
+Route::get('/invoices_paid',[ManageClientController::class, 'invoicePaid'])->name('userEditProfile');
+
 Route::get('/consumption', function() {
     return view('client/consumption');
 });
@@ -78,9 +80,9 @@ Route::get('/consumption/monthly', function() {
 //     return view('client/factures');
 // });
 
-Route::get('/invoices_paid', function() {
-    return view('client/paidInvoices');
-});
+// Route::get('/invoices_paid', function() {
+//     return view('client/paidInvoices');
+// });
 
 Route::get('/unpaid_invoices', function() {
     return view('client/unpaidInvoices');

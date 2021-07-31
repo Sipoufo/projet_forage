@@ -145,7 +145,7 @@
                 </div>
                 <div class="row ">
                     <button class="btn btn-primary btn-block col-sm-5" type="submit">Proceed</button>
-                    <button class="btn btn-primary btn-block col-sm-5 offset-2">Back</button>
+                    <a class="btn btn-primary btn-block col-sm-5 offset-2 text-white" href="/user">Back</a>
                 </div>
                 
             </form>
