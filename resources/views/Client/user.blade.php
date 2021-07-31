@@ -72,61 +72,114 @@
 @stop
 @section('content')
 
-<h1>                            
-    <i class='bx bx-grid-alt'></i>
-    <span class="nav_name">User</span>
-</h1>
-
-<!-- User Card -->
-<div class="card mb-4">
-    <div class="card-header">
-        Christian Kepya
-    </div>
-    <div class="card-body">
-        <div class="container">
-            <form class="col-lg-8 offset-lg-2">
-            <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-address-book'></i></span></div>
-                    <input type="text" class="form-control" placeholder="first name" id="firstname" name="firstname">                  
+<div class="container">
+    <div class="main-body">
+      <div class="row gutters-sm">
+        <div class="col-md-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-column align-items-center text-center">
+                @if(Session::has('photo'))
+                  @php
+                      $photo = url('storage/'.Session::get('photo'))
+                  @endphp
+                @else
+                  @php
+                      $photo = '/img/undraw_profile.svg'
+                  @endphp   
+                @endif
+                <img src="{{$photo}}" alt="Admin" class="rounded-circle" width="150">
+                <!-- <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150"> -->
+                <div class="mt-3">
+                  <h4><?= $data['name']?></h4>
+                  <p class="text-secondary mb-1"><?= $data['email']?></p>
+                  <p class="text-muted font-size-sm"><?= $data['phone']?></p>
+                  <!-- <button class="btn btn-primary">Follow</button>
+                  <button class="btn btn-outline-primary">Message</button> -->
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-address-book'></i></span></div>
-                    <input type="text" class="form-control" placeholder="last name" id="lastname" name="lastname">                  
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-birthday-cake'></i></span></div>
-                    <input type="date" class="form-control" id="birth_date">                  
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">@</span></div>
-                    <input type="email" class="form-control" placeholder="email" id="email">                  
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-phone-volume'></i></span></div>
-                    <input type="number" class="form-control" placeholder="phone number" id="phone" name="phone">                  
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='	fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control" placeholder="Old password" id="old password" name="Old Password">                  
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='	fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control" placeholder="New password" id="password" name="password">                  
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='	fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword">                  
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='	fas fa-image'></i></span></div>
-                    <input type="FILE" class="form-control" id="photo" name="photo">                  
-                </div>
-                <div class="row ">
-                    <button class="btn btn-primary btn-block" type="submit">Proceed</button>
-                </div>
-                
-            </form>
+              </div>
+            </div>
+          </div>
         </div>
+        <div class="col-md-8">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Full Name</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <?= $data['name']?>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <?= $data['email']?>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Phone</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <?= $data['phone']?>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Birthday</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <?= $data['birthday']?>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Home</h6>
+                </div>
+                <?php $localisation = $data['localisation'] ;?>
+                <div class="col-sm-9 text-secondary">
+                  <?= $localisation['description']?>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Registered at</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <?= date('d-m-Y H:i:s', strtotime($data['createdAt']))?>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Updated at</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <?= date('d-m-Y H:i:s', strtotime($data['updatedAt']))?>
+                </div>
+              </div>
+              <hr>
+              <div class="row text-center">
+                <div class="col-sm-12">
+                  <a class="btn btn-info btn-block" target="_self" href="/user/editProfile">Edit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
     </div>
 </div>
              

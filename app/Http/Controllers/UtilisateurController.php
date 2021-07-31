@@ -52,11 +52,6 @@ class UtilisateurController extends Controller
         curl_close($ch);
     }
 
-    public function allInvoiceWhichHavePaidOfClient($idClient)
-    {
-        # code...
-    }
-
     public function allInvoiceWhichHaveNotPaid()
     {
         // je definie l'url de connexion.

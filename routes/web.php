@@ -36,6 +36,12 @@ Route::post('/reset',[HomeController::class, 'reset']);
 
 Route::get('/home',[ManageClientController::class, 'dashboard'])->name('clientHome');
 
+Route::get('/user',[ManageClientController::class, 'setting'])->name('userSetting');
+
+Route::get('/user/editProfile',[ManageClientController::class, 'updateUser'])->name('userEditProfile');
+
+Route::match(['get','put'],'/client/update',[ManageClientController::class, 'update'])->name('updateClient');
+
 Route::get('/consumption', function() {
     return view('client/consumption');
 });
@@ -80,9 +86,9 @@ Route::get('/unpaid_invoices', function() {
     return view('client/unpaidInvoices');
 });
 
-Route::get('/user', function() {
-    return view('client/user');
-});
+// Route::get('/user', function() {
+//     return view('client/user');
+// });
 
 Route::get('/tchat', function() {
     return view('client/message');
@@ -106,6 +112,10 @@ Route::get('/admin/consumption',[AdminController::class, 'allInvoices'])->name('
 Route::get('/admin/detail-consumption/{invoice_id}/edit',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
 
 Route::put('/admin/detail-consumption',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
+
+Route::post('/admin/facture/{invoice_id}',[AdminController::class, 'updateInvoice'])->name('updateInvoice');
+
+Route::get('/admin/paid/{invoice_id}',[AdminController::class, 'finishToPaidInvoice'])->name('finishToPaidInvoice');
 
 Route::get('/admin/customer',[ManageAdminController::class, 'viewCustomers']);
 

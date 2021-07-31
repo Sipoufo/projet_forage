@@ -133,7 +133,7 @@
                     </div>
             <?php } ?>
             
-            <form method="post" action="/admin/facture" class="col-lg-8 offset-lg-2">
+            <form method="post" action="/admin/facture/{{$invoice->_id}}" class="col-lg-8 offset-lg-2">
                 {{csrf_field()}}
                 <div class="form-group mb-3">
                     <div class="input-group">Personnel</div>
@@ -223,16 +223,14 @@
                 <div class="d-flex flex justify-content-between">
                     <div class="float-left">
                         @if($invoice  -> facturePay == false)
-                            <a href="#">
-                                <button class="btn btn-primary" name="connect" type="submit">Paid Invoice</button>
+                            <a href="{{ url('/admin/paid/'.$invoice->_id) }}">
+                                <button class="btn btn-primary" name="connect" type="button">Paid Invoice</button>
                             </a>
                         @endif
                     </div>
                     <div class="float-right">
                         @if($invoice  -> facturePay == false)
-                            <a href="#">
-                                <button class="btn btn-primary" name="connect" type="submit">Update</button>
-                            </a>
+                            <button class="btn btn-primary" name="connect" type="submit">Update</button>
                         @endif
                         <a href="/admin/home">
                             <button class="btn btn-secondary ml-2" type="button">Cancel</button>
