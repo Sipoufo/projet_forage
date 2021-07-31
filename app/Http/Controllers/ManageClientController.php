@@ -197,6 +197,7 @@ class ManageClientController extends Controller
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
+            
             $data = array(
                 'name' => $name,
                 'birthday' => $birthdate,
@@ -205,7 +206,6 @@ class ManageClientController extends Controller
                 'email' => $email,
                 "profileImage" => $photoPath,
                 "description" => $home,
-                "IdCompteur" => $identifier,
                 "longitude" => $longitude,
                 "latitude" => $latitude,
             );
