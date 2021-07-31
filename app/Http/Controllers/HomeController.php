@@ -62,7 +62,7 @@ class HomeController extends Controller
 	        if($userdata['isDelete'] == 1){
 
 	        	Session::flash('message', 'You account doesn\'t exist anymore');
-	        	return redirect()->back();
+	        	return redirect()->back()->withInput();
 
 	        }else{
 
@@ -104,7 +104,7 @@ class HomeController extends Controller
 	    }else{
 	        $err  = $informations['error'];
 	        Session::flash('message', $err);
-	        return redirect()->back();
+	        return redirect()->back()->withInput();
 	    }
 	}
 
@@ -116,9 +116,9 @@ class HomeController extends Controller
 		//
 	}
 
-	public function clientHome(){
-    	return view('client/dashboard');
-    }
+	// public function clientHome(){
+ //    	return view('client/dashboard');
+ //    }
 
     public function adminHome(){
 

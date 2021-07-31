@@ -38,11 +38,7 @@ aria-hidden="true">
                 @csrf
                 <div class="form-group">
                     <input type="text" class="form-control form-control-user"
-                        placeholder="Enter the type">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control form-control-user"
-                        placeholder="Enter the description">
+                        name="type" placeholder="Enter the type" required>
                 </div>
                 <hr>
                 <div class="row float-right mt-3">

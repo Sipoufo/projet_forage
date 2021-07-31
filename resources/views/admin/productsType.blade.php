@@ -129,48 +129,39 @@
         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#typeModal" > Add a type </a>
     </div>
 
+    @if(Session::has('message'))
+        <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+            {{ Session::get('message') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
 
     <div class="container">
       <table class="table table-striped table-light table-hover table-sm table-responsive-lg text-center">
         <thead style="background-color:#4e73df;color:white;">
           <tr>
             <th>Type</th>
-            <th>Description</th>
+            <th>Created At </th>
             <th>Actions</th>
           </tr>
         </thead>
+        <?php 
+                if($data['status'] == 200){
+
+                    $types = $data['result'];
+
+                    foreach($types as $type){
+
+            ?>
         <tbody>
+            
           <tr style="background-color:white;color:black;">
-            <td>Electricity</td>
-            <td>electrical materials</td>
+            <td><?= $type['name'] ?></td>
+            <td><?= date('d-m-Y H:i:s', strtotime($type['createdAt']))?></td>
             <td>
-                <a href="#" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                    <span class="icon">
-                        <i class="fas fa-edit"></i>
-                    </span>
-                </a>
-                
-                <a href="#" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
-                    <span class="icon">
-                        <i class="fas fa-trash"></i>
-                    </span>
-                </a>
-
-            </td>
-          </tr>
-
-          <tr style="background-color:white;color:black;">
-            <td>Water Maintenance</td>
-            <td>water materials</td>
-            <td>
-                
-                <a href="#" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                    <span class="icon">
-                        <i class="fas fa-edit"></i>
-                    </span>
-                </a>
-
-                <a href="#" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                <a href="/admin/products_types/delete/<?= $type['_id'] ?>" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
                     <span class="icon">
                         <i class="fas fa-trash"></i>
                     </span>
@@ -180,6 +171,10 @@
           </tr>
           
         </tbody>
+        <?php 
+                }
+            }
+        ?>
       </table>
     </div>
         

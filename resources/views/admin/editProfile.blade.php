@@ -198,7 +198,7 @@
 
                 <hr>
                 <div class="row float-right mt-3">
-                    <a href="/admin/profile">
+                    <a href="/user/editProfile">
                       <button class="btn btn-secondary" type="button">Cancel</button>
                     </a>
                     <a href="#">

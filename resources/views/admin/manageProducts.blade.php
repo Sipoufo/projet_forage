@@ -153,8 +153,13 @@
                             </div> 
                             <div class="form-group">
                                 <select name="type" id="type" class="form-control">
-                                    <option value="Electricity">Electricity</option>
-                                    <option value="Water Maintenance">Water Maintenance</option>  
+                                    <?php 
+                                        foreach($data as $data){
+                                    ?>
+                                        <option value="<?= $data['_id']?>"><?= $data['name']?></option>
+                                    <?php 
+                                        }
+                                    ?> 
                                 </select>
                             </div>
                             <div class="form-group">

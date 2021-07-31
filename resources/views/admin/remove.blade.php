@@ -136,19 +136,31 @@
                 Remove a product
             </div>
             <div class="card-body">
+
+                @if(Session::has('message'))
+                    <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+                        {{ Session::get('message') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
                 <div class="col-md-11 col-lg-7 offset-md-1 offset-lg-2">
                     <div class="p-5">
-                        <form method="" action="" class="user">
+                        <form method="post" action="/admin/manage_products/remove/removed" class="user">
                             @csrf
+                            @method('PUT')
                             <div class="form-group">
-                                <select name="productName" class="form-control">
-                                    <option value="tuyau">Tuyau</option>
-                                    <option value="visse">Visse</option>
+                                <select name="name" class="form-control">
+                                    <?php foreach ($materials as $material) { ?>
+                                    <option value="<?= $material['name'] ?>"><?= $material['name'] ?></option>
+                                    <?php } ?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <input type="number" class="form-control form-control-user"
-                                    placeholder="Quantity">
+                                    name="quantity" placeholder="Quantity">
                             </div>
 
                             <div class="row float-right mt-3">

@@ -84,6 +84,7 @@
     </div>
     <div class="card-body">
         <div class="container">
+
             @if(Session::has('message'))
                 <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
                     {{ Session::get('message') }}
@@ -92,60 +93,75 @@
                     </button>
                 </div>
             @endif
-            <form method="put" action="/client/update" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
+
+            
+            <form method="post" action="/user/editProfile/update" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
                 <div class="input-group mb-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-address-book'></i></span></div>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Name" id="name" name="name" value="<?= $user['result']['name']  ?>">                  
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Name" id="name" name="name" value="<?= $user['result']['name']  ?>" required>                  
                     @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-birthday-cake'></i></span></div>
-                    <input type="date" class="form-control" id="birth_date" value="<?= $user['result']['birthday']  ?>">                  
+                    <input type="date" class="form-control" id="birth_date" name="birthdate" value="<?= $user['result']['birthday']  ?>" required>                  
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">@</span></div>
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" id="email" value="<?= $user['result']['email']  ?>" name="email">                  
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="<?= $user['result']['email']  ?>" required>                  
                     @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                      @enderror 
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-phone-volume'></i></span></div>
-                    <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="<?= $user['result']['phone']  ?>">                  
+                    <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="<?= $user['result']['phone']  ?>" required>                  
                     @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-address-book'></i></span></div>
-                    <input type="text" class="form-control" placeholder="description of localisation" id="description" name="description" value="<?= $user['result']['localisation']['description']  ?>">                  
+                    <input type="text" class="form-control" placeholder="description of localisation" id="description" name="description" value="<?= $user['result']['localisation']['description']  ?>" required>                  
                 </div>
                 <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='	fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="New password" id="password" name="password">                  
+                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="New password" id="password" name="password" value="{{ old('password') }}" required>                  
                     @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='	fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword">                  
+                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
+                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="{{ old('confirmpassword') }}"  required>                  
                     @error('confirmpassword')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='	fas fa-image'></i></span></div>
-                    <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo">                  
+            
+                <div class="input-group mt-3">
+                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-image'></i></span></div>
+                    <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo">    
                     @error('photo')
                             <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    @enderror              
                 </div>
-                <div class="row ">
-                    <button class="btn btn-primary btn-block col-sm-5" type="submit">Proceed</button>
-                    <a class="btn btn-primary btn-block col-sm-5 offset-2 text-white" href="/user">Back</a>
+
+                <input type="hidden" name="identifier" id="identifier" value="<?= $user['result']['IdCompteur']  ?>"/>
+                <input type="hidden" name="lat" id="lat" value="<?= $user['result']['localisation']['latitude']?>"/> 
+                <input type="hidden" name="lng" id="lng" value="<?= $user['result']['localisation']['longitude']?>"/>
+
+
+                <div class="row float-right mt-3">
+                    <a href="/user/editProfile">
+                      <button class="btn btn-secondary" type="button">Cancel</button>
+                    </a>
+                    <a href="#">
+                        <button class="btn btn-primary ml-2" type="submit">Proceed</button>
+                    </a>
                 </div>
                 
             </form>
