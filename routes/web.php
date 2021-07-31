@@ -104,6 +104,7 @@ Route::get('/admin/home',[HomeController::class, 'adminHome'])->name('adminHome'
 Route::get('/admin/consumption',[AdminController::class, 'allInvoices'])->name('allInvoices');
 
 Route::get('/admin/detail-consumption/{invoice_id}/edit',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
+
 Route::put('/admin/detail-consumption',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
 
 Route::get('/admin/customer',[ManageAdminController::class, 'viewCustomers']);
@@ -132,13 +133,22 @@ Route::post('/admin/manage_products/add',[AdminController::class, 'storeProduct'
 
 Route::get('/admin/manage_products/remove',[AdminController::class, 'adminRemove'])->name('adminRemove');
 
+Route::match(['get','put'],'/admin/manage_products/remove/removed',[AdminController::class, 'removeProduct'])->name('removeProduct');
+
 Route::get('/admin/products_types',[AdminController::class, 'productsType'])->name('productsType');
 
 Route::post('/admin/products_types/create',[AdminController::class, 'createType'])->name('createType');
 
+Route::match(['get','delete'],'/admin/products_types/delete/{id}',[AdminController::class, 'deleteType'])->name('deleteType');
+
+
 // Route::delete('/admin/remove',[AdminController::class, 'deleteProduct'])->name('adminDelete');
 
 Route::get('/admin/stock/{id}',[AdminController::class, 'viewStock'])->name('viewStock');
+
+Route::match(['get','post'],'/admin/stock/type',[AdminController::class, 'viewTypeStock'])->name('viewTypeStock');
+
+Route::match(['get','put'],'/admin/stock/update',[AdminController::class, 'updateProduct'])->name('updateProduct');
 
 Route::get('/admin/clauses',[AdminController::class, 'adminClauses'])->name('adminClauses');
 

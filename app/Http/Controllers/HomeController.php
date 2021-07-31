@@ -116,9 +116,9 @@ class HomeController extends Controller
 		//
 	}
 
-	public function clientHome(){
-    	return view('client/dashboard');
-    }
+	// public function clientHome(){
+ //    	return view('client/dashboard');
+ //    }
 
     public function adminHome(){
 

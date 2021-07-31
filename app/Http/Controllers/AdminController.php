@@ -22,15 +22,87 @@ class AdminController extends Controller{
     }
 
     public function manageProducts(){
-    	return view('admin/manageProducts');
+
+        $url = "http://localhost:4000/stock/type";
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($response,true);
+
+        $result = $response['result'];
+
+        return view('admin/manageProducts',['data' => $result]);
+    	
     }
 
     public function productsType(){
-        return view('admin/productsType');
+
+        $url = "http://localhost:4000/stock/type";
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($response,true);
+
+        return view('admin/productsType',['data' => $response]);
+
     }
     
-    public function createType(){
-        //
+    public function createType(Request $request){
+        
+        $type = $request->input('type');
+
+        $url = "http://localhost:4000/stock/type";
+
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $data = array(
+            'name' => $type,
+        );
+        $data_json = json_encode($data);
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        curl_close($ch); 
+
+        $data = json_decode($response,true);
+
+        if($data['status'] == 200){
+            Session::flash('message', 'Action Successfully done!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back();
+        }else{
+            Session::flash('message', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back();
+        }
     }
 
     public function storeProduct(Request $request){
@@ -113,16 +185,124 @@ class AdminController extends Controller{
     }
 
     public function adminRemove(){
-    	return view('admin/remove');
-    }
-
-    public function deleteProduct(){
-    	//
-    }
-
-    public function viewStock($id){
 
         $url = "http://localhost:4000/stock/getAll";
+
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $data = array(
+            'page' => 1,
+            'limit' => 0,
+        );
+        $data_json = json_encode($data);
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        curl_close($ch); 
+
+        $response = json_decode($response,true);
+
+        $data= $response['result']['docs'];
+
+        return view('admin/remove',['materials' => $data]);
+    
+    }
+
+    public function removeProduct(Request $request){
+
+        $product = $request->input('name');
+        $quantity = $request->input('quantity');
+
+        $url = "http://localhost:4000/stock/type";
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $data = array(
+            'name' => $product,
+            'quantity' => $quantity,
+        );
+
+        $data_json = json_encode($data);
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        curl_close($ch); 
+
+        $response = json_decode($response);
+        
+        if ($response->status == 200){
+            Session::flash('message', 'Action Successfully done!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back();
+        }else{
+            Session::flash('message', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back();
+        }
+    }
+
+    public function deleteType($id){
+    	
+        $url = "http://localhost:4000/stock/type/".$id;
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        curl_close($ch); 
+
+        $response = json_decode($response);
+
+        // print_r($response);
+        
+        if ($response->status == 200){
+            Session::flash('message', 'Action Successfully done!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back();
+        }else{
+            Session::flash('message', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back();
+        }
+    }
+
+    public function viewTypeStock(Request $request){
+
+        $type = $request->input('type');
+
+        if($type == "all"){
+
+            $id = 1;
+            return redirect()->route('viewStock',[$id]);
+
+        }else{
 
             $alltoken = $_COOKIE['token'];
             $alltokentab = explode(';', $alltoken);
@@ -131,46 +311,81 @@ class AdminController extends Controller{
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
-            $data = array(
-                'page' => $id,
-                'limit' => 5,
-            );
-            $data_json = json_encode($data);
-            
+            $url = "http://localhost:4000/stock/type";
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response  = curl_exec($ch);
-            curl_close($ch); 
+            $response = curl_exec($ch);
+            curl_close($ch);
+            $response = json_decode($response,true);
+            $types = $response['result'];
 
-            $data = json_decode($response,true);
 
-    	    return view('admin/stock',['materials' => $data]);
+            $url1 = "http://localhost:4000/stock/getByType";
+            $data1 = array(
+                'page' => 1,
+                'limit' => 0,
+                'type' => $type,
+            );
+            $data_json1 = json_encode($data1);
+            
+            $ch1 = curl_init();
+            curl_setopt($ch1, CURLOPT_URL, $url1);
+            curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+            curl_setopt($ch1, CURLOPT_POST, 1);
+            curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
+            curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+            $response1  = curl_exec($ch1);
+            curl_close($ch1); 
+
+            $data1 = json_decode($response1,true);
+
+            return view('admin/stock',['typeMaterials' => $data1, 'types' => $types, 'nametype' => $type]);
+
+            }
     }
 
-    // public function getProduct($id){
+    public function viewStock($id){
 
-    //     $url = "http://localhost:4000/stock/".$id;
-    //     $alltoken = $_COOKIE['token'];
-    //     $alltokentab = explode(';', $alltoken);
-    //     $token = $alltokentab[0];
-    //     $tokentab = explode('=',$token);
-    //     $tokenVal = $tokentab[1];
-    //     $Authorization = 'Bearer '.$tokenVal;
-    //     $ch = curl_init();
-    //     curl_setopt($ch, CURLOPT_URL, $url);
-    //     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
-    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    //     $response = curl_exec($ch);
-    //     curl_close($ch);
-    //     $response = json_decode($response,true);
-    //     $userdata = $response['result'];
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
 
-    //     return view('admin/stock',['data' => $userdata]);
-    // }
+        $url = "http://localhost:4000/stock/type";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($response,true);
+        $types = $response['result'];
+
+
+        $url1 = "http://localhost:4000/stock/getAll";
+        $data = array(
+            'page' => $id,
+            'limit' => 5,
+        );
+        $data_json = json_encode($data);
+        $ch1 = curl_init();
+        curl_setopt($ch1, CURLOPT_URL, $url1);
+        curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch1, CURLOPT_POST, 1);
+        curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json);
+        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+        $response1  = curl_exec($ch1);
+        curl_close($ch1); 
+
+        $data = json_decode($response1,true);
+
+        return view('admin/stock',['materials' => $data, 'types' => $types]);
+    }
+
 
     public function updateProduct(Request $request){
 
@@ -211,7 +426,7 @@ class AdminController extends Controller{
 
             $id = $request->input('id');
 
-            $url = "http://localhost:4000/".$id;
+            $url = "http://localhost:4000/stock/".$id;
             $alltoken = $_COOKIE['token'];
             $alltokentab = explode(';', $alltoken);
             $token = $alltokentab[0];
@@ -282,7 +497,7 @@ class AdminController extends Controller{
         // echo $url;
         // print_r($response);
         $userdata = $response['result'];
-        return view('admin/profile',['info' => $userdata]);
+        return view('admin/profile',['data' => $userdata]);
     }
 
     public function adminEditProfile(Request $request){
