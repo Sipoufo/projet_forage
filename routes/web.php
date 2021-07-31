@@ -36,6 +36,8 @@ Route::post('/reset',[HomeController::class, 'reset']);
 
 Route::get('/home',[ManageClientController::class, 'dashboard'])->name('clientHome');
 
+Route::get('/user',[ManageClientController::class, 'setting'])->name('userSetting');
+
 Route::get('/consumption', function() {
     return view('client/consumption');
 });
@@ -80,9 +82,9 @@ Route::get('/unpaid_invoices', function() {
     return view('client/unpaidInvoices');
 });
 
-Route::get('/user', function() {
-    return view('client/user');
-});
+// Route::get('/user', function() {
+//     return view('client/user');
+// });
 
 Route::get('/tchat', function() {
     return view('client/message');

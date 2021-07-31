@@ -72,6 +72,10 @@
 @stop
 @section('content')
 
+<?php
+    print_r($user);
+?>
+
 <h1>                            
     <i class='bx bx-grid-alt'></i>
     <span class="nav_name">User</span>
