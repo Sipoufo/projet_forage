@@ -30,6 +30,10 @@ Route::get('/forgot_password',[HomeController::class, 'forgot_password']);
 
 Route::post('/reset',[HomeController::class, 'reset']);
 
+Route::get('/preview/clauses',[UtilisateurController::class, 'previewClauses'])->name('seeClauses');
+
+Route::post('/preview/clauses/validation',[UtilisateurController::class, 'validClauses']);
+
 
 
 //Client
@@ -40,7 +44,7 @@ Route::get('/user',[ManageClientController::class, 'setting'])->name('userSettin
 
 Route::get('/user/editProfile',[ManageClientController::class, 'updateUser'])->name('userEditProfile');
 
-Route::match(['get','put'],'/client/update',[ManageClientController::class, 'update'])->name('updateClient');
+Route::match(['get','put'],'/user/editProfile/update',[ManageClientController::class, 'update'])->name('updateClient');
 
 Route::get('/consumption', function() {
     return view('client/consumption');
@@ -94,9 +98,6 @@ Route::get('/tchat', function() {
     return view('client/message');
 });
 
-Route::get('/preview/clauses',[UtilisateurController::class, 'previewClauses'])->name('seeClauses');
-
-Route::post('/preview/clauses/validation',[UtilisateurController::class, 'validClauses']);
 
 Route::get('/clauses', function() {
     return view('client/clauses');

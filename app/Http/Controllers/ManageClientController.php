@@ -141,11 +141,7 @@ class ManageClientController extends Controller
                 $photoPath = $request->photo->storeAs('/customers',$photo);   
             }else{
                 $photo = "";
-                if(Session::has('photo')){
-                    $photoPath = Session::get('photo');
-                }else{
-                    $photoPath = "customers/leopard.jpg";
-                }
+                $photoPath = Session::get('photo');
             }
 
 
@@ -155,6 +151,7 @@ class ManageClientController extends Controller
             $phone = $request->input('phone');
             $password = md5(sha1($request->input('password')));
             $home = $request->input('description');
+            $identifier = $request->input('identifier');
             $longitude = $request->input('lng');
             $latitude = $request->input('lat');
             
@@ -175,12 +172,13 @@ class ManageClientController extends Controller
                 'email' => $email,
                 "profileImage" => $photoPath,
                 "description" => $home,
+                "IdCompteur" => $identifier,
                 "longitude" => $longitude,
                 "latitude" => $latitude,
             );
             $data_json = json_encode($data);
 
-            // print_r($data_json);
+            //print_r($data_json);
             
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
