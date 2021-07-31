@@ -321,131 +321,33 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
       <h6 class="m-0 font-weight-bold text-primary">Facture</h6>
     </div>
     <div class="card-body container-fluid">
-      <!-- <h4 class="small font-weight-bold">Server Migration <span
-                              class="float-right">20%</span></h4>
-                      <div class="progress mb-4">
-                          <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
-                              aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div> -->
-      <div class="col-lg-12 bg-danger mb-2 row">
-        <div class="text-white col-md-4">
-          <div class="">
-            Nom
-            <div class="text-white-50 small">Sipoufo Yvan</div>
-          </div>
-        </div>
-        <div class="text-white col-md-4">
-          <div class="">
-            Consumption
-            <div class="text-white-50 small">
-              40 m<sup>3</sup>
-            </div>
-          </div>
-        </div>
-        <div class="text-white col-md-3">
-          <div class="">
-            amount
-            <div class="text-white-50 small">10 000Fcfa</div>
-          </div>
-        </div>
-        <div class="text-white col-md-1">
-          <div class="col-auto">
-            <i
-              class="fas fa-lightbulb"
-              style="font-size: 30px; color: red"
-            ></i>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-12 bg-danger mb-2 row">
-        <div class="text-white col-md-4">
-          <div class="">
-            Nom
-            <div class="text-white-50 small">Bryan</div>
-          </div>
-        </div>
-        <div class="text-white col-md-4">
-          <div class="">
-            Consumption
-            <div class="text-white-50 small">
-              40 m<sup>3</sup>
-            </div>
-          </div>
-        </div>
-        <div class="text-white col-md-3">
-          <div class="">
-            amount
-            <div class="text-white-50 small">9 000Fcfa</div>
-          </div>
-        </div>
-        <div class="text-white col-md-1">
-          <div class="col-auto">
-            <i
-              class="fas fa-lightbulb"
-              style="font-size: 30px; color: red"
-            ></i>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-12 bg-danger mb-2 row">
-        <div class="text-white col-md-4">
-          <div class="">
-            Nom
-            <div class="text-white-50 small">Christian</div>
-          </div>
-        </div>
-        <div class="text-white col-md-4">
-          <div class="">
-            Consumption
-            <div class="text-white-50 small">
-              40 m<sup>3</sup>
-            </div>
-          </div>
-        </div>
-        <div class="text-white col-md-3">
-          <div class="">
-            amount
-            <div class="text-white-50 small">9 000Fcfa</div>
-          </div>
-        </div>
-        <div class="text-white col-md-1">
-          <div class="col-auto">
-            <i
-              class="fas fa-lightbulb"
-              style="font-size: 30px; color: red"
-            ></i>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-12 bg-danger mb-2 row">
-        <div class="text-white col-md-4">
-          <div class="">
-            Nom
-            <div class="text-white-50 small">CFS</div>
-          </div>
-        </div>
-        <div class="text-white col-md-4">
-          <div class="">
-            Consumption
-            <div class="text-white-50 small">
-              40 m<sup>3</sup>
-            </div>
-          </div>
-        </div>
-        <div class="text-white col-md-3">
-          <div class="">
-            amount
-            <div class="text-white-50 small">9 000Fcfa</div>
-          </div>
-        </div>
-        <div class="text-white col-md-1">
-          <div class="col-auto">
-            <i
-              class="fas fa-lightbulb"
-              style="font-size: 30px; color: red"
-            ></i>
-          </div>
-        </div>
+      <div class="table-responsive" *ngIf="classes.length>0">
+        <table class="table table-hover">
+          <thead class="thead thead-danger">
+          <tr>
+            <th>Name</th>
+            <th style="text-align: center">Consumption</th>
+            <th style="text-align: center">amount</th>
+            <th style="text-align: right"></th>
+          </tr>
+          </thead>
+
+          <tbody>
+            @foreach($invoices as $invoice)
+              <tr *ngFor="let classe of classes">
+                <td>{{$client[$loop ->index]->name}}</td>
+                <td style="text-align: center">{{$invoice -> consommation}}</td>
+                <td style="text-align: center">{{$invoice -> montantImpaye}}FCFA</td>
+                <td style="text-align: right">
+                  <i
+                    class="fas fa-lightbulb"
+                    style="font-size: 30px; color: red"
+                  ></i>
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
