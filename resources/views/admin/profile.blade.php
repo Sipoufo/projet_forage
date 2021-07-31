@@ -82,9 +82,9 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Stock Information</h6>
-                    <a class="collapse-item" href="/admin/add">Add</a>
-                    <a class="collapse-item" href="/admin/remove">Remove</a>
-                    <a class="collapse-item" href="/admin/stock">Stock</a>
+                    <a class="collapse-item" href="/admin/products_types">Products type</a>
+                    <a class="collapse-item" href="/admin/manage_products">Manage products</a>
+                    <a class="collapse-item" href="/admin/stock/1">Stock</a>
                 </div>
             </div>
         </li>
@@ -179,6 +179,16 @@
                     </div>
                     <div class="col-sm-9 text-secondary">
                       <?= $data['birthday']?>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Home</h6>
+                    </div>
+                    <?php $localisation = $data['localisation'] ;?>
+                    <div class="col-sm-9 text-secondary">
+                      <?= $localisation['description']?>
                     </div>
                   </div>
                   <hr>

@@ -6,6 +6,7 @@ use App\Http\Controllers\ManageAdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\ManageClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +34,7 @@ Route::post('/reset',[HomeController::class, 'reset']);
 
 //Client
 
-Route::get('/home',[HomeController::class, 'clientHome'])->name('clientHome');
+Route::get('/home',[ManageClientController::class, 'dashboard'])->name('clientHome');
 
 Route::get('/consumption', function() {
     return view('client/consumption');
@@ -87,10 +88,6 @@ Route::get('/tchat', function() {
     return view('client/message');
 });
 
-// Route::match(['post','get'],'/preview/clauses', function() {
-//     return view('/clauses');
-// });
-
 Route::get('/preview/clauses',[UtilisateurController::class, 'previewClauses'])->name('seeClauses');
 
 Route::post('/preview/clauses/validation',[UtilisateurController::class, 'validClauses']);
@@ -129,15 +126,19 @@ Route::get('/admin/status',[AdminController::class, 'adminStatus'])->name('admin
 
 Route::get('/admin/chat',[AdminController::class, 'adminChat'])->name('adminChat');
 
-Route::get('/admin/add',[AdminController::class, 'adminAdd'])->name('adminAdd');
+Route::get('/admin/manage_products',[AdminController::class, 'manageProducts'])->name('manageProducts');
 
-Route::post('/admin/add/store',[AdminController::class, 'storeProduct'])->name('adminAddStore');
+Route::post('/admin/manage_products/add',[AdminController::class, 'storeProduct'])->name('adminAddStore');
 
-Route::get('/admin/remove',[AdminController::class, 'adminRemove'])->name('adminRemove');
+Route::get('/admin/manage_products/remove',[AdminController::class, 'adminRemove'])->name('adminRemove');
 
-Route::delete('/admin/remove',[AdminController::class, 'deleteProduct'])->name('adminDelete');
+Route::get('/admin/products_types',[AdminController::class, 'productsType'])->name('productsType');
 
-Route::get('/admin/stock',[AdminController::class, 'adminStock'])->name('adminStock');
+Route::post('/admin/products_types/create',[AdminController::class, 'createType'])->name('createType');
+
+// Route::delete('/admin/remove',[AdminController::class, 'deleteProduct'])->name('adminDelete');
+
+Route::get('/admin/stock/{id}',[AdminController::class, 'viewStock'])->name('viewStock');
 
 Route::get('/admin/clauses',[AdminController::class, 'adminClauses'])->name('adminClauses');
 
@@ -147,12 +148,26 @@ Route::get('/admin/editProfile',[AdminController::class, 'adminEditProfile'])->n
 
 Route::match(['get','put'],'/admin/update',[AdminController::class, 'updateAdmin'])->name('updateAdmin');
 
-Route::match(['get','put'],'/admin/customer/block/{id}',[ManageAdminController::class, 'blockCustomer'])->name('blockCustomer');
+Route::match(['get','put'],'/admin/customer/block/{id}/{status}',[ManageAdminController::class, 'blockCustomer'])->name('blockCustomer');
 
-Route::match(['get','put'],'/admin/customer/activate/{id}',[ManageAdminController::class, 'activateCustomer'])->name('activateCustomer');
+Route::match(['get','put'],'/admin/administrator/block/{id}/{status}',[ManageAdminController::class, 'blockAdmin'])->name('blockAdmin');
 
 Route::get('/admin/customer/edit/{id}',[ManageAdminController::class, 'editCustomer'])->name('editCustomer');
 
+Route::get('/admin/administrator/edit/{id}',[ManageAdminController::class, 'editAdmin'])->name('editAdmin');
+
 Route::match(['get','put'],'/admin/customer/saveCustomer/{id}',[ManageAdminController::class, 'saveCustomer'])->name('saveCustomer');
 
+Route::match(['get','put'],'/admin/administrator/saveAdmin/{id}',[ManageAdminController::class, 'saveAdmin'])->name('saveAdmin');
+
+// Route::get('/admin/clauses', function() {
+//     return view('admin/adminClauses');
+// });
+
+Route::get('/admin/map', function() {
+    return view('admin/maps');
+});
+
 Route::match(['get','put'],'/admin/customer/delete/{id}',[ManageAdminController::class, 'deleteCustomer'])->name('deleteCustomer');
+
+Route::match(['get','put'],'/admin/administrator/delete/{id}',[ManageAdminController::class, 'deleteAdmin'])->name('deleteAdmin');

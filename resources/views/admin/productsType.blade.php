@@ -1,5 +1,5 @@
 @extends('admin.layouts.skeleton')
-@section('title', 'Add product')
+@section('title', 'Products Types')
 @section('nav')
         <li class="nav-item">
             <a class="nav-link" href="/admin/home">
@@ -82,14 +82,22 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Stock Information</h6>
-                    <a class="collapse-item" href="/admin/add">Add</a>
-                    <a class="collapse-item" href="/admin/remove">Remove</a>
-                    <a class="collapse-item" href="/admin/stock">Stock</a>
+                    <a class="collapse-item" href="/admin/products_types">Products type</a>
+                    <a class="collapse-item" href="/admin/manage_products">Manage products</a>
+                    <a class="collapse-item" href="/admin/stock/1">Stock</a>
                 </div>
             </div>
         </li>
 
         <!-- Nav Item - Clauses -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/map">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Map</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Payment -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/admin/clauses">
             <i class="fas fa-list"></i>
@@ -114,49 +122,66 @@
         </li>
 @stop
 @section('content')
-
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Add</h1>
-</div>
-
-<div class="row">
-    <!-- Detail Part -->
-    <div class="col-lg-12">
-        <div class="card mb-4">
-            <div class="card-header">
-                Add product
-            </div>
-            <div class="card-body">
-                <div class="col-md-11 col-lg-7 offset-md-1 offset-lg-2">
-                    <div class="p-5">
-                        <form method="post" action="/admin/add/store" class="user">
-                            @csrf
-                            <div class="form-group">
-                                <input type="text" class="form-control form-control-user"
-                                    placeholder="Enter your product name">
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control form-control-user"
-                                    placeholder="Quantity">
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control form-control-user"
-                                    placeholder="Unit price">
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control form-control-user"
-                                    placeholder="Enter your image">
-                            </div>
-                            <button href="#" class="btn btn-primary btn-user btn-block" type="submit">
-                                Add
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+  
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Products Types</h1> 
+        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#typeModal" > Add a type </a>
     </div>
-</div>
+
+
+    <div class="container">
+      <table class="table table-striped table-light table-hover table-sm table-responsive-lg text-center">
+        <thead style="background-color:#4e73df;color:white;">
+          <tr>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background-color:white;color:black;">
+            <td>Electricity</td>
+            <td>electrical materials</td>
+            <td>
+                <a href="#" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                    <span class="icon">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                </a>
+                
+                <a href="#" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                    <span class="icon">
+                        <i class="fas fa-trash"></i>
+                    </span>
+                </a>
+
+            </td>
+          </tr>
+
+          <tr style="background-color:white;color:black;">
+            <td>Water Maintenance</td>
+            <td>water materials</td>
+            <td>
+                
+                <a href="#" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                    <span class="icon">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                </a>
+
+                <a href="#" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                    <span class="icon">
+                        <i class="fas fa-trash"></i>
+                    </span>
+                </a>
+
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+        
 
 @stop
