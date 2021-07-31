@@ -192,5 +192,482 @@ class AdminController extends Controller{
         
     }
 
+    //All Invoice that the admin have
+    public function allInvoices()
+    {
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+    
+        $i=0;
+        $invoices = array();
 
+        foreach($response as $key => $value){
+            if($i >= 1){
+                //echo $value;
+                $invoices = $value;
+                //dump($value);
+            }
+            $i = $i + 1;
+            //dump($key);
+        }
+
+        if (gettype($invoices) != "array") {
+        //    echo "je t'aime";
+            $invoices = array();
+        }
+
+        //dump($invoices);
+
+        $client = array();
+
+        foreach($invoices as $invoice){
+
+            $idClient = $invoice  -> idClient;
+            //echo $idClient;
+            $url = curl_init();
+            curl_setopt_array($url, array(
+                CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+            
+            $response = curl_exec($url);
+            $response = json_decode($response);
+        
+            $i=0;
+
+            foreach($response as $key => $value){
+                if($i >= 1){
+                    //echo $value;
+                    //$client = $value;
+                    array_push($client,$value);
+                    //dump($value);
+                }
+                $i = $i + 1;
+                //dump($key);
+            }
+        
+        }
+
+        //dump($client);
+        curl_close($url);
+        return view('admin/consumption',['invoices' => $invoices, 'client' => $client]);
+        //return view('admin/facture',['invoices' => $invoices]);
+    }
+
+    public function detailInvoive($invoice_id){
+        //echo "v ".$invoice_id;
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/one/'.$invoice_id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+    
+        $i=0;
+        $invoice = array();
+
+        foreach($response as $key => $value){
+            if($i >= 1){
+                //echo $value;
+                //array_push($invoice,$value);
+                $invoice = $value;
+                //dump($value);
+            }
+            $i = $i + 1;
+            //dump($key);
+        }
+
+        if (gettype($invoice) != "array" && gettype($invoice) != "object") {
+        //    echo "je t'aime";
+            $invoice = array();
+        }
+
+        //dump($invoice);
+
+        if ($invoice -> idClient != null)
+        {
+            $client = array();
+
+            $idClient = $invoice -> idClient;
+            //echo $idClient;
+            $url = curl_init();
+            curl_setopt_array($url, array(
+                CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+            
+            $response = curl_exec($url);
+            $response = json_decode($response);
+        
+            $i=0;
+
+            foreach($response as $key => $value){
+                if($i >= 1){
+                    //echo $value;
+                    $client = $value;
+                }
+                $i = $i + 1;
+                //dump($key);
+            }
+
+            //dump($client);
+            curl_close($url);
+        }
+        return view('admin/detailInvoice',
+            [
+                'invoice' => $invoice, 
+                'client' => $client
+            ]
+        );
+    }
+
+    //All Invoice that the admin have
+    public function allInvoicesThatHaveAdvenced()
+    {
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/getFactureAd',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+    
+        $i=0;
+        $invoicesAdvenced = array();
+
+        foreach($response as $key => $value){
+            if($i >= 1){
+                //echo $value;
+                $invoicesAdvenced = $value;
+                //dump($value);
+            }
+            $i = $i + 1;
+            //dump($key);
+        }
+
+        if (gettype($invoicesAdvenced) != "array") {
+        //    echo "je t'aime";
+            $invoicesAdvenced = array();
+        }
+
+        //dump($users);
+        //return view('admin/dashboard',['invoices' => $invoicesAdvenced]);
+    }
+
+    //Function about invoice
+    public function allInvoicesByClient()
+    {
+        $idClient = $_POST['idClient'];
+        
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/'.$idClient,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+    
+        $i=0;
+        $invoices = array();
+
+        foreach($response as $key => $value){
+            if($i >= 1){
+                //echo $value;
+                $invoices = $value;
+                //dump($value);
+            }
+            $i = $i + 1;
+            //dump($key);
+        }
+
+        //dump($users);
+        return view('client/consumption',['invoices' => $invoices]);
+
+        //return view('client/consumption',['invoices' => $invoices]);
+    }
+
+    //finish to paid invoice
+    public function finishToPaidInvoice()
+    {
+        $idFacture = $_POST['idFacture'];
+        
+        // je definie l'url de connexion.
+        $url = "http://localhost:4000/admin/facture/statusPaidFacture/"+$idFacture;
+        // je definie la donnée de ma facture.
+        $facture = array(
+            'status' => true
+        );
+        
+        // j'encode cette donnée là'.
+        $data_json = json_encode($facture);
+
+        // Initialisez une session CURL.
+        $ch = curl_init();
+
+        // Je definie les propriétés de connexion
+        //CURLOPT_URL : permet de definir l'url
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        /*
+            on renseignement l'option "CURLOPT_HEADER" avec "true" comme valeur
+            pour inclure l'en-tête dans la réponse
+        */
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+
+        //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
+        curl_setopt($ch, CURLOPT_PUT, 1);
+        
+        //j'insere la donnée à etre envoyé
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+        //enfin d'avoir un retour sur l'etat de la requette on a CURLOPT_RETURNTRANSFER = true
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        var_dump($response);
+        curl_close($ch);
+    }
+
+    public function allClient()
+    {
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+    
+        $i=0;
+        $users = array();
+
+        foreach($response as $key => $value){
+            if($i >= 1){
+                //echo $value;
+                $users = $value;
+                //dump($value);
+            }
+            $i = $i + 1;
+            //dump($key);
+        }
+
+        //dump($users);
+        if (gettype($users) != "array") {
+        //    echo "je t'aime";
+            $users = array();
+        }
+        //dump($users);
+        return view('admin/facture',['users' => $users]);
+    }
+
+    public function addInvoice()
+    {
+        if(isset($_POST['connect']))
+        {
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            $Authorization = 'Bearer '.$tokenVal;
+
+            $newIndex = $_POST['newIndex'];
+            $penalty = $_POST['penalty'];
+            $observation = $_POST['observation'];
+            $dateSpicy = $_POST['dateSpicy'];
+            $dataPaid = $_POST['dataPaid'];
+            $idClient = $_POST['idClient'];
+            $amountPaid = $_POST['amountPaid'];
+            $oldIndex = $_POST['oldIndex'];
+            echo $idClient;
+
+            // je definie l'url de connexion.
+            $url = "http://localhost:4000/admin/facture/".$idClient;
+            // je definie la donnée de ma facture.
+            $facture = array(
+                'newIndex' => $newIndex,
+                'observation' => $observation,
+                'penalite' => $penalty,
+                'dataPaid' => $dataPaid,
+                'montantVerse' => $amountPaid,
+                'dateReleveNewIndex' => $dateSpicy,
+                'oldIndex' => $oldIndex,
+            );
+
+            // j'encode cette donnée là'.
+            $data_json = json_encode($facture);
+            //var_dump($data_json);
+            // Initialisez une session CURL.
+            $ch = curl_init();
+
+            // Je definie les propriétés de connexion
+            //CURLOPT_URL : permet de definir l'url
+            curl_setopt($ch, CURLOPT_URL, $url);
+
+            /*
+                on renseignement l'option "CURLOPT_HEADER" avec "true" comme valeur
+                pour inclure l'en-tête dans la réponse
+            */
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+
+            //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
+            curl_setopt($ch, CURLOPT_POST, 1);
+            
+            //j'insere la donnée à etre envoyé
+            curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+            //enfin d'avoir un retour sur l'etat de la requette on a CURLOPT_RETURNTRANSFER = true
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response  = curl_exec($ch);
+            //var_dump($response);
+            curl_close($ch);
+
+            $messageErr = null;
+            $messageOK = null;
+
+            $response = json_decode($response);
+
+            if ($response->status == 200){
+                $messageOK = "Action Done Successfully";
+            }else{
+                $messageErr = ucfirst($response->error);
+            }
+
+
+            $curl = curl_init();
+        
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+            
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $response = json_decode($response);
+        
+            $i=0;
+            $users = array();
+    
+            foreach($response as $key => $value){
+                if($i >= 1){
+                    //echo $value;
+                    $users = $value;
+                    //dump($value);
+                }
+                $i = $i + 1;
+                //dump($key);
+            }
+
+            return view('admin/facture',['users' => $users,'messageOK' => $messageOK,'messageErr' => $messageErr]);
+        }
+    }
 }

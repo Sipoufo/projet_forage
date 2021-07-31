@@ -144,23 +144,35 @@
                         @endforeach
                     </select>
                 </div>
+            
                 <div class="form-group mb-3">
                     <div class="input-group">New index</div>
                     <input type="number" class="form-control" placeholder="new index" id="newIndex" name="newIndex" required>                  
                 </div>
                 <div class="form-group mb-3">
-                    <div class="input-group">Last index</div>
-                    <input type="number" class="form-control" placeholder="last index" id="lastIndex" name="lastIndex" required>                  
+                    <div class="input-group">Old index</div>
+                    <input type="number" class="form-control" placeholder="old index" id="oldIndex" name="oldIndex" required>                  
                 </div>
                 <div class="form-group mb-3">
-                    <div class="input-group">Price of KW</div>
-                    <input type="number" class="form-control" placeholder="price of kilo wath" id="priceKW" name="priceKW" required>                  
+                    <div class="input-group">Penalty</div>
+                    <input type="number" class="form-control" placeholder="penalty" id="penalty" name="penalty" required>                  
                 </div>
                 <div class="form-group mb-3">
-                    <div class="input-group">Limit date of paiement</div>
-                    <input type="date" class="form-control" id="dataLimitePaid" name="dataLimitePaid" placeholder="limit date of payement" required>                  
+                    <div class="input-group">Money</div>
+                    <input type="number" class="form-control" placeholder="money who give" id="amountPaid" name="amountPaid" required>                  
                 </div>
-            
+                <div class="form-group mb-3">
+                    <div class="input-group">Observation</div>
+                    <input type="text" class="form-control" placeholder="Observation" id="observation" name="observation" required>                  
+                </div>
+                <div class="form-group mb-3">
+                    <div class="input-group">Date of spicy</div>
+                    <input type="date" class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" required>                  
+                </div>
+                <div class="form-group mb-3">
+                    <div class="input-group">Date of paiement</div>
+                    <input type="date" class="form-control" id="dataPaid" name="dataPaid" placeholder="Date of payement" required>                  
+                </div>
                 <div class="row float-right">
                     <a href="#">
                         <button class="btn btn-primary" name="connect" type="submit">Register</button>

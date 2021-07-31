@@ -104,7 +104,51 @@ class HomeController extends Controller
 
     public function adminHome(){
 
-    	return view('admin/dashboard');
+		$alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/getFactureAd',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+    
+        $i=0;
+        $invoicesAdvenced = array();
+
+        foreach($response as $key => $value){
+            if($i >= 1){
+                //echo $value;
+                $invoicesAdvenced = $value;
+                //dump($value);
+            }
+            $i = $i + 1;
+            //dump($key);
+        }
+
+		if (gettype($invoicesAdvenced) != "array") {
+		//    echo "je t'aime";
+			$invoicesAdvenced = array();
+		}
+		
+		//dump($invoicesAdvenced);
+    	return view('admin/dashboard',['invoices' => $invoicesAdvenced]);
     }
 
     

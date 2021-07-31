@@ -104,7 +104,10 @@ Route::get('/clauses', function() {
 
 Route::get('/admin/home',[HomeController::class, 'adminHome'])->name('adminHome');
 
-Route::get('/admin/consumption',[AdminController::class, 'adminConsumption'])->name('adminConsumption');
+Route::get('/admin/consumption',[AdminController::class, 'allInvoices'])->name('allInvoices');
+
+Route::get('/admin/detail-consumption/{invoice_id}/edit',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
+Route::put('/admin/detail-consumption',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
 
 Route::get('/admin/customer',[ManageAdminController::class, 'viewCustomers']);
 
@@ -118,9 +121,9 @@ Route::get('/admin/administrator/addAdministrator',[ManageAdminController::class
 
 Route::post('/admin/administrator/addAdministrator/store',[ManageAdminController::class, 'storeAdministrators']);
 
-Route::get('/admin/facture',[UtilisateurController::class, 'allClient']);
+Route::get('/admin/facture',[AdminController::class, 'allClient']);
 
-Route::post('/admin/facture',[UtilisateurController::class, 'addInvoice']);
+Route::post('/admin/facture',[AdminController::class, 'addInvoice']);
 
 Route::get('/admin/status',[AdminController::class, 'adminStatus'])->name('adminStatus');
 
