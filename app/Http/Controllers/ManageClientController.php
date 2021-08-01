@@ -109,6 +109,71 @@ class ManageClientController extends Controller
         return view('Client/paidInvoices',['data' => $informations]);
     }
     
+    // budget of user
+    public function budget(){
+
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://localhost:4000/client/facture/getFactureWithMonth/true',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization:'.$Authorization,
+        ),
+        ));
+
+        $response = curl_exec($curl);
+        $informations = json_decode($response, true);
+
+        curl_close($curl);
+
+        return view('Client/budget',['data' => $informations]);
+    }
+    
+    public function invoiceUnpaid(){
+
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://localhost:4000/client/facture/getFactureWithMonth/false',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization:'.$Authorization,
+        ),
+        ));
+
+        $response = curl_exec($curl);
+        $informations = json_decode($response, true);
+
+        curl_close($curl);
+
+        return view('Client/unpaidInvoices',['data' => $informations]);
+    }
+    
     // setting of user
     public function updateUser(){
 
@@ -240,6 +305,56 @@ class ManageClientController extends Controller
                 return redirect()->back();
             }
         }
+        
+    }
+    
+    public function paidFac(Request $request){
+
+            $modalId = $request->input('modalId');
+            $montant = $request->input('montant');
+            
+
+            $url = "http://localhost:4000/client/facture/paid/".$modalId;
+            echo $url;
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            $Authorization = 'Bearer '.$tokenVal;
+
+            
+            $data = array(
+                'montant' => $montant,
+            );
+            $data_json = json_encode($data);
+
+            //print_r($data_json);
+            
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+             //curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+            curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response  = curl_exec($ch);
+            curl_close($ch); 
+
+            $response = json_decode($response);
+
+            // print_r($response);
+            
+            if ($response->status == 200){
+                Session::flash('message', 'Action Successfully done!');
+                Session::flash('alert-class', 'alert-success');
+                return redirect()->back();
+                
+            }else{
+                Session::flash('message', ucfirst($response->error));
+                Session::flash('alert-class', 'alert-danger');
+                return redirect()->back();
+            }
         
     }
 }

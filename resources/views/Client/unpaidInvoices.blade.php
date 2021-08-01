@@ -16,9 +16,9 @@
 
         <!-- Nav Item - consumption -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/consumption" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Consumption">
+            <a class="nav-link collapsed" href="/budget" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Consumption">
             <i class="fas fa-file-invoice-dollar"></i>
-            <span>Consumption</span>
+            <span>Buget</span>
             </a>
         </li>
 
@@ -71,107 +71,167 @@
 
 @stop
         @section('content')
+
+            @if(Session::has('message'))
+                <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+                    {{ Session::get('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <h1>                            
                 <i class='bx bx-grid-alt'></i>
-                <span class="nav_name">Invoice</span>
+                <span class="nav_name">Invoice Unpaid</span>
             </h1>
         
-            <div class="card mb-4 containter-fluid">
-                <div class="card-header row bg-danger">
-                    <div class="col-md-12 col-lg-2 text-white">
-                        Invoice of 15/05/2021
+            <?php 
+                $alltoken = $_COOKIE['token'];
+                $alltokentab = explode(';', $alltoken);
+                $token = $alltokentab[0];
+                $tokentab = explode('=',$token);
+                $tokenVal = $tokentab[1];
+                $Authorization = 'Bearer '.$tokenVal;   
+            ?>
+
+            <form style="float: right" hidden>
+                <input type="text" value="<?php echo $Authorization?>" id="authorization">
+            </form>
+            
+            <!-- Default Card Example -->
+            <?php
+                $lengthPaid = count($data['result']);
+                for ($i=0; $i < $lengthPaid; $i++) { 
+            ?>
+                <div class="card mb-4 containter-fluid">
+                    <div class="card-header row col-lg-12">
+                        <div class="col-md-6 col-lg-6">
+                            <?php
+                                $datesb = $data['result'][$i]['facture']['createdAt'];
+                                echo (substr($datesb, 0, 10));
+                            ?>
+                        </div>
+                        <div class="col-md-2 col-lg-2 offset-md-4">
+                            <a href="javascript:;" class="btn btn-success btnapp" data-unpaid="<?= $data['result'][$i]['facture']['montantImpaye'] ?>" data-id="<?= $data['result'][$i]['facture']['_id'] ?>">Paid/Advance</a>
+                        </div>
                     </div>
-                    <a href="#" class="btn btn-info col-md-12 col-lg-2 offset-lg-3 mr-3" 
-                        data-toggle="modal"
-                        data-target="#penaltyModal">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-info-circle"></i>
-                        </span>
-                        <span class="text">Penalization</span>
-                    </a>
-                    <a href="#" class="btn btn-warning col-md-12 col-lg-2 offset-lg-0 mr-3">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-info-circle"></i>
-                        </span>
-                        <span class="text">Advanced</span>
-                    </a>
-                    <a href="#" class="btn btn-secondary col-md-12 col-lg-2 offset-lg-0">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-donate"></i>
-                        </span>
-                        <span class="text">Paid</span>
-                     </a>
+                    <div class="card-body row">
+                        <div class="col-lg-3 col-6 mb-4">
+                            <div class="card shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Index (New - Old)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $data['result'][$i]['facture']['newIndex'] ?> - <?= $data['result'][$i]['facture']['oldIndex'] ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6 mb-4">
+                            <div class="card shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Consumption M<sup>3</sup></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $data['result'][$i]['facture']['consommation'] ?> m<sup>3</sup></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6 mb-4">
+                            <div class="card shadow h-100 py-2 bg-danger">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Unpaid</div>
+                                            <div class="h5 mb-0 font-weight-bold text-white" id="unpaid"><?= $data['result'][$i]['facture']['montantImpaye'] ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6 mb-4">
+                            <div class="card shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                amount of consumption</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $data['result'][$i]['facture']['montantConsommation'] ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body row">
-                    <div class="col-lg-3 col-6 mb-4">
-                        <div class="card shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Index (New - Old)</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">543 - 210</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+            <?php
+                    # code...
+                }
+            ?>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Paid/Advance</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                     </div>
-                    <div class="col-lg-3 col-6 mb-4">
-                        <div class="card shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Consumption M<sup>3</sup></div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">60 m<sup>3</sup></div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="modal-body">
+                        <form name="formulaire" method="PUT" action="/paidfact">
+                            <input type="text" class="form-control" id="modalId" name="modalId" hidden>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">$</span></div>
+                                <input type="number" class="form-control" id="modalUnpaid" name="modalUnpaid" disabled>                  
+                            </div>                            
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">$</span></div>
+                                <input type="number" class="form-control" id="montant" name="montant" placeholder="Montant" required>                  
+                            </div>                            
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success validate">Paid</button>
+                        </form>
                     </div>
-                    <div class="col-lg-3 col-6 mb-4">
-                        <div class="card shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Amount paid</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6 mb-4">
-                        <div class="card shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            total amount</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">12000</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
                 </div>
             </div>
             
             
-
-            
 @stop
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>              
+<script>
+    $(document).on('click', '.btnapp', function() {
+        var id = $(this).attr('data-id');
+        var unpaid = $(this).attr('data-unpaid');
+        alert(unpaid);
+        document.getElementById("modalUnpaid").value = unpaid;
+        document.getElementById("modalId").value = id;
+        $('#alertM').modal('hide');
+        $('#exampleModal').modal('show');
+    });
+</script>
         

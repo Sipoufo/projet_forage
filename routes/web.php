@@ -48,6 +48,12 @@ Route::match(['get','put'],'/user/editProfile/update',[ManageClientController::c
 
 Route::get('/invoices_paid',[ManageClientController::class, 'invoicePaid'])->name('userEditProfile');
 
+Route::get('/unpaid_invoices',[ManageClientController::class, 'invoiceUnPaid'])->name('userEditProfile');
+
+Route::match(['get','put'],'/paidfact',[ManageClientController::class, 'paidFac']);
+
+Route::get('/budget',[ManageClientController::class, 'budget'])->name('budget');
+
 Route::get('/consumption', function() {
     return view('client/consumption');
 });
@@ -59,9 +65,9 @@ Route::get('/paidInvoice', function() {
 //[AuthController::class, 'login']
 Route::get('/allInvoice', 'App\Http\Controllers\UtilisateurController@allInvoicesOfClient');
 
-Route::get('/avanceInvoice', function() {
-    return view('client/consumption');
-});
+// Route::get('/avanceInvoice', function() {
+//     return view('client/consumption');
+// });
 /*
 Route::get('/consumption/monthly', function() {
     $data = "donné";
@@ -88,9 +94,9 @@ Route::get('/consumption/monthly', function() {
 //     return view('client/paidInvoices');
 // });
 
-Route::get('/unpaid_invoices', function() {
-    return view('client/unpaidInvoices');
-});
+// Route::get('/unpaid_invoices', function() {
+//     return view('client/unpaidInvoices');
+// });
 
 // Route::get('/user', function() {
 //     return view('client/user');

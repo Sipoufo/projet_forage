@@ -16,9 +16,9 @@
 
         <!-- Nav Item - consumption -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/consumption" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Consumption">
+            <a class="nav-link collapsed" href="/budget" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Consumption">
             <i class="fas fa-file-invoice-dollar"></i>
-            <span>Consumption</span>
+            <span>Buget</span>
             </a>
         </li>
 
