@@ -121,7 +121,7 @@ class ManageClientController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'http://localhost:4000/client/facture/getFactureWithMonth/true',
+        CURLOPT_URL => 'http://localhost:4000/client/facture/factureClientWithDate',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -136,10 +136,41 @@ class ManageClientController extends Controller
 
         $response = curl_exec($curl);
         $informations = json_decode($response, true);
-
+        $response = json_encode($informations['result']);
         curl_close($curl);
 
-        return view('Client/budget',['data' => $informations]);
+        return view('Client/budget',['data' => $response]);
+    }
+    
+    public function budget_detail(){
+
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://localhost:4000/client/facture',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization:'.$Authorization,
+        ),
+        ));
+
+        $response = curl_exec($curl);
+        $informations = json_decode($response, true);
+        curl_close($curl);
+
+        return view('Client/budget_detail',['data' => $informations]);
     }
     
     public function invoiceUnpaid(){

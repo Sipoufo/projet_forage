@@ -15,11 +15,18 @@
         <div class="sidebar-heading">Informations</div>
 
         <!-- Nav Item - consumption -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/budget" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Consumption">
-            <i class="fas fa-file-invoice-dollar"></i>
-            <span>Buget</span>
+        <li class="nav-item ">
+            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Buget</span>
             </a>
+            <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Buget</h6>
+                    <a class="collapse-item" href="/budget-stat" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">statistics</a>
+                    <a class="collapse-item" href="/budget-detail" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Detail</a>
+                </div>
+            </div>
         </li>
 
         <!-- Nav Item - Invoice -->

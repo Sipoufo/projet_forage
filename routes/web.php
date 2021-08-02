@@ -52,7 +52,9 @@ Route::get('/unpaid_invoices',[ManageClientController::class, 'invoiceUnPaid'])-
 
 Route::match(['get','put'],'/paidfact',[ManageClientController::class, 'paidFac']);
 
-Route::get('/budget',[ManageClientController::class, 'budget'])->name('budget');
+Route::get('/budget-stat',[ManageClientController::class, 'budget'])->name('budget-stat');
+
+Route::get('/budget-detail',[ManageClientController::class, 'budget_detail'])->name('budget-detail');
 
 Route::get('/consumption', function() {
     return view('client/consumption');
