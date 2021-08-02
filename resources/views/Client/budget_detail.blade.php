@@ -80,8 +80,42 @@
 @section('content')
 <div class="col-12 mt-5">
     <div class="card">
-        <div class="card-body">
-            <h4 class="header-title">Progress Table</h4>
+        <div class="card-body row">
+            <h4 class="header-title col-md-4 mt-4">Budget</h4>
+            <!-- Total invoice which didn't paid -->
+            <div class="col-md-4 offset-3">
+                <div class="card border-left-info shadow">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div
+                                    class="
+                                    text-xs
+                                    font-weight-bold
+                                    text-info text-uppercase
+                                    mb-1
+                                    "
+                                >
+                                    Total
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <?php
+                                        $lengthPaid = count($data['result']);
+                                        $count = 0;
+                                        for ($j=0; $j < $lengthPaid; $j++) { 
+                                            $count += $data['result'][$j]['montantVerse'];
+                                        }
+                                        echo $count;
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="single-table mt-4">
                 <div class="table-responsive">
                     <table class="table table-hover progress-table text-center">
