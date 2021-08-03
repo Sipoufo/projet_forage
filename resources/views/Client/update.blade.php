@@ -136,14 +136,14 @@
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="New password" id="password" name="password" value="{{ old('password') }}" required>                  
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="New password" id="password" name="password" value="{{ old('password') }}">                  
                     @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="{{ old('confirmpassword') }}"  required>                  
+                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="{{ old('confirmpassword') }}">                  
                     @error('confirmpassword')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

@@ -244,8 +244,8 @@ class ManageClientController extends Controller
             'name' =>  'bail|required',
             'email' => 'bail|required|email',
             'phone' => 'bail|required|digits:9',
-            'password' => 'bail|required|regex:/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,15}$/',
-            'confirmpassword' => 'bail|required|same:password',
+            'password' => 'nullable|regex:/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,15}$/',
+            'confirmpassword' => 'nullable|same:password',
             'photo' => 'bail|image|mimes:jpeg,jpg,png|max:5000',
             ],
 
@@ -281,8 +281,6 @@ class ManageClientController extends Controller
             $password = md5(sha1($request->input('password')));
             $home = $request->input('description');
             $identifier = $request->input('identifier');
-            $longitude = $request->input('lng');
-            $latitude = $request->input('lat');
             
 
             $url = "http://localhost:4000/client/auth/update";
@@ -302,8 +300,6 @@ class ManageClientController extends Controller
                 'email' => $email,
                 "profileImage" => $photoPath,
                 "description" => $home,
-                "longitude" => $longitude,
-                "latitude" => $latitude,
             );
             $data_json = json_encode($data);
 

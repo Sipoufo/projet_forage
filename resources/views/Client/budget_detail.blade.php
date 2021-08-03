@@ -137,8 +137,13 @@
                                 $lengthPaid = count($data['result']);
                                 for ($i=0; $i < $lengthPaid; $i++) {
                                     $EndTranche = count($data['result'][$i]['tranche']);
-                                    $tranche = $data['result'][$i]['tranche'][$EndTranche-1]['montant'];
-                                    $progression = 100/($data['result'][$i]['montantConsommation'] / $tranche);
+                                    if ($EndTranche == 0) {
+                                        $progression = 0; 
+                                    } else {
+                                        $tranche = $data['result'][$i]['tranche'][$EndTranche-1]['montant'];
+                                        $progression = 100/($data['result'][$i]['montantConsommation'] / $tranche);
+                                    }
+                                    
 
                             ?>
                                 <tr>
