@@ -1098,7 +1098,7 @@ class AdminController extends Controller{
             $idClient = $_POST['idClient'];
             $amountPaid = $_POST['amountPaid'];
             $oldIndex = $_POST['oldIndex'];
-            echo $idClient;
+            // echo $idClient;
 
             // je definie l'url de connexion.
             $url = "http://localhost:4000/admin/facture/".$idClient;

@@ -70,7 +70,7 @@ class UtilisateurController extends Controller
         $invoices = curl_exec($ch); 
 
         //Afficher le résultat
-        echo $invoices; 
+        // echo $invoices; 
         
         //Je ferme la connexion et je libere les ressources
         curl_close($ch);
@@ -80,7 +80,7 @@ class UtilisateurController extends Controller
 
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        echo 'HTTP code: ' . $httpcode;
+        // echo 'HTTP code: ' . $httpcode;
 
         //return view('admin/dashboard',['invoices' => $invoices]);
     }
