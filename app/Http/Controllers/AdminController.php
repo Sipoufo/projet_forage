@@ -710,7 +710,6 @@ class AdminController extends Controller{
             }
         
         }
-
         //dump($client);
         curl_close($url);
         return view('admin/consumption',['invoices' => $invoices, 'client' => $client]);
@@ -851,7 +850,7 @@ class AdminController extends Controller{
         }
 
         if (gettype($invoicesAdvenced) != "array") {
-        //    echo "je t'aime";
+            echo "je t'aime";
             $invoicesAdvenced = array();
         }
 
@@ -913,7 +912,7 @@ class AdminController extends Controller{
     {
         echo " v ".$invoice_id;
         // je definie l'url de connexion.
-        $url = "http://localhost:4000/admin/facture/statusPaidFacture/".$invoice_id;
+/*        $url = "http://localhost:4000/admin/facture/statusPaidFacture/".$invoice_id;
         // je definie la donnée de ma facture.
         $facture = array(
             'status' => true
@@ -941,7 +940,7 @@ class AdminController extends Controller{
             on renseignement l'option "CURLOPT_HEADER" avec "true" comme valeur
             pour inclure l'en-tête dans la réponse
         */
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+/*        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
 
         //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
         curl_setopt($ch, CURLOPT_PUT, 1);
@@ -954,7 +953,7 @@ class AdminController extends Controller{
         var_dump($response);
         curl_close($ch);
 
-        echo "ok";
+        echo "ok";*/
     }
 
     //finish to paid invoice
@@ -1185,5 +1184,26 @@ class AdminController extends Controller{
 
             return view('admin/facture',['users' => $users,'messageOK' => $messageOK,'messageErr' => $messageErr]);
         }
+    }
+
+    //Paginator
+
+    public function index()
+    {
+        $posts = $this->postRepository->getActiveOrderByDate($this->nbrPages);
+        return view('admin/consumption', compact('posts'));
+    }
+
+    protected function queryActiveOrderByDate()
+    {
+        return $this->model
+            ->select('id', 'title', 'slug', 'excerpt', 'image')
+            ->whereActive(true)
+            ->latest();
+    }
+
+    public function getActiveOrderByDate($nbrPages)
+    {
+        return $this->queryActiveOrderByDate()->paginate($nbrPages);
     }
 }
