@@ -132,7 +132,7 @@ class HomeController extends Controller
         $curl = curl_init();
         
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://localhost:4000/admin/facture',
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/2021/08/20/1',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

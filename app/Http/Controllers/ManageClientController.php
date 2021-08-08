@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
 
+use PDF;
+
 class ManageClientController extends Controller
 {
     // Dashboard of user
@@ -333,6 +335,139 @@ class ManageClientController extends Controller
             }
         }
         
+    }
+
+    public function print($invoice_id){
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/one/'.$invoice_id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $invoice = json_decode($response, true);
+
+        $curl2 = curl_init();
+        curl_setopt_array($curl2, array(
+            CURLOPT_URL => 'http://localhost:4000/client/auth/'.$invoice['result']['idClient'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        $response2 = curl_exec($curl2);
+        curl_close($curl2);
+        $client = json_decode($response2, true);
+        
+        print_r($client);
+        $curl3 = curl_init();
+        curl_setopt_array($curl3, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/auth/'.$invoice['result']['idAdmin'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        $response3 = curl_exec($curl3);
+        curl_close($curl3);
+        $admin = json_decode($response3, true);
+        // return view('facturePdf/generator',['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
+        // echo($admin['result']['phone']);
+        
+        $pdf = PDF::loadView('facturePdf/generator', ['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
+        
+        return $pdf->download('facture-'. $client['result']['name'].'-'.date('F').'.pdf');
+        // return view('facturePdf/generator',['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
+    }
+    
+    public function overview($invoice_id){
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/one/'.$invoice_id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $invoice = json_decode($response, true);
+
+        $curl2 = curl_init();
+        curl_setopt_array($curl2, array(
+            CURLOPT_URL => 'http://localhost:4000/client/auth/'.$invoice['result']['idClient'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        $response2 = curl_exec($curl2);
+        curl_close($curl2);
+        $client = json_decode($response2, true);
+        
+        // print_r($client);
+        $curl3 = curl_init();
+        curl_setopt_array($curl3, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/auth/'.$invoice['result']['idAdmin'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        $response3 = curl_exec($curl3);
+        curl_close($curl3);
+        $admin = json_decode($response3, true);
+        // echo($admin['result']['phone']);
+        
+        // $pdf = PDF::loadView('facturePdf/generator', ['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
+        
+        // return $pdf->download('facture-'. $client['result']['name'].'-'.date('F').'.pdf');
+        return view('Client/getFacture',['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
     }
     
     public function paidFac(Request $request){
