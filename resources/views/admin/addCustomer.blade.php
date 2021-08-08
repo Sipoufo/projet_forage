@@ -105,11 +105,11 @@
             </a>
         </li>
 
-        <!-- Nav Item - profile -->
+        <!-- Nav Item - Finances -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/profile">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
+            <a class="nav-link collapsed" href="/admin/finances">
+            <i class="fas fa-wallet"></i>
+            <span>Finances</span>
             </a>
         </li>
 

@@ -81,6 +81,14 @@
             </div>
         </li>
 
+        <!-- Nav Item - Clauses -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/map">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Map</span>
+            </a>
+        </li>
+
         <!-- Nav Item - Payment -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/admin/clauses">
@@ -94,6 +102,14 @@
             <a class="nav-link collapsed" href="/admin/profile">
             <i class="fas fa-user"></i>
             <span>Profile</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Finances -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/finances">
+            <i class="fas fa-wallet"></i>
+            <span>Finances</span>
             </a>
         </li>
 

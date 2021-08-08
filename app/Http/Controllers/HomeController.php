@@ -162,6 +162,8 @@ class HomeController extends Controller
 
 		//dump($bill);
 		
+    	// return view('admin/dashboard',['invoices' => $invoicesAdvenced]);
+
 		foreach($bill as $value){
             if($i >= 1){
                 //echo $value;

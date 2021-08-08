@@ -289,7 +289,7 @@ class AdminController extends Controller{
         $response = json_decode($response);
         
         if ($response->status == 200){
-            Session::flash('message', 'Action Successfully done!');
+            Session::flash('message', ucfirst($response->error));
             Session::flash('alert-class', 'alert-success');
             return redirect()->back();
         }else{
@@ -1019,7 +1019,7 @@ class AdminController extends Controller{
     {
         echo " v ".$invoice_id;
         // je definie l'url de connexion.
-/*        $url = "http://localhost:4000/admin/facture/statusPaidFacture/".$invoice_id;
+    /*        $url = "http://localhost:4000/admin/facture/statusPaidFacture/".$invoice_id;
         // je definie la donnée de ma facture.
         $facture = array(
             'status' => true
@@ -1047,7 +1047,7 @@ class AdminController extends Controller{
             on renseignement l'option "CURLOPT_HEADER" avec "true" comme valeur
             pour inclure l'en-tête dans la réponse
         */
-/*        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+    /*        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
 
         //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
         curl_setopt($ch, CURLOPT_PUT, 1);
@@ -1293,8 +1293,254 @@ class AdminController extends Controller{
         }
     }
 
-    //Paginator
+    public function finance(){
 
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $url = "http://localhost:4000/admin/facture";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($response,true);
+        $factures = $response['result'];
+
+
+        $url1 = "http://localhost:4000/stock/getAll";
+        $data1 = array(
+            'page' => 1,
+            'limit' => 0,
+        );
+        $data_json1 = json_encode($data1);
+        $ch1 = curl_init();
+        curl_setopt($ch1, CURLOPT_URL, $url1);
+        curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch1, CURLOPT_POST, 1);
+        curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
+        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+        $response1  = curl_exec($ch1);
+        curl_close($ch1); 
+        $response1 = json_decode($response1,true);
+        $data1= $response1['result']['docs'];
+
+
+        $url2 = "http://localhost:4000/admin/facture/factureByYear/".date('Y');    
+        $ch2 = curl_init();
+        curl_setopt($ch2, CURLOPT_URL, $url2);
+        curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+        $response2  = curl_exec($ch2);
+        curl_close($ch2); 
+        $response2 = json_decode($response2,true);
+        $data2= $response2['result'];
+
+        $url3 = "http://localhost:4000/stock/getInputMaterialByYear/".date('Y');    
+        $ch3 = curl_init();
+        curl_setopt($ch3, CURLOPT_URL, $url3);
+        curl_setopt($ch3, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch3, CURLOPT_RETURNTRANSFER, true);
+        $response3  = curl_exec($ch3);
+        curl_close($ch3); 
+        $response3 = json_decode($response3,true);
+        $data3= $response3['result'];
+
+        return view('admin/finances',['factures' => $factures,'materials' => $data1, 'yearBills'=>$data2, 'materialsYear' => $data3]);
+    }
+
+    public function financeYear(Request $request){
+
+        $year = $request->input('year');
+
+        if(!(empty($year))){
+            $year = $request->input('year');
+        }else{
+            $year = date('Y');
+        }
+
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $url = "http://localhost:4000/admin/facture";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($response,true);
+        $factures = $response['result'];
+
+
+        $url1 = "http://localhost:4000/stock/getAll";
+        $data1 = array(
+            'page' => 1,
+            'limit' => 0,
+        );
+        $data_json1 = json_encode($data1);
+        
+        $ch1 = curl_init();
+        curl_setopt($ch1, CURLOPT_URL, $url1);
+        curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch1, CURLOPT_POST, 1);
+        curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
+        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+        $response1  = curl_exec($ch1);
+        curl_close($ch1); 
+        $response1 = json_decode($response1,true);
+        $data1= $response1['result']['docs'];
+
+
+        $url2 = "http://localhost:4000/admin/facture/factureByYear/".$year; 
+        $ch2 = curl_init();
+        curl_setopt($ch2, CURLOPT_URL, $url2);
+        curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+        $response2  = curl_exec($ch2);
+        curl_close($ch2); 
+        $response2 = json_decode($response2,true);
+        $data2= $response2['result'];
+
+        $url3 = "http://localhost:4000/stock/getInputMaterialByYear/".$year;    
+        $ch3 = curl_init();
+        curl_setopt($ch3, CURLOPT_URL, $url3);
+        curl_setopt($ch3, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch3, CURLOPT_RETURNTRANSFER, true);
+        $response3  = curl_exec($ch3);
+        curl_close($ch3); 
+        $response3 = json_decode($response3,true);
+        $data3= $response3['result'];
+
+        return view('admin/finances',['factures' => $factures,'materials' => $data1, 'reqYearBills'=>$data2, 'reqYearMaterials' => $data3, 'year' => $year]);
+    }
+
+
+    public function financeDetails(){
+
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $url = "http://localhost:4000/admin/auth/getClient";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($response,true);
+        $customers = $response['result'];
+
+        $url1 = "http://localhost:4000/stock/getAll";
+        $data1 = array(
+            'page' => 1,
+            'limit' => 0,
+        );
+        $data_json1 = json_encode($data1);
+        
+        $ch1 = curl_init();
+        curl_setopt($ch1, CURLOPT_URL, $url1);
+        curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch1, CURLOPT_POST, 1);
+        curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
+        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+        $response1  = curl_exec($ch1);
+        curl_close($ch1); 
+        $response1 = json_decode($response1,true);
+        $data1= $response1['result']['docs'];
+
+        return view('admin/finances_details',['customers' => $customers,'materials'=> $data1]);
+    }
+
+    public function customerDetails($id){
+
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $url = "http://localhost:4000/admin/facture/clientFactureByYear/".date('Y')."/".$id;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($response,true);
+        $factures = $response['result'];
+
+
+        $url1 = "http://localhost:4000/client/auth/".$id;
+        $ch1 = curl_init();
+        curl_setopt($ch1, CURLOPT_URL, $url1);
+        curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+        $response1 = curl_exec($ch1);
+        curl_close($ch1);
+        $response1 = json_decode($response1,true);
+        $userdata = $response1['result'];
+
+        return view('admin/finances_details_customer',['factures' => $factures,'userdata' => $userdata]);
+    }
+
+    public function customerDetailsYear($id, Request $request){
+
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $year = $request->input('year');
+
+        if(!(empty($year))){
+            $year = $request->input('year');
+        }else{
+            $year = date('Y');
+        }
+
+        $url = "http://localhost:4000/admin/facture/clientFactureByYear/".$year."/".$id;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($response,true);
+        $factures = $response['result'];
+
+
+        $url1 = "http://localhost:4000/client/auth/".$id;
+        $ch1 = curl_init();
+        curl_setopt($ch1, CURLOPT_URL, $url1);
+        curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+        $response1 = curl_exec($ch1);
+        curl_close($ch1);
+        $response1 = json_decode($response1,true);
+        $userdata = $response1['result'];
+
+        return view('admin/finances_details_customer',['facturesYear' => $factures,'userdata' => $userdata, 'year' => $year]);
+
+    }
+    //Paginator
+    
     public function index()
     {
         $posts = $this->postRepository->getActiveOrderByDate($this->nbrPages);
