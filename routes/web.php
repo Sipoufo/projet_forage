@@ -202,3 +202,13 @@ Route::get('/admin/map', function() {
 Route::match(['get','put'],'/admin/customer/delete/{id}',[ManageAdminController::class, 'deleteCustomer'])->name('deleteCustomer');
 
 Route::match(['get','put'],'/admin/administrator/delete/{id}',[ManageAdminController::class, 'deleteAdmin'])->name('deleteAdmin');
+
+Route::get('/admin/finances',[AdminController::class, 'finance'])->name('seeFinances');
+
+Route::post('/admin/finances',[AdminController::class, 'financeYear'])->name('seeFinancesYear');
+
+Route::get('/admin/finances/details',[AdminController::class, 'financeDetails'])->name('financeDetails');
+
+Route::get('/admin/finances/details/customer/{id}',[AdminController::class, 'customerDetails'])->name('customerDetails');
+
+Route::post('/admin/finances/details/customer/{id}',[AdminController::class, 'customerDetailsYear'])->name('customerDetailsYear');

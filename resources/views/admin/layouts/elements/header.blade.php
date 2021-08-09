@@ -20,6 +20,10 @@
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <script src="/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="{{asset('js/chart.js/Chart.min.js')}}"></script>
+
 </head>
 <body id="page-top">
 
@@ -227,7 +231,7 @@
                             <div class="dropdown-list-image mr-3">
                             <img
                                 class="rounded-circle"
-                                src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
+                                src="/img/undraw_profile_1.svg"
                                 alt="..."
                             />
                             <div class="status-indicator bg-success"></div>

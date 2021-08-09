@@ -119,6 +119,14 @@
             </a>
         </li>
 
+        <!-- Nav Item - Finances -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/finances">
+            <i class="fas fa-wallet"></i>
+            <span>Finances</span>
+            </a>
+        </li>
+
         <!-- Nav Item - Log out -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/logout">

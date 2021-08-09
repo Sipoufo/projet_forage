@@ -166,7 +166,6 @@ class HomeController extends Controller
 			$invoicesAdvenced = array();
 		}
 		
-		dump($invoicesAdvenced);
     	return view('admin/dashboard',['invoices' => $invoicesAdvenced]);
     }
 
