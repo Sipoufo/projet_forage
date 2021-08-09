@@ -335,16 +335,16 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
           <tr>
             <th>Name</th>
             <th style="text-align: center">Consumption</th>
-            <th style="text-align: center">amount</th>
+            <th style="text-align: center">UnPaid</th>
             <th style="text-align: right"></th>
           </tr>
           </thead>
 
           <tbody>
             @foreach($invoices as $invoice)
-              {{-- <tr *ngFor="let classe of classes">
+              <tr>
                 <td>{{$client[$loop ->index]->name}}</td>
-                <td style="text-align: center">{{$invoice -> consommation}}</td>
+                <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
                 <td style="text-align: center">{{$invoice -> montantImpaye}}FCFA</td>
                 <td style="text-align: right">
                   <i
@@ -352,7 +352,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
                     style="font-size: 30px; color: red"
                   ></i>
                 </td>
-              </tr> --}}
+              </tr>
             @endforeach
           </tbody>
         </table>

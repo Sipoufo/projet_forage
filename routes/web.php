@@ -56,6 +56,10 @@ Route::get('/budget-stat',[ManageClientController::class, 'budget'])->name('budg
 
 Route::get('/budget-detail',[ManageClientController::class, 'budget_detail'])->name('budget-detail');
 
+Route::get('/user/print/{invoice_id}',[ManageClientController::class, 'print']);
+
+Route::get('/user/get/{invoice_id}',[ManageClientController::class, 'overview']);
+
 Route::get('/consumption', function() {
     return view('client/consumption');
 });
@@ -162,6 +166,7 @@ Route::post('/admin/products_types/create',[AdminController::class, 'createType'
 
 Route::match(['get','delete'],'/admin/products_types/delete/{id}',[AdminController::class, 'deleteType'])->name('deleteType');
 
+Route::get('/admin/print/{invoice_id}',[AdminController::class, 'print']);
 
 // Route::delete('/admin/remove',[AdminController::class, 'deleteProduct'])->name('adminDelete');
 

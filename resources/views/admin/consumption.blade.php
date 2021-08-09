@@ -133,87 +133,81 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Consumption</h1>
-        <div class="font-weight-bold text-primary text-right">
-            <i class="fas fa-angle-left" style="cursor: pointer;"></i>
-            <span class="h6 font-weight-bold text-primary text-uppercase mr-2 ml-2">
-                January
-            </span>
-            <i class="fas fa-angle-right" style="cursor: pointer;"></i>
-        </div>  
+        <h1 class="h3 mb-0 text-gray-800">Consumption</h1> 
     </div>
 
+    <div class="flex d-flex justify-content-between mb-1">
+        <!-- Detail Part -->
+        <div class="flex d-flex align-items-center">
+            Show 
+            <select class="form-control" style="width: 70px;">
+              <option>5</option>
+              <option>10</option>
+              <option>15</option>
+              <option>20</option>
+            </select>
+            entries
+        </div>
+        <!--<div class="flex d-flex align-items-center">
+            search <input class="form-control" />
+        </div>-->
+    </div>
     <div class="row">
         <!-- Detail Part -->
         <div class="col-lg-12">
-            @foreach($invoices as $invoice)
-                <div class="card shadow mb-4">
-                    <!-- Title  {{$loop ->index  }}-->
-                    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
-                        role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                        <h6 class="m-0 font-weight-bold text-primary">{{$client[$loop ->index]->name}}</h6> 
-                    </a>
-                    <!-- Corps -->
-                    <div class="collapse show container-fluid row" id="collapseCardExample">
-                        <!-- Month -->
-                        <div class="col-md-4 card-body">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Month</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$invoice -> montantConsommation}}Fcfa</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-info pull-right">Detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Year -->
-                        <div class="col-md-4 card-body">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Montant Payé</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$invoice -> montantVerse}}Fcfa</div>
-                                        </div>
-                                        <div class="col-auto">
-                                        <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-info pull-right">Detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        
-                        <!-- Year -->
-                        <div class="col-md-4 card-body">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Montant Restant</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$invoice -> montantImpaye}}Fcfa</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-info pull-right">Detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Facture</h6>
                 </div>
-            @endforeach
+                <div class="card-body container-fluid">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                    <thead class="thead thead-danger">
+                    <tr>
+                        <th>Name</th>
+                        <th style="text-align: center">Consumption</th>
+                        <th style="text-align: center">Amount</th>
+                        <th style="text-align: center">UnPaid</th>
+                        <th style="text-align: center">Pénalité</th>
+                        <th style="text-align: center">Date Paiement</th>
+                        <th style="text-align: right">Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach($invoices as $invoice)
+                        <tr>
+                            <td>{{$client[$loop ->index]->name}}</td>
+                            <td style="text-align: center">{{$invoice -> consommation}} m<sup>3</sup></td>
+                            <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
+                            <td style="text-align: center">{{$invoice -> montantImpaye}} FCFA</td>
+                            <td style="text-align: center">{{$invoice -> penalite}} FCFA</td>
+                            <td style="text-align: center">{{$invoice -> dateFacturation}}</td>
+                            <td style="text-align: right">
+                                <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-primary pull-right">
+                                    <i class="fa fa-pencil-alt" style="font-size: 20px;">
+                                    </i> 
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
         </div>
-
     </div>
-
+    <div class="flex d-flex justify-content-end mb-1">
+        <!-- Detail Part -->
+        <button class="flex d-flex align-items-center">
+            Preview 
+        </button>
+        <button class="ml-1">
+            1 
+        </button>
+        <button class="ml-1">
+            Next 
+        </button>
+    </div>
 @stop

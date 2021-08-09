@@ -249,6 +249,7 @@
                             <button class="btn btn-primary" name="connect" type="submit">Update</button>
                         @endif
                         <a href="/admin/home">
+                            <a class="ml-2 btn btn-primary" type="button" href="{{ url('/admin/print/'.$invoice->_id) }}">Print to pdf</a>
                             <button class="btn btn-secondary ml-2" type="button">Cancel</button>
                         </a>
                     </div>

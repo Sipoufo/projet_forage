@@ -90,11 +90,17 @@
             ?>
                 <div class="card mb-4 containter-fluid">
                     <div class="card-header row">
-                        <div class="col-md-12 col-lg-12">
+                        <div class="ccol-md-6 col-lg-6">
                             <?php
                                 $datesb = $data['result'][$i]['facture']['createdAt'];
                                 echo (substr($datesb, 0, 10));
                             ?>
+                        </div>
+                        <div class="col-md-2 col-lg-2 offset-md-2">
+                            <a href="/user/get/<?php echo $data['result'][$i]['facture']['_id'] ?>" class="btn btn-primary btnapp">Overview</a>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <a href="/user/print/<?php echo $data['result'][$i]['facture']['_id'] ?>" class="btn btn-success btnapp">Print to pdf</a>
                         </div>
                     </div>
                     <div class="card-body row">

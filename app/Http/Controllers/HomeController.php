@@ -120,9 +120,9 @@ class HomeController extends Controller
  //    	return view('client/dashboard');
  //    }
 
-    public function adminHome(){
-
-		$alltoken = $_COOKIE['token'];
+    public function adminHome()
+	{
+        $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
         $tokentab = explode('=',$token);
@@ -132,7 +132,7 @@ class HomeController extends Controller
         $curl = curl_init();
         
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://localhost:4000/admin/facture/getFactureAd',
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/2021/08/20/1',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -148,26 +148,77 @@ class HomeController extends Controller
         $response = json_decode($response);
     
         $i=0;
-        $invoicesAdvenced = array();
-
+        $invoices = array();
+		$bill = array();
         foreach($response as $key => $value){
             if($i >= 1){
                 //echo $value;
-				array_push($invoicesAdvenced,$value);
-                //$invoicesAdvenced = $value;
+				$bill = $value;
                 //dump($value);
             }
             $i = $i + 1;
             //dump($key);
         }
 
-		if (gettype($invoicesAdvenced) != "array") {
-		//    echo "je t'aime";
-			$invoicesAdvenced = array();
-		}
+		//dump($bill);
 		
-    	return view('admin/dashboard',['invoices' => $invoicesAdvenced]);
-    }
+    	// return view('admin/dashboard',['invoices' => $invoicesAdvenced]);
 
+		foreach($bill as $value){
+            if($i >= 1){
+                //echo $value;
+				if (($value -> montantImpaye != 0) && ($value -> montantImpaye > 0)) {
+					array_push($invoices,$value);
+				}
+                //dump($invoices);
+            }
+            $i = $i + 1;
+            //dump($key);
+        }
+
+        //dump($invoices);
+
+        $client = array();
+
+        foreach($invoices as $invoice){
+
+            $idClient = $invoice -> idClient;
+            //echo $idClient;
+            $url = curl_init();
+            curl_setopt_array($url, array(
+                CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+            
+            $response = curl_exec($url);
+            $response = json_decode($response);
+        
+            $i=0;
+
+            foreach($response as $key => $value){
+                if($i >= 1){
+                    //echo $value;
+                    //$client = $value;
+                    array_push($client,$value);
+                    //dump($value);
+                }
+                $i = $i + 1;
+                //dump($key);
+            }
+        
+        }
+
+        //dump($client);
+        //curl_close($url);
+        return view('admin/dashboard',['invoices' => $invoices, 'client' => $client]);
+        //return view('admin/facture',['invoices' => $invoices]);
+    }
     
 }

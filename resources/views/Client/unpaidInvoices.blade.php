@@ -118,7 +118,10 @@
                                 echo (substr($datesb, 0, 10));
                             ?>
                         </div>
-                        <div class="col-md-2 col-lg-2 offset-md-4">
+                        <div class="col-md-2 col-lg-2 offset-md-2">
+                            <a href="/user/get/<?php echo $data['result'][$i]['facture']['_id'] ?>" class="btn btn-primary">Overview</a>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
                             <a href="javascript:;" class="btn btn-success btnapp" data-unpaid="<?= $data['result'][$i]['facture']['montantImpaye'] ?>" data-id="<?= $data['result'][$i]['facture']['_id'] ?>">Paid/Advance</a>
                         </div>
                     </div>
