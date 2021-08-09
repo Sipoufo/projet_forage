@@ -70,11 +70,11 @@
             </div>
         </li>
 
-        <!-- Nav Item - Notification -->
+        <!-- Nav Item - Payment -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/chat">
-            <i class="fas fa-file-archive"></i>
-            <span>Notification</span>
+            <a class="nav-link collapsed" href="/admin/map">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Map</span>
             </a>
         </li>
 

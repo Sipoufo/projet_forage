@@ -63,15 +63,6 @@
             </div>
             </div>
         </li>
-
-        <!-- Nav Item - Notification -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/chat">
-            <i class="fas fa-file-archive"></i>
-            <span>Notification</span>
-            </a>
-        </li>
-
         <!-- Nav Item - Stock -->
         <li class="nav-item active">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
