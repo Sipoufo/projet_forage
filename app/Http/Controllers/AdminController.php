@@ -1421,7 +1421,27 @@ class AdminController extends Controller{
         $response3 = json_decode($response3,true);
         $data3= $response3['result'];
 
-        return view('admin/finances',['factures' => $factures,'materials' => $data1, 'reqYearBills'=>$data2, 'reqYearMaterials' => $data3, 'year' => $year]);
+        $url4 = "http://localhost:4000/admin/facture/factureByYear/".date('Y');    
+        $ch4 = curl_init();
+        curl_setopt($ch4, CURLOPT_URL, $url4);
+        curl_setopt($ch4, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch4, CURLOPT_RETURNTRANSFER, true);
+        $response4  = curl_exec($ch4);
+        curl_close($ch4); 
+        $response4 = json_decode($response4,true);
+        $data4= $response4['result'];
+
+        $url5 = "http://localhost:4000/stock/getInputMaterialByYear/".date('Y');    
+        $ch5 = curl_init();
+        curl_setopt($ch5, CURLOPT_URL, $url5);
+        curl_setopt($ch5, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch5, CURLOPT_RETURNTRANSFER, true);
+        $response5  = curl_exec($ch5);
+        curl_close($ch5); 
+        $response5 = json_decode($response5,true);
+        $data5= $response5['result'];
+
+        return view('admin/finances',['factures' => $factures,'materials' => $data1, 'reqYearBills'=>$data2, 'reqYearMaterials' => $data3, 'yearBills'=>$data4, 'materialsYear' => $data5, 'year' => $year]);
     }
 
 

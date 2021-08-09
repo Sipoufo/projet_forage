@@ -151,11 +151,6 @@
       <!-- Card Body -->
       <div class="card-body">
       
-      <?php 
-
-        foreach($customers as $cust) {
-
-      ?>
         <div class="single-table mt-4">
             <div class="table-responsive">
                 <table class="table table-hover progress-table text-center">
@@ -169,7 +164,11 @@
                         </tr>
                     </thead>
                     <tbody>
-      
+                            <?php 
+                                if($customers){
+                                      foreach($customers as $cust) {
+
+                            ?>
                             <tr>
                                 <td><?= $cust['name']?></td>
                                 <td><?= $cust['localisation']['description']?></td>
@@ -179,14 +178,15 @@
                                     <a href="/admin/finances/details/customer/<?=$cust['_id']?>" class="btn btn-outline-info" data-target="_self" data-bs-toggle="tooltip" data-bs-placement="bottom" title="See Details"><i class="fas fa-chart-area"></i></a>
                                 </td>
                             </tr>
-                  
+                            
+                                <?php 
+                                        } 
+                                    }
+                                ?>
                     </tbody>
                 </table>
             </div>
         </div>
-
-        <?php } ?>
-
 
       </div>
     </div>
@@ -221,8 +221,10 @@
                         <tr>
                             <?php
                                 $total = 0;
-                                foreach($materials as $mat){
-                                    $total += $mat['input'][0]['quantity']*$mat['input'][0]['prixUnit'] ;
+                                if($materials){
+                                    foreach($materials as $mat){
+                                        $total += $mat['input'][0]['quantity']*$mat['input'][0]['prixUnit'] ;
+                                    }
                                 }
                             ?>
                             <th class="text-center" colspan= "4">Total : <?= $total ?></th>
@@ -230,7 +232,8 @@
                     </tfoot>
                     <tbody>
                             <?php
-                                foreach($materials as $mat){
+                                if($materials){
+                                    foreach($materials as $mat){
                             ?>
                         <tr>
                             <td><?= $mat['name']?></td>
@@ -239,7 +242,9 @@
                             <td><?= $mat['input'][0]['quantity']*$mat['input'][0]['prixUnit']?></td>
                         </tr>
 
-                            <?php } ?>
+                            <?php   } 
+                                }
+                            ?>
                     </tbody>
                 </table>
             </div>
@@ -274,14 +279,19 @@ labels: [
     <?php
         $inputQuantity = 0;
         $leftQuantity = 0;
-        foreach($materials as $mat){
-            $inputQuantity += $mat['input'][0]['quantity'];
-            $leftQuantity += $mat['quantity'];
+        if($materials){
+
+           foreach($materials as $mat){
+             $inputQuantity += $mat['input'][0]['quantity'];
+             $leftQuantity += $mat['quantity'];
+           }
+
+           $left = number_format(($leftQuantity / $inputQuantity)*100, 2) ;
+           $used = 100 - $left;
+           echo '"'.$used.' %Used",';
+           echo '"'.$left.' %Left"';
         }
-        $left = ($leftQuantity / $inputQuantity)*100;
-        $used = 100 - $left;
-        echo '"'.$used.' %Used",';
-        echo '"'.$left.' %Left"';
+        
     ?>
 ],
 datasets: [{
@@ -289,14 +299,18 @@ data: [
     <?php
         $inputQuantity = 0;
         $leftQuantity = 0;
-        foreach($materials as $mat){
+        if($materials){
+
+           foreach($materials as $mat){
             $inputQuantity += $mat['input'][0]['quantity'];
             $leftQuantity += $mat['quantity'];
+           } 
+
+           $left = number_format(($leftQuantity / $inputQuantity)*100, 2) ;
+           $used = 100 - $left;
+           echo '"'.$used.'",';
+           echo '"'.$left.'"';
         }
-        $left = ($leftQuantity / $inputQuantity)*100;
-        $used = 100 - $left;
-        echo '"'.$used.'",';
-        echo '"'.$left.'"';
     ?>
 ],
 backgroundColor: ["#46BFBD", "#FDB45C"],
