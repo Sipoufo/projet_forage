@@ -426,7 +426,6 @@ class AdminController extends Controller{
         return view('admin/stock',['materials' => $data, 'types' => $types]);
     }
 
-
     public function updateProduct(Request $request){
 
         $validator = Validator::make($request->all(), [
@@ -687,11 +686,8 @@ class AdminController extends Controller{
         $curl = curl_init();
         
         curl_setopt_array($curl, array(
-<<<<<<< HEAD
             CURLOPT_URL => 'http://localhost:4000/admin/facture/factureByYear/'.$year,
-=======
-            CURLOPT_URL => 'http://localhost:4000/admin/facture/2021/08/20/1',
->>>>>>> 014df9bcf3da5b0c579b95663ac29d1c7bc48d85
+
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -1025,7 +1021,6 @@ class AdminController extends Controller{
         
         $curl = curl_init();
         
-<<<<<<< HEAD
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/factureByYear/'.$year,
             CURLOPT_RETURNTRANSFER => true,
@@ -1111,13 +1106,7 @@ class AdminController extends Controller{
         
         }
         return view('admin/consumption',['invoices' => $invoicesWithPaginator, 'client' => $client, 'page' => $page, 'size' => $size]);
-=======
-            //dump($client);
-            curl_close($url);
-        }
-        return view('admin/consumption',['invoices' => $invoices, 'client' => $client]);
-        //return view('admin/facture',['invoices' => $invoices]);
->>>>>>> 014df9bcf3da5b0c579b95663ac29d1c7bc48d85
+
     }
 
     public function print($invoice_id){
@@ -1482,23 +1471,10 @@ class AdminController extends Controller{
     //finish to paid invoice
     public function finishToPaidInvoice()
     {
-<<<<<<< HEAD
         if (isset($_POST['connect'])) {
             $amount = $_POST['amount'];
             $invoice_id = $_POST['idInvoice'];
             //echo "amount ".$amount." id ".$invoice_id;
-=======
-        echo " v ".$invoice_id;
-        // je definie l'url de connexion.
-    /*        $url = "http://localhost:4000/admin/facture/statusPaidFacture/".$invoice_id;
-        // je definie la donnée de ma facture.
-        $facture = array(
-            'status' => true
-        );
-        
-        // j'encode cette donnée là'.
-        $data_json = json_encode($facture);
->>>>>>> 014df9bcf3da5b0c579b95663ac29d1c7bc48d85
 
             $url = "http://localhost:4000/admin/facture/statusPaidFacture/".$invoice_id;
             $alltoken = $_COOKIE['token'];
@@ -1513,9 +1489,6 @@ class AdminController extends Controller{
             );
 
             $data_json = json_encode($facture);
-
-<<<<<<< HEAD
-            // print_r($data_json);
             
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -1525,13 +1498,6 @@ class AdminController extends Controller{
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
             curl_close($ch); 
-=======
-        /*
-            on renseignement l'option "CURLOPT_HEADER" avec "true" comme valeur
-            pour inclure l'en-tête dans la réponse
-        */
-    /*        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
->>>>>>> 014df9bcf3da5b0c579b95663ac29d1c7bc48d85
 
             $messageErr = null;
             $messageOK = null;
@@ -1626,9 +1592,10 @@ class AdminController extends Controller{
                     'messageErr' => $messageErr,
                 ]
             );
+    
+    
         }
     }
-
     //finish to paid invoice
     public function updateInvoice($invoice_id)
     {
@@ -1859,8 +1826,6 @@ class AdminController extends Controller{
         }
     }
 
-<<<<<<< HEAD
-=======
     public function finance(){
 
         $alltoken = $_COOKIE['token'];
@@ -2012,7 +1977,6 @@ class AdminController extends Controller{
         return view('admin/finances',['factures' => $factures,'materials' => $data1, 'reqYearBills'=>$data2, 'reqYearMaterials' => $data3, 'yearBills'=>$data4, 'materialsYear' => $data5, 'year' => $year]);
     }
 
-
     public function financeDetails(){
 
         $alltoken = $_COOKIE['token'];
@@ -2127,25 +2091,4 @@ class AdminController extends Controller{
         return view('admin/finances_details_customer',['facturesYear' => $factures,'userdata' => $userdata, 'year' => $year]);
 
     }
-    //Paginator
-    
-    public function index()
-    {
-        $posts = $this->postRepository->getActiveOrderByDate($this->nbrPages);
-        return view('admin/consumption', compact('posts'));
-    }
-
-    protected function queryActiveOrderByDate()
-    {
-        return $this->model
-            ->select('id', 'title', 'slug', 'excerpt', 'image')
-            ->whereActive(true)
-            ->latest();
-    }
-
-    public function getActiveOrderByDate($nbrPages)
-    {
-        return $this->queryActiveOrderByDate()->paginate($nbrPages);
-    }
->>>>>>> 014df9bcf3da5b0c579b95663ac29d1c7bc48d85
 }

@@ -115,13 +115,6 @@ class HomeController extends Controller
 	public function reset(){
 		//
 	}
-<<<<<<< HEAD
- 
-=======
-
-	// public function clientHome(){
- //    	return view('client/dashboard');
- //    }
 
     public function adminHome()
 	{
@@ -224,5 +217,4 @@ class HomeController extends Controller
         //return view('admin/facture',['invoices' => $invoices]);
     }
     
->>>>>>> 014df9bcf3da5b0c579b95663ac29d1c7bc48d85
 }
