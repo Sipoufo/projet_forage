@@ -132,8 +132,9 @@
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                     </div>
             <?php } ?>
-            
-            <form method="post" action="/admin/facture/{{$invoice->_id}}" class="col-lg-8 offset-lg-2">
+
+            @if($show == false)
+            <form method="post" id="detailInvoice" action="/admin/facture/{{$invoice->_id}}" class="col-lg-8 offset-lg-2">
                 {{csrf_field()}}
                 <div class="form-group mb-3">
                     <div class="input-group">Personnel</div>
@@ -175,7 +176,7 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">date Facturation</div>
-                            <input type="date" disabled class="form-control" placeholder="new index" id="newIndex" name="newIndex" value="<?= $invoice  -> dateFacturation?>" required>                  
+                            <input type="text" disabled class="form-control" placeholder="new index" id="newIndex" name="newIndex" value="<?= $invoice  -> dateFacturation?>" required>                  
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -189,13 +190,13 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Date of spicy</div>
-                            <input type="date" class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= $invoice  -> dateReleveNewIndex?>" required>                  
+                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= $invoice  -> dateReleveNewIndex?>" required>                  
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Date Limit of paiement</div>
-                            <input type="date" disabled class="form-control" id="dataPaid" name="dataPaid" placeholder="Date of payement" value="<?= $invoice  -> dataLimitePaid?>" required>                  
+                            <input type="text" disabled class="form-control" id="dataPaid" name="dataPaid" placeholder="Date of payement" value="<?= $invoice  -> dataLimitePaid?>" required>                  
                         </div>
                     </div>
                 </div>
@@ -223,8 +224,8 @@
                 <div class="d-flex flex justify-content-between">
                     <div class="float-left">
                         @if($invoice  -> facturePay == false)
-                            <a href="{{ url('/admin/paid/'.$invoice->_id) }}">
-                                <button class="btn btn-primary" name="connect" type="button">Paid Invoice</button>
+                            <a href="{{ url('/admin/paid/'.$invoice->_id .'/client/'.$client -> _id) }}">
+                                <button class="btn btn-primary" id="paid" name="connect" type="button">Paid Invoice</button>
                             </a>
                         @endif
                     </div>
@@ -237,10 +238,44 @@
                         </a>
                     </div>
                 </div>
-
-                
-                
             </form>
+            @endif
+
+            @if($show == true)
+            <form id="paidInvoice" action="{{url('/admin/paid')}}" method="post" role="form" class="col-lg-8 offset-lg-2">
+                {{csrf_field()}}
+                <div class="form-group mb-3">
+                    <div class="input-group">Personnel</div>
+        
+                    <select name="idClient" id="idClient" class="form-control" disabled>
+                        <option value={{$client -> _id}}>{{ $client -> name }}</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group mb-3">
+                            <div class="input-group">Id Invoice</div>
+                            <input type="text" class="form-control" placeholder="idInvoice" id="idInvoice" name="idInvoice" value="<?= $invoice ?>" required>                  
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group mb-3">
+                            <div class="input-group">Enter Amount Paid</div>
+                            <input type="number" class="form-control" placeholder="amount" id="amount" name="amount" required>                  
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex flex justify-content-end">
+                    <button class="btn btn-primary" id="connect" name="connect" type="submit">Paid Invoice</button>
+                    <button class="btn btn-secondary ml-2" id="showDetail" type="button">Cancel</button>
+                </div>
+            </form>
+            @endif
         </div>
     </div>
 </div>

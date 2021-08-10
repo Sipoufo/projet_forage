@@ -116,9 +116,13 @@ Route::get('/clauses', function() {
 
 //Admin route
 
-Route::get('/admin/home',[HomeController::class, 'adminHome'])->name('adminHome');
+Route::post('/admin/search_invoices',[AdminController::class, 'searchByMonthOrYear'])->name('searchByMonthOrYear');
+
+Route::get('/admin/home',[AdminController::class, 'allInvoicesThatHaveAdvenced'])->name('allInvoicesThatHaveAdvenced');
 
 Route::get('/admin/consumption',[AdminController::class, 'allInvoices'])->name('allInvoices');
+
+Route::get('/admin/consumption/page/{page_size}/size/{size}',[AdminController::class, 'search'])->name('search');
 
 Route::get('/admin/detail-consumption/{invoice_id}/edit',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
 
@@ -126,7 +130,9 @@ Route::put('/admin/detail-consumption',[AdminController::class, 'detailInvoive']
 
 Route::post('/admin/facture/{invoice_id}',[AdminController::class, 'updateInvoice'])->name('updateInvoice');
 
-Route::get('/admin/paid/{invoice_id}',[AdminController::class, 'finishToPaidInvoice'])->name('finishToPaidInvoice');
+Route::get('/admin/paid/{invoice_id}/client/{client_id}',[AdminController::class, 'getClientByInvoices'])->name('getClientByInvoices');
+
+Route::post('/admin/paid',[AdminController::class, 'finishToPaidInvoice'])->name('finishToPaidInvoice');
 
 Route::get('/admin/customer',[ManageAdminController::class, 'viewCustomers']);
 
