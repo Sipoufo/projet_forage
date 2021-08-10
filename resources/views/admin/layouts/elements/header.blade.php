@@ -21,7 +21,14 @@
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/css/admin_invoice.css" rel="stylesheet">
     <script src="/vendor/jquery/jquery.min.js"></script>
+<<<<<<< HEAD
     <script src="/js/admin_invoice.js"></script>
+=======
+
+    <!-- Page level plugins -->
+    <script src="{{asset('js/chart.js/Chart.min.js')}}"></script>
+
+>>>>>>> 014df9bcf3da5b0c579b95663ac29d1c7bc48d85
 </head>
 <body id="page-top">
 
@@ -229,7 +236,7 @@
                             <div class="dropdown-list-image mr-3">
                             <img
                                 class="rounded-circle"
-                                src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
+                                src="/img/undraw_profile_1.svg"
                                 alt="..."
                             />
                             <div class="status-indicator bg-success"></div>

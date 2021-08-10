@@ -44,14 +44,6 @@
             </div>
         </li>
 
-        <!-- Nav Item - Payment -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/tchat" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Notification">
-            <i class="fas fa-file-archive"></i>
-            <span>Notification</span>
-            </a>
-        </li>
-
         <!-- Nav Item - Profile Setting -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">

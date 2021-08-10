@@ -64,14 +64,6 @@
             </div>
         </li>
 
-        <!-- Nav Item - Notification -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/chat">
-            <i class="fas fa-file-archive"></i>
-            <span>Notification</span>
-            </a>
-        </li>
-
         <!-- Nav Item - Stock -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
@@ -91,6 +83,14 @@
 
         <!-- Nav Item - Payment -->
         <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/map">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Map</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Payment -->
+        <li class="nav-item">
             <a class="nav-link collapsed" href="/admin/clauses">
             <i class="fas fa-list"></i>
             <span>Confidentiality Clauses</span>
@@ -102,6 +102,14 @@
             <a class="nav-link collapsed" href="/admin/profile">
             <i class="fas fa-user"></i>
             <span>Profile</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Finances -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/finances">
+            <i class="fas fa-wallet"></i>
+            <span>Finances</span>
             </a>
         </li>
 

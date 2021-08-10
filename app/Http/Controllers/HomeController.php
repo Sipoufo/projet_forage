@@ -115,5 +115,114 @@ class HomeController extends Controller
 	public function reset(){
 		//
 	}
+<<<<<<< HEAD
  
+=======
+
+	// public function clientHome(){
+ //    	return view('client/dashboard');
+ //    }
+
+    public function adminHome()
+	{
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/2021/08/20/1',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+    
+        $i=0;
+        $invoices = array();
+		$bill = array();
+        foreach($response as $key => $value){
+            if($i >= 1){
+                //echo $value;
+				$bill = $value;
+                //dump($value);
+            }
+            $i = $i + 1;
+            //dump($key);
+        }
+
+		//dump($bill);
+		
+    	// return view('admin/dashboard',['invoices' => $invoicesAdvenced]);
+
+		foreach($bill as $value){
+            if($i >= 1){
+                //echo $value;
+				if (($value -> montantImpaye != 0) && ($value -> montantImpaye > 0)) {
+					array_push($invoices,$value);
+				}
+                //dump($invoices);
+            }
+            $i = $i + 1;
+            //dump($key);
+        }
+
+        //dump($invoices);
+
+        $client = array();
+
+        foreach($invoices as $invoice){
+
+            $idClient = $invoice -> idClient;
+            //echo $idClient;
+            $url = curl_init();
+            curl_setopt_array($url, array(
+                CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+            
+            $response = curl_exec($url);
+            $response = json_decode($response);
+        
+            $i=0;
+
+            foreach($response as $key => $value){
+                if($i >= 1){
+                    //echo $value;
+                    //$client = $value;
+                    array_push($client,$value);
+                    //dump($value);
+                }
+                $i = $i + 1;
+                //dump($key);
+            }
+        
+        }
+
+        //dump($client);
+        //curl_close($url);
+        return view('admin/dashboard',['invoices' => $invoices, 'client' => $client]);
+        //return view('admin/facture',['invoices' => $invoices]);
+    }
+    
+>>>>>>> 014df9bcf3da5b0c579b95663ac29d1c7bc48d85
 }

@@ -56,6 +56,10 @@ Route::get('/budget-stat',[ManageClientController::class, 'budget'])->name('budg
 
 Route::get('/budget-detail',[ManageClientController::class, 'budget_detail'])->name('budget-detail');
 
+Route::get('/user/print/{invoice_id}',[ManageClientController::class, 'print']);
+
+Route::get('/user/get/{invoice_id}',[ManageClientController::class, 'overview']);
+
 Route::get('/consumption', function() {
     return view('client/consumption');
 });
@@ -168,6 +172,7 @@ Route::post('/admin/products_types/create',[AdminController::class, 'createType'
 
 Route::match(['get','delete'],'/admin/products_types/delete/{id}',[AdminController::class, 'deleteType'])->name('deleteType');
 
+Route::get('/admin/print/{invoice_id}',[AdminController::class, 'print']);
 
 // Route::delete('/admin/remove',[AdminController::class, 'deleteProduct'])->name('adminDelete');
 
@@ -208,3 +213,13 @@ Route::get('/admin/map', function() {
 Route::match(['get','put'],'/admin/customer/delete/{id}',[ManageAdminController::class, 'deleteCustomer'])->name('deleteCustomer');
 
 Route::match(['get','put'],'/admin/administrator/delete/{id}',[ManageAdminController::class, 'deleteAdmin'])->name('deleteAdmin');
+
+Route::get('/admin/finances',[AdminController::class, 'finance'])->name('seeFinances');
+
+Route::post('/admin/finances',[AdminController::class, 'financeYear'])->name('seeFinancesYear');
+
+Route::get('/admin/finances/details',[AdminController::class, 'financeDetails'])->name('financeDetails');
+
+Route::get('/admin/finances/details/customer/{id}',[AdminController::class, 'customerDetails'])->name('customerDetails');
+
+Route::post('/admin/finances/details/customer/{id}',[AdminController::class, 'customerDetailsYear'])->name('customerDetailsYear');
