@@ -20,15 +20,20 @@
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/css/admin_invoice.css" rel="stylesheet">
+
+    <!-- Profile assets -->
+    
+    <!-- Profile assets -->
+
     <script src="/vendor/jquery/jquery.min.js"></script>
-<<<<<<< HEAD
+
     <script src="/js/admin_invoice.js"></script>
-=======
+
 
     <!-- Page level plugins -->
     <script src="{{asset('js/chart.js/Chart.min.js')}}"></script>
 
->>>>>>> 014df9bcf3da5b0c579b95663ac29d1c7bc48d85
+
 </head>
 <body id="page-top">
 

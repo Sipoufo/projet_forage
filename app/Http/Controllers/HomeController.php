@@ -73,30 +73,28 @@ class HomeController extends Controller
 
 	        	}else{
 
-			        if(!empty($location['longitude']) && !empty($location['latitude'])){
+	        		$request->session()->put('id',$userdata['_id']);
+			        $request->session()->put('name',$userdata['name']);
+			        $request->session()->put('profile',$userdata['profile']);
 
-			              $request->session()->put('id',$userdata['_id']);
-			        	  $request->session()->put('name',$userdata['name']);
-			        	  $request->session()->put('profile',$userdata['profile']);
+	        	  	if(array_key_exists('profileImage', $userdata)){
+	        		$request->session()->put('photo',$userdata['profileImage']);
+	        	  	}
 
-			        	  if(array_key_exists('profileImage', $userdata)){
-			        		$request->session()->put('photo',$userdata['profileImage']);
-			        	  }
-			        	  // $request->session()->put('photo',$userdata['profileImage']);
+	        	  	setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
 
-			              setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
+		            if($userdata['profile'] != 'user'){
+		              return redirect()->route('adminHome');
+		            }else{
+		              return redirect()->route('clientHome');
+		            }
+			     //    if(!empty($location['longitude']) && !empty($location['latitude'])){
 
-			              if($userdata['profile'] != 'user'){
-			              	return redirect()->route('adminHome');
-			              }else{
-			              	return redirect()->route('clientHome');
-			              } 
-			              
-			        }else{
-			        	  $request->session()->put('profile',$userdata['profile']);
-						  setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
-			              return redirect()->route('seeClauses');
-			        }
+			     //    }else{
+			     //    	  $request->session()->put('profile',$userdata['profile']);
+						  // setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
+			     //          return redirect()->route('seeClauses');
+			     //    }
 	        	}
 
 	        }

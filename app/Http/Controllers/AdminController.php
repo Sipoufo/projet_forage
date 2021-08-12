@@ -665,6 +665,122 @@ class AdminController extends Controller{
         
     }
 
+    public function changePassword(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'password' => 'bail|required|regex:/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,15}$/',
+            'confirmpassword' => 'bail|required|same:password',
+            ],
+
+            $messages = [
+                'confirmpassword.same' => 'Confirm your password',
+                'password.regex' => 'Between 8 and 15 characters - Minimum one uppercase letter and one number digit - Minimum one special character !@#$%^&*-',
+            ]
+        );
+
+
+        if ($validator->fails()) {
+
+            return back()->withErrors($validator)->withInput();
+
+        }else{
+
+            $password = md5(sha1($request->input('password')));
+            
+            $url = "";
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            $Authorization = 'Bearer '.$tokenVal;
+
+            $data = array(
+                'password' => $password,
+            );
+            $data_json = json_encode($data);
+
+            // print_r($data_json);
+            
+            // $ch = curl_init();
+            // curl_setopt($ch, CURLOPT_URL, $url);
+            // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+            //  //curl_setopt($ch, CURLOPT_POST, 1);
+            // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+            // curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            // $response  = curl_exec($ch);
+            // curl_close($ch); 
+
+            // $response = json_decode($response);
+
+            // print_r($response);
+            
+            // if ($response->status == 200){
+            //     Session::flash('message', 'Action Successfully done!');
+            //     Session::flash('alert-class', 'alert-success');
+            //     return redirect()->back();
+                
+            // }else{
+            //     Session::flash('message', ucfirst($response->error));
+            //     Session::flash('alert-class', 'alert-danger');
+            //     return redirect()->back();
+            // }
+        }
+    }
+
+    public function saveSettings(Request $request){
+
+        $maintenance = $request->input('maintenance');
+        $meterprice = $request->input('meterprice');
+
+        $data = array(
+            'meterprice' => $meterprice,
+            'maintenance' => $maintenance,
+        );
+
+        $url = "";
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $data = array(
+            'password' => $password,
+        );
+        $data_json = json_encode($data);
+
+        // print_r($data_json);
+        
+        // $ch = curl_init();
+        // curl_setopt($ch, CURLOPT_URL, $url);
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        //  //curl_setopt($ch, CURLOPT_POST, 1);
+        // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        // curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // $response  = curl_exec($ch);
+        // curl_close($ch); 
+
+        // $response = json_decode($response);
+
+        // print_r($response);
+        
+        // if ($response->status == 200){
+        //     Session::flash('message', 'Action Successfully done!');
+        //     Session::flash('alert-class', 'alert-success');
+        //     return redirect()->back();
+            
+        // }else{
+        //     Session::flash('message', ucfirst($response->error));
+        //     Session::flash('alert-class', 'alert-danger');
+        //     return redirect()->back();
+        // }
+
+    }
+
     //All Invoice that the admin have
     public function search($page_size,$size)
     {
@@ -1370,7 +1486,7 @@ class AdminController extends Controller{
 
         //dump($invoicesAdvenced);
         if (gettype($invoicesAdvenced) != "array") {
-            echo "je t'aime";
+            // echo "je t'aime";
             $invoicesAdvenced = array();
         }
 

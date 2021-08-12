@@ -186,9 +186,13 @@ Route::get('/admin/clauses',[AdminController::class, 'adminClauses'])->name('adm
 
 Route::get('/admin/profile',[AdminController::class, 'adminProfile'])->name('adminProfile');
 
-Route::get('/admin/editProfile',[AdminController::class, 'adminEditProfile'])->name('adminEditProfile');
 
 Route::match(['get','put'],'/admin/update',[AdminController::class, 'updateAdmin'])->name('updateAdmin');
+
+Route::match(['get','put'],'/admin/change_password',[AdminController::class, 'changePassword'])->name('changePassword');
+
+Route::match(['get','put'],'/admin/save_settings',[AdminController::class, 'saveSettings'])->name('saveSettings');
+
 
 Route::match(['get','put'],'/admin/customer/block/{id}/{status}',[ManageAdminController::class, 'blockCustomer'])->name('blockCustomer');
 
