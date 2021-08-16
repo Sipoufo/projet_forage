@@ -191,8 +191,14 @@
             <div class="col-md-6 col-lg-4">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 <?= $card ?>">
+
+                                <a href="#" id="location" class="btn <?= $card ?> float-left" data-bs-toggle="tooltip" data-bs-placement="bottom" title="location">
+                                    <span class="icon"  style="color:white;">
+                                        <i class="fas fa-globe"></i></i>
+                                    </span>
+                                </a>
             
-                                <h6 class="m-0 font-weight-bold text-white" style="font-size:25px;"><?=$info['name']?>
+                                <h6 class="m-0 font-weight-bold text-white text-center" style="font-size:25px;"><?=$info['name']?>
 
                                 <a href="/admin/customer/delete/<?= $info['_id'] ?>" class="btn <?= $card ?> float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
                                     <span class="icon"  style="color:white;">
@@ -253,5 +259,75 @@
      ?>       
     
     </div> 
+
+
+    <script>
+
+    $("body").on('click','#location',function(event){
+
+
+       function myPosition(position) {
+         lat = position.coords.latitude; 
+         lng = position.coords.longitude;
+
+            <?php
+                $alltoken = $_COOKIE['token'];
+                $alltokentab = explode(';', $alltoken);
+                $token = $alltokentab[0];
+                $tokentab = explode('=',$token);
+                $tokenVal = $tokentab[1];
+                $Authorization = 'Bearer '.$tokenVal;
+            ?>
+
+            var datas = {'longitude' : lng, 'latitude' : lat };
+
+            datas = JSON.stringify(datas);
+
+           $.ajax({
+
+               type : 'post',
+
+               url : "<?= 'http://localhost:4000/login/localisation'?>",
+
+               headers: { 'Authorization': '<?= $Authorization ?>', 'Content-Type': 'application/json' },
+
+               data: datas,
+
+               success :function (success) {
+                  alert("Well Done !");
+               },
+
+               error : function (){
+                  alert('Error');
+               }
+
+           });
+       }
+
+       function errorPosition(error) {
+          var info = "Error while getting your location : ";
+          
+          switch(error.code) {
+              case error.TIMEOUT:
+                  info += "Timeout !";
+              break;
+              case error.PERMISSION_DENIED:
+              info += "Access refused to site";
+              break;
+              case error.POSITION_UNAVAILABLE:
+                  info += "Your location could not be determined";
+              break;
+              case error.UNKNOWN_ERROR:
+                  info += "Unknown Error";
+              break;
+          }
+       }
+
+      if(navigator.geolocation)
+        navigator.geolocation.getCurrentPosition(myPosition,errorPosition,{enableHighAccuracy:true});
+
+         
+    }); 
+    </script>
 
 @stop
