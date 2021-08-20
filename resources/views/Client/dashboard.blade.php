@@ -12,19 +12,19 @@
         <hr class="sidebar-divider" />
 
         <!-- Heading -->
-        <div class="sidebar-heading">Informations</div>
+        <div class="sidebar-heading">Information</div>
 
         <!-- Nav Item - consumption -->
         <li class="nav-item ">
             <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
                 <i class="fas fa-file-invoice-dollar"></i>
-                <span>Buget</span>
+                <span>Budget</span>
             </a>
             <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Buget</h6>
+                    <h6 class="collapse-header">Budget</h6>
                     <a class="collapse-item" href="/budget-stat" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">statistics</a>
-                    <a class="collapse-item" href="/budget-detail" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Detail</a>
+                    <a class="collapse-item" href="/budget-detail" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Details</a>
                 </div>
             </div>
         </li>
@@ -33,7 +33,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities1" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
                 <i class="fas fa-money-bill-alt"></i>
-                <span>Invoice</span>
+                <span>Invoices</span>
             </a>
             <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -178,7 +178,7 @@
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Invoice in progress</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Invoice Paid</h6>
                 </div>
                 <div class="card-body container-fluid">
                     <?php
@@ -208,7 +208,7 @@
                         </div>
                         <div class="text-white col-md-3">
                         <div class="">
-                            Date Released
+                            Payment Date
                             <div class="text-white-50 small">
                                 <?php
                                     $date = $informations['result']['facturePaid'][$i]['dateFacturation'];
@@ -305,7 +305,7 @@
                     <p>Name : <?= $informations['result']['client']['name']; ?></p>
                     <p>Phone : <?= $informations['result']['client']['phone']; ?></p>
                     <p>Email : <?= $informations['result']['client']['email']; ?></p>
-                    <p>Id compteur : <?= $informations['result']['client']['IdCompteur']; ?></p>
+                    <p>Id Meter : <?= $informations['result']['client']['IdCompteur']; ?></p>
                 </div>
             </div>
         </div>
