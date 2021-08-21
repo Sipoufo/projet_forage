@@ -21,10 +21,6 @@
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/css/admin_invoice.css" rel="stylesheet">
 
-    <!-- Profile assets -->
-    
-    <!-- Profile assets -->
-
     <script src="/vendor/jquery/jquery.min.js"></script>
 
     <script src="/js/admin_invoice.js"></script>

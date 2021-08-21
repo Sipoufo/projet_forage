@@ -268,7 +268,17 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
             Nb. product remaining
           </div>
           <div class="h5 mb-0 font-weight-bold text-gray-800">
-            200
+            <?php
+              if($materials){
+                $left = 0;
+                foreach($materials as $material){
+                   $left += $material['quantity'];
+                }
+                echo $left;
+              }else{
+                echo '0';
+              }  
+            ?>
           </div>
         </div>
         <div class="col-auto">

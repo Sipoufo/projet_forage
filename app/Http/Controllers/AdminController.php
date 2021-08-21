@@ -674,7 +674,7 @@ class AdminController extends Controller{
             $newpassword = md5(sha1($request->input('newpassword')));
             $oldpassword = md5(sha1($request->input('oldpassword')));
             
-            $url = "";
+            $url = "http://localhost:4000/admin/auth/updatePassword";
             $alltoken = $_COOKIE['token'];
             $alltokentab = explode(';', $alltoken);
             $token = $alltokentab[0];

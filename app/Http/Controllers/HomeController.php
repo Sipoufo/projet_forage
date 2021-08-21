@@ -146,6 +146,12 @@ class HomeController extends Controller
         $invoicesAdvenced = array();
         //echo "je";
 
+        $year = date("Y");
+        //echo $year;
+        
+        $month = date("m");
+        //echo $month;
+
         foreach($response as $key => $value){
             if($i >= 1){
                 //echo $value;
@@ -198,6 +204,133 @@ class HomeController extends Controller
             }
         
         }
+    
+        $ch = curl_init();
+            
+        curl_setopt_array($ch, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/'.$year.'/'.$month.'/1000/1',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $re = curl_exec($ch);
+        curl_close($ch);
+        $res = json_decode($re);
+
+        $earnly = 0;
+        $invoices_paid = array();
+        $invoices_month = array();
+        $invoices_year = array();
+        $row = 0;
+        
+        foreach($res as $key => $value){
+            if($i >= 3){
+                $row = count($value);
+                if ($row > 0) {
+                    if ($value->facturePay) {
+                        $earnly = $value->montantVerse + $earnly;
+                        //array_push($invoices_paid,$value);
+                        $invoices_paid = $value;
+                    }
+                    $invoices_month = $value;
+                }
+            }
+            $i = $i + 1;
+        }
+        
+        $people = array();
+        $number0fClient = 0;
+        
+        if ($invoices_paid > 0) {
+            foreach($invoices_paid as $invoice){
+
+                $idClient = $invoice->idClient;
+                $url = curl_init();
+                curl_setopt_array($url, array(
+                    CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'GET',
+                    CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+                ));
+                
+                $response = curl_exec($url);
+                $response = json_decode($response);
+            
+                $i=0;
+
+                foreach($response as $key => $value){
+                    if($i >= 1){
+                        array_push($people,$value);
+                    }
+                    $i = $i + 1;
+                }
+            }
+        }
+        $number0fClient = count($people);
+        
+        $url_client = curl_init();
+        curl_setopt_array($url_client, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $user = curl_exec($url_client);
+        $user = json_decode($user);
+        $user_list = array();
+    
+        foreach($user as $key => $value){
+            if($i >= 3){
+                $user_list = $value;
+            }
+            $i = $i + 1;
+        }
+        $numberOfAllClient = count($user_list);
+        $pourcent = ($number0fClient / $numberOfAllClient) * 100;
+        //dump($invoicesAdvenced);
+
+        // annuel
+        $url_annuel = curl_init();
+        curl_setopt_array($url_annuel, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/factureByYear/'.$year,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $invoices_annuel = curl_exec($url_annuel);
+        $invoices_annuel = json_decode($invoices_annuel);
+        $invoices_annuel_list = array();
+    
+        foreach($invoices_annuel as $key => $value){
+            if($i >= 3){
+                $invoices_annuel_list = $value;
+            }
+            $i = $i + 1;
+        }
+
 
         $url1 = "http://localhost:4000/stock/getAll";
         $data1 = array(
@@ -217,9 +350,15 @@ class HomeController extends Controller
         $response1 = json_decode($response1,true);
         $data1= $response1['result']['docs'];
 
-        //dump($client);
-        //curl_close($url);
-        return view('admin/dashboard',['invoices' => $invoicesAdvenced, 'client' => $client, 'materials' => $data1]);
+
+        return view('admin/dashboard',[
+            'invoices' => $invoicesAdvenced, 
+            'client' => $client,
+            'pourcent' => $pourcent,
+            'earnly' => $earnly,
+            'earnly_invoices' => $invoices_annuel_list,
+            'materials' => $data1
+        ]);
 
     }
     

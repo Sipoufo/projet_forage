@@ -196,7 +196,7 @@
                       <ul class="nav nav-tabs" role="tablist" id="tabMenu">
                           <li role="presentation" class="nav-item"><a class="nav-link active ?>" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
                           <li role="presentation" class="nav-item"><a class="nav-link" href="#update" aria-controls="update" role="tab" data-toggle="tab">Update</a></li>
-                          <li role="presentation" class="nav-item"><a class="nav-link" href="#password_form" aria-controls="password" role="tab" data-toggle="tab">Password</a></li>
+                          <li role="presentation" class="nav-item"><a class="nav-link" href="#password_form" aria-controls="password_form" role="tab" data-toggle="tab">Password</a></li>
                           <li role="presentation"class="nav-item"><a class="nav-link" href="#settings" aria-controls="settings" role="tab" data-toggle="tab">General Settings</a></li>
                       </ul>
                   
