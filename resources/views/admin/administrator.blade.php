@@ -165,7 +165,7 @@
                     $phone = $info['phone'];
                     $registered_at = date('d-m-Y H:i:s', strtotime($info['createdAt'])); 
 
-                    if(!empty($info['profileImage'])){
+                    if($info['profileImage'] != "noPath"){
                         $image = url('storage/'.$info['profileImage']);
                     }else{
                         $image = "/img/undraw_profile.svg";
@@ -251,6 +251,7 @@
         </tbody>
       </table>
     </div>
-    <?php } ?>        
+    <?php } ?> 
+
 
 @stop

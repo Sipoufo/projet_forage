@@ -108,11 +108,6 @@ Route::get('/consumption/monthly', function() {
 //     return view('client/user');
 // });
 
-Route::get('/tchat', function() {
-    return view('client/message');
-});
-
-
 Route::get('/clauses', function() {
     return view('client/clauses');
 });
@@ -120,9 +115,9 @@ Route::get('/clauses', function() {
 
 //Admin route
 
-Route::post('/admin/search_invoices',[AdminController::class, 'searchByMonthOrYear'])->name('searchByMonthOrYear');
+Route::get('/admin/home',[HomeController::class, 'adminHome'])->name('adminHome');
 
-Route::get('/admin/home',[AdminController::class, 'allInvoicesThatHaveAdvenced'])->name('allInvoicesThatHaveAdvenced');
+Route::post('/admin/search_invoices',[AdminController::class, 'searchByMonthOrYear'])->name('searchByMonthOrYear');
 
 Route::get('/admin/consumption',[AdminController::class, 'allInvoices'])->name('allInvoices');
 
@@ -144,6 +139,8 @@ Route::get('/admin/customer/addCustomer',[ManageAdminController::class, 'addCust
 
 Route::post('/admin/customer/addCustomer/store',[ManageAdminController::class, 'storeCustomers']);
 
+Route::match(['get','post'], '/admin/customer/location', [ManageAdminController::class, 'location']);
+
 Route::get('/admin/administrator',[ManageAdminController::class, 'viewAdministrators']);
 
 Route::get('/admin/administrator/addAdministrator',[ManageAdminController::class, 'addAdministrators']);
@@ -155,8 +152,6 @@ Route::get('/admin/facture',[AdminController::class, 'allClient']);
 Route::post('/admin/facture',[AdminController::class, 'addInvoice']);
 
 Route::get('/admin/status',[AdminController::class, 'adminStatus'])->name('adminStatus');
-
-Route::get('/admin/chat',[AdminController::class, 'adminChat'])->name('adminChat');
 
 Route::get('/admin/manage_products',[AdminController::class, 'manageProducts'])->name('manageProducts');
 
@@ -187,11 +182,11 @@ Route::get('/admin/clauses',[AdminController::class, 'adminClauses'])->name('adm
 Route::get('/admin/profile',[AdminController::class, 'adminProfile'])->name('adminProfile');
 
 
-Route::match(['get','put'],'/admin/update',[AdminController::class, 'updateAdmin'])->name('updateAdmin');
+Route::match(['get','put'],'/admin/profile/update',[AdminController::class, 'updateAdmin'])->name('updateAdmin');
 
-Route::match(['get','put'],'/admin/change_password',[AdminController::class, 'changePassword'])->name('changePassword');
+Route::match(['get','put'],'/admin/profile/change_password',[AdminController::class, 'changePassword'])->name('changePassword');
 
-Route::match(['get','put'],'/admin/save_settings',[AdminController::class, 'saveSettings'])->name('saveSettings');
+Route::match(['get','post'],'/admin/profile/save_settings',[AdminController::class, 'saveSettings'])->name('saveSettings');
 
 
 Route::match(['get','put'],'/admin/customer/block/{id}/{status}',[ManageAdminController::class, 'blockCustomer'])->name('blockCustomer');

@@ -172,13 +172,6 @@
                     @enderror
                 </div>
 
-                <?php $localisation = $data['localisation']; 
-                ?>  
-                <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
-                    <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="<?= $localisation['description']?>" required>                
-                </div>
-
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-image'></i></span></div>
                     <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo">    
@@ -188,8 +181,6 @@
                 </div>
 
                 <input type="hidden" name="profileImage" id="profileImage" value="<?= $data['profileImage']?>"/>
-                <input type="hidden" name="lat" id="lat" value="<?= $localisation['latitude']?>"/> 
-                <input type="hidden" name="lng" id="lng" value="<?= $localisation['longitude']?>"/>
 
                 <div class="row float-right mt-3"> 
                     <a href="/admin/administrator">

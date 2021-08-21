@@ -181,9 +181,20 @@
 
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
-                    <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="{{ old('home') }}" required>                
+                    <input type="text" class="form-control" placeholder="description of the location" id="home" name="home" value="{{ old('home') }}" required>                
                 </div>
-                  
+
+                <div class="input-group mt-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="setLocation" id="setLocation" name="setLocation">
+                      <label class="form-check-label" for="setLocation">
+                        Activate the location
+                      </label>
+                    </div>
+                    <input type="hidden" name="lat" id="lat"  value="">
+                    <input type="hidden" name="lng" id="lng"  value="">        
+                </div>
+  
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-water'></i></span></div>
                     <input type="text" class="form-control" placeholder="Water meter identifier" id="identifier" name="identifier" value="{{ old('identifier') }}" required>                  
@@ -226,5 +237,48 @@
         </div>
     </div>
 </div>
+
+<script>
+    $( "#setLocation" ).on( "click", function() {
+    
+        if($("#setLocation").is(':checked'))
+
+            // checked
+            event.preventDefault();
+
+           function myPosition(position) {
+            $('#lat').val(position.coords.latitude);
+            $('#lng').val(position.coords.longitude);
+           }
+
+           function errorPosition(error) {
+              var info = "Error while getting your location : ";
+              
+              switch(error.code) {
+                  case error.TIMEOUT:
+                      info += "Timeout !";
+                  break;
+                  case error.PERMISSION_DENIED:
+                  info += "Permission denied";
+                  break;
+                  case error.POSITION_UNAVAILABLE:
+                      info += "Your location could not be determined";
+                  break;
+                  case error.UNKNOWN_ERROR:
+                      info += "Unknown Error";
+                  break;
+              }
+
+              alert(info);
+           }
+
+          if(navigator.geolocation)
+            navigator.geolocation.getCurrentPosition(myPosition,errorPosition,{enableHighAccuracy:true});
+
+        else
+            //unchecked
+            var message = "unchecked";
+    });
+</script>
 
 @stop

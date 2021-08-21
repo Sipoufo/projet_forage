@@ -124,8 +124,8 @@
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Manage Products</h1>
-    <a href="/admin/manage_products/remove" class="btn btn-primary"> Remove a product </a>
+    <h1 class="h3 mb-0 text-gray-800">Manage Products - Add</h1>
+    <a href="/admin/manage_products/remove" class="btn btn-primary"> Use a product </a>
 </div>
 
 <div class="row">

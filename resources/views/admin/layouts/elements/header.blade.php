@@ -287,9 +287,15 @@
 
                             @if(Session::has('photo'))
 
-                                @php
-                                    $photo = url('storage/'.Session::get('photo'))
-                                @endphp
+                                @if(Session::get('photo') == "noPath")
+                                    @php
+                                        $photo = '/img/undraw_profile.svg'
+                                    @endphp
+                                @else
+                                    @php
+                                        $photo = url('storage/'.Session::get('photo'))
+                                    @endphp
+                                @endif
                                 <img
                                     class="img-profile rounded-circle"
                                     src="{{ $photo }}"
@@ -302,9 +308,7 @@
                                     class="img-profile rounded-circle"
                                     src="{{ $photo }}"
                                 />
-                            @endif
-
-                        
+                            @endif       
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class=" dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown" >

@@ -116,7 +116,8 @@ class HomeController extends Controller
 
     public function adminHome()
 	{
-        $alltoken = $_COOKIE['token'];
+
+		$alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
         $tokentab = explode('=',$token);
@@ -126,7 +127,7 @@ class HomeController extends Controller
         $curl = curl_init();
         
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://localhost:4000/admin/facture/2021/08/20/1',
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/getByStatus/false',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -142,39 +143,28 @@ class HomeController extends Controller
         $response = json_decode($response);
     
         $i=0;
-        $invoices = array();
-		$bill = array();
+        $invoicesAdvenced = array();
+        //echo "je";
+
         foreach($response as $key => $value){
             if($i >= 1){
                 //echo $value;
-				$bill = $value;
+                $invoicesAdvenced = $value;
                 //dump($value);
             }
             $i = $i + 1;
             //dump($key);
         }
 
-		//dump($bill);
-		
-    	// return view('admin/dashboard',['invoices' => $invoicesAdvenced]);
-
-		foreach($bill as $value){
-            if($i >= 1){
-                //echo $value;
-				if (($value -> montantImpaye != 0) && ($value -> montantImpaye > 0)) {
-					array_push($invoices,$value);
-				}
-                //dump($invoices);
-            }
-            $i = $i + 1;
-            //dump($key);
+        //dump($invoicesAdvenced);
+        if (gettype($invoicesAdvenced) != "array") {
+            // echo "je t'aime";
+            $invoicesAdvenced = array();
         }
-
-        //dump($invoices);
 
         $client = array();
 
-        foreach($invoices as $invoice){
+        foreach($invoicesAdvenced as $invoice){
 
             $idClient = $invoice -> idClient;
             //echo $idClient;
@@ -209,10 +199,28 @@ class HomeController extends Controller
         
         }
 
+        $url1 = "http://localhost:4000/stock/getAll";
+        $data1 = array(
+            'page' => 1,
+            'limit' => 0,
+        );
+        $data_json1 = json_encode($data1);
+        
+        $ch1 = curl_init();
+        curl_setopt($ch1, CURLOPT_URL, $url1);
+        curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch1, CURLOPT_POST, 1);
+        curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
+        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+        $response1  = curl_exec($ch1);
+        curl_close($ch1); 
+        $response1 = json_decode($response1,true);
+        $data1= $response1['result']['docs'];
+
         //dump($client);
         //curl_close($url);
-        return view('admin/dashboard',['invoices' => $invoices, 'client' => $client]);
-        //return view('admin/facture',['invoices' => $invoices]);
+        return view('admin/dashboard',['invoices' => $invoicesAdvenced, 'client' => $client, 'materials' => $data1]);
+
     }
     
 }

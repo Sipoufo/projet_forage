@@ -129,8 +129,6 @@
         <h1 class="h3 mb-0 text-gray-800">Profile</h1> 
     </div>
 
-<div class="container"> 
-  <div class="row gutters-sm">
     @if(Session::has('message'))
         <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
             {{ Session::get('message') }}
@@ -140,22 +138,46 @@
         </div>
     @endif
 
+  
+<div class="container"> 
+  <div class="row gutters-sm">
+
       <div class="col-md-4">      
           <div class="portlet light profile-sidebar-portlet bordered">
               <div class="text-center profile-userpic">
                 @if(Session::has('photo'))
-                  @php
-                      $photo = url('storage/'.Session::get('photo'))
-                  @endphp
+                    @if(Session::get('photo') == "noPath")
+                        @php
+                            $photo = '/img/undraw_profile.svg'
+                        @endphp
+                    @else
+                        @php
+                            $photo = url('storage/'.Session::get('photo'))
+                        @endphp
+                    @endif
                 @else
-                  @php
-                      $photo = '/img/undraw_profile.svg'
-                  @endphp   
-                @endif
+                    @php
+                        $photo = '/img/undraw_profile.svg'
+                    @endphp
+                @endif 
                   <img src="{{$photo}}" class="rounded-circle" alt="<?= $data['profile']?>"> </div>
               <div class="profile-usertitle">
                   <div class="profile-usertitle-name"> <?= $data['name']?> </div>
                   <div class="profile-usertitle-job"> <?= $data['profile']?> </div>
+
+                  @if($data['profile'] == "superAdmin")
+
+                    <div class="profile-usertitle-job"> 
+
+                      <a href="#" id="location" locate="<?= $data['_id']?>" class="btn text-primary" style="size:18px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                          <span class="icon">
+                              <i class="fas fa-globe"></i>
+                          </span>
+                      </a>
+
+                   </div>
+
+                  @endif
               </div>
           </div>
       </div>
@@ -171,8 +193,8 @@
                   <div>
                   
                       <!-- Nav tabs -->
-                      <ul class="nav nav-tabs" role="tablist">
-                          <li role="presentation" class="nav-item"><a class="nav-link active" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+                      <ul class="nav nav-tabs" role="tablist" id="tabMenu">
+                          <li role="presentation" class="nav-item"><a class="nav-link active ?>" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
                           <li role="presentation" class="nav-item"><a class="nav-link" href="#update" aria-controls="update" role="tab" data-toggle="tab">Update</a></li>
                           <li role="presentation" class="nav-item"><a class="nav-link" href="#password_form" aria-controls="password" role="tab" data-toggle="tab">Password</a></li>
                           <li role="presentation"class="nav-item"><a class="nav-link" href="#settings" aria-controls="settings" role="tab" data-toggle="tab">General Settings</a></li>
@@ -250,9 +272,9 @@
                           </div>
                          
 
-                          <div role="tabpanel" class="tab-pane fade" id="update">
+                          <div role="tabpanel" class="tab-pane fade " id="update">
                               <br>
-                              <form method="post" action="/admin/update" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
+                              <form method="post" action="/admin/profile/update" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
                                   @csrf
                                   @method('PUT')
                                   <div class="input-group mt-3">
@@ -296,9 +318,6 @@
                                               <div class="invalid-feedback">{{ $message }}</div>
                                       @enderror              
                                   </div>
-                   
-                                  <input type="hidden" name="lat" id="lat" value="<?= $localisation['latitude']?>"/> 
-                                  <input type="hidden" name="lng" id="lng" value="<?= $localisation['longitude']?>"/>
 
                                   <hr>
                                  
@@ -312,14 +331,19 @@
                       <div role="tabpanel" class="tab-pane fade" id="password_form">
                         <br>
 
-                          <form method="post" action="/admin/change_password" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
+                          <form method="post" action="/admin/profile/change_password" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
+
+                                <div class="input-group mt-3">
+                                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
+                                    <input type="password" class="form-control" placeholder="Old password" id="oldpassword" name="oldpassword" value="{{ old('password') }}" required>                  
+                                </div>
                                   
                                 <div class="input-group mt-3">
                                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                                    <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter the password" id="password" name="password" value="{{ old('password') }}" required>                  
-                                    @error('password')
+                                    <input type="password" class="form-control @error('newpassword') is-invalid @enderror" placeholder="New password" id="newpassword" name="newpassword" value="{{ old('password') }}" required>                  
+                                    @error('newpassword')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -344,10 +368,8 @@
                       <div role="tabpanel" class="tab-pane fade " id="settings">
                         <br>
 
-                        <form method="post" action="/admin/save_settings" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
+                        <form method="post" action="/admin/profile/save_settings" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
                               @csrf
-                              @method('PUT')
-
                               <div class="input-group mt-3">
                                   <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class="fas fa-cube"></i></span></div>
                                   <input type="number" class="form-control @error('meterprice') is-invalid @enderror" placeholder="Price per cubic meter" id="meterprice" name="meterprice" value="{{ old('meterprice') }}" required>                  
@@ -380,6 +402,89 @@
 
   </div>
 </div>
+
+<script>
+  //redirect to specific tab
+  $(document).ready(function () {
+      $("#tabMenu a[href='#{{ old('tab') }}']").tab('show');
+  });
+</script>
+
+<script>
+
+    $("body").on('click','#location',function(event){
+
+        event.preventDefault();
+
+        var id = $(this).attr('locate');
+
+        console.log(id);
+
+       function myPosition(position) {
+         lat = position.coords.latitude; 
+         lng = position.coords.longitude;
+
+            <?php
+                $alltoken = $_COOKIE['token'];
+                $alltokentab = explode(';', $alltoken);
+                $token = $alltokentab[0];
+                $tokentab = explode('=',$token);
+                $tokenVal = $tokentab[1];
+                $Authorization = 'Bearer '.$tokenVal;
+            ?>
+
+            var datas = {'longitude' : lng, 'latitude' : lat };
+
+            datas = JSON.stringify(datas);
+
+           $.ajax({
+
+               type : 'post',
+
+               url : "<?= 'http://localhost:4000/login/localisation/'?>" + id,
+
+               headers: { 'Authorization': '<?= $Authorization ?>', 'Content-Type': 'application/json' },
+
+               data: datas,
+
+               success :function (success) {
+                  alert("Well Done !");
+               },
+
+               error : function (){
+                  alert('Error');
+               }
+
+           });
+       }
+
+       function errorPosition(error) {
+          var info = "Error while getting your location : ";
+          
+          switch(error.code) {
+              case error.TIMEOUT:
+                  info += "Timeout !";
+              break;
+              case error.PERMISSION_DENIED:
+              info += "Permission denied";
+              break;
+              case error.POSITION_UNAVAILABLE:
+                  info += "Your location could not be determined";
+              break;
+              case error.UNKNOWN_ERROR:
+                  info += "Unknown Error";
+              break;
+          }
+       }
+
+      if(navigator.geolocation)
+        navigator.geolocation.getCurrentPosition(myPosition,errorPosition,{enableHighAccuracy:true});
+
+         
+    }); 
+
+</script>
+
 
 <style>
 

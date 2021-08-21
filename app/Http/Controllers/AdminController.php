@@ -57,10 +57,6 @@ class AdminController extends Controller{
     	return view('admin/status', ['invoice' => $invoice, 'client' => $client]);
     }
 
-    public function adminChat(){
-    	return view('admin/chat');
-    }
-
     public function manageProducts(){
 
         $url = "http://localhost:4000/stock/type";
@@ -568,16 +564,12 @@ class AdminController extends Controller{
             'name' =>  'bail|required',
             'email' => 'bail|required|email',
             'phone' => 'bail|required|digits:9',
-            'password' => 'bail|required|regex:/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,15}$/',
-            'confirmpassword' => 'bail|required|same:password',
             'photo' => 'bail|image|mimes:jpeg,jpg,png|max:2000',
             ],
 
             $messages = [
                 'required' => 'The :attribute is required',
                 'phone.digits' => '9 digits needed',
-                'confirmpassword.same' => 'Confirm your password',
-                'password.regex' => 'Between 8 and 15 characters - Minimum one uppercase letter and one number digit - Minimum one special character !@#$%^&*-',
                 'photo.mimes' => 'Only jpeg,jpg,png formats accepted',
                 'photo.max' => 'The :attribute must not sized over 2Mo',
             ]
@@ -585,7 +577,7 @@ class AdminController extends Controller{
  
         if ($validator->fails()) {
 
-            return back()->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->withInput(['tab'=>'update']);
 
         }else{
 
@@ -597,7 +589,7 @@ class AdminController extends Controller{
                 if(Session::has('photo')){
                     $photoPath = Session::get('photo');
                 }else{
-                    $photoPath = "administrators/leopard.jpg";
+                    $photoPath = "noPath";
                 }
             }
 
@@ -606,10 +598,7 @@ class AdminController extends Controller{
             $birthdate = $request->input('birthdate');
             $email = $request->input('email');
             $phone = $request->input('phone');
-            $password = md5(sha1($request->input('password')));
             $home = $request->input('home');
-            $longitude = $request->input('lng');
-            $latitude = $request->input('lat');
             
 
             $url = "http://localhost:4000/admin/auth/update";
@@ -624,12 +613,78 @@ class AdminController extends Controller{
                 'name' => $name,
                 'birthday' => $birthdate,
                 'phone' => $phone,
-                'password' => $password,
                 'email' => $email,
                 "profileImage" => $photoPath,
                 "description" => $home,
-                "longitude" => $longitude,
-                "latitude" => $latitude,
+            );
+            $data_json = json_encode($data);
+
+            // print_r($data_json);
+            
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+             //curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+            curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response  = curl_exec($ch);
+            curl_close($ch); 
+
+            $response = json_decode($response);
+
+            //print_r($response);
+            
+            if ($response->status == 200){
+                $request->session()->put('name',$name);
+                $request->session()->put('photo',$photoPath);
+                Session::flash('message', 'Action Successfully done!');
+                Session::flash('alert-class', 'alert-success');
+                return redirect()->back()->withInput(['tab'=>'update']);
+                
+            }else{
+                Session::flash('message', ucfirst($response->error));
+                Session::flash('alert-class', 'alert-danger');
+                return redirect()->back()->withInput(['tab'=>'update']);
+            }
+        }
+        
+    }
+
+    public function changePassword(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'newpassword' => 'bail|required|regex:/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,15}$/',
+            'confirmpassword' => 'bail|required|same:newpassword',
+            ],
+
+            $messages = [
+                'confirmpassword.same' => 'Confirm your password',
+                'newpassword.regex' => 'Between 8 and 15 characters - Minimum one uppercase letter and one number digit - Minimum one special character !@#$%^&*-',
+            ]
+        );
+
+
+        if ($validator->fails()) {
+
+            return back()->withErrors($validator)->withInput(['tab'=>'password_form']);
+
+        }else{
+
+            $newpassword = md5(sha1($request->input('newpassword')));
+            $oldpassword = md5(sha1($request->input('oldpassword')));
+            
+            $url = "";
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            $Authorization = 'Bearer '.$tokenVal;
+
+            $data = array(
+                'oldpassword' => $oldpassword,
+                'newpassword' => $newpassword,
             );
             $data_json = json_encode($data);
 
@@ -650,82 +705,15 @@ class AdminController extends Controller{
             // print_r($response);
             
             if ($response->status == 200){
-                $request->session()->put('name',$name);
-                $request->session()->put('photo',$photoPath);
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
-                return redirect()->back();
+                return redirect()->back()->withInput(['tab'=>'password_form']);
                 
             }else{
                 Session::flash('message', ucfirst($response->error));
                 Session::flash('alert-class', 'alert-danger');
-                return redirect()->back();
+                return redirect()->back()->withInput(['tab'=>'password_form']);
             }
-        }
-        
-    }
-
-    public function changePassword(Request $request){
-
-        $validator = Validator::make($request->all(), [
-            'password' => 'bail|required|regex:/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,15}$/',
-            'confirmpassword' => 'bail|required|same:password',
-            ],
-
-            $messages = [
-                'confirmpassword.same' => 'Confirm your password',
-                'password.regex' => 'Between 8 and 15 characters - Minimum one uppercase letter and one number digit - Minimum one special character !@#$%^&*-',
-            ]
-        );
-
-
-        if ($validator->fails()) {
-
-            return back()->withErrors($validator)->withInput();
-
-        }else{
-
-            $password = md5(sha1($request->input('password')));
-            
-            $url = "";
-            $alltoken = $_COOKIE['token'];
-            $alltokentab = explode(';', $alltoken);
-            $token = $alltokentab[0];
-            $tokentab = explode('=',$token);
-            $tokenVal = $tokentab[1];
-            $Authorization = 'Bearer '.$tokenVal;
-
-            $data = array(
-                'password' => $password,
-            );
-            $data_json = json_encode($data);
-
-            // print_r($data_json);
-            
-            // $ch = curl_init();
-            // curl_setopt($ch, CURLOPT_URL, $url);
-            // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
-            //  //curl_setopt($ch, CURLOPT_POST, 1);
-            // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-            // curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
-            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            // $response  = curl_exec($ch);
-            // curl_close($ch); 
-
-            // $response = json_decode($response);
-
-            // print_r($response);
-            
-            // if ($response->status == 200){
-            //     Session::flash('message', 'Action Successfully done!');
-            //     Session::flash('alert-class', 'alert-success');
-            //     return redirect()->back();
-                
-            // }else{
-            //     Session::flash('message', ucfirst($response->error));
-            //     Session::flash('alert-class', 'alert-danger');
-            //     return redirect()->back();
-            // }
         }
     }
 
@@ -734,12 +722,8 @@ class AdminController extends Controller{
         $maintenance = $request->input('maintenance');
         $meterprice = $request->input('meterprice');
 
-        $data = array(
-            'meterprice' => $meterprice,
-            'maintenance' => $maintenance,
-        );
 
-        $url = "";
+        $url = "http://localhost:4000/admin/facture/staticInformation";
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
@@ -748,36 +732,37 @@ class AdminController extends Controller{
         $Authorization = 'Bearer '.$tokenVal;
 
         $data = array(
-            'password' => $password,
+            'prixUnitaire' => $meterprice,
+            'fraisEntretien' => $maintenance,
         );
+        
         $data_json = json_encode($data);
 
         // print_r($data_json);
         
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, $url);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
-        //  //curl_setopt($ch, CURLOPT_POST, 1);
-        // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-        // curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // $response  = curl_exec($ch);
-        // curl_close($ch); 
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        curl_close($ch); 
 
-        // $response = json_decode($response);
+        $response = json_decode($response);
 
         // print_r($response);
         
-        // if ($response->status == 200){
-        //     Session::flash('message', 'Action Successfully done!');
-        //     Session::flash('alert-class', 'alert-success');
-        //     return redirect()->back();
+        if ($response->status == 200){
+            Session::flash('message', 'Action Successfully done!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back()->withInput(['tab'=>'settings']);
             
-        // }else{
-        //     Session::flash('message', ucfirst($response->error));
-        //     Session::flash('alert-class', 'alert-danger');
-        //     return redirect()->back();
-        // }
+        }else{
+            Session::flash('message', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back()->withInput(['tab'=>'settings']);
+        }
 
     }
 

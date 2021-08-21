@@ -125,7 +125,7 @@
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Manage Products</h1>
+    <h1 class="h3 mb-0 text-gray-800">Manage Products - Use </h1>
 </div>
 
 <div class="row">
@@ -133,7 +133,7 @@
     <div class="col-lg-12">
         <div class="card mb-4">
             <div class="card-header">
-                Remove a product
+                Use a product
             </div>
             <div class="card-body">
 

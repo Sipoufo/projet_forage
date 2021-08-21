@@ -25,42 +25,44 @@
 <!-- Type Modal -->
 <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Create a product Type</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create a product Type</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/admin/products_types/create" class="user">
+                    @csrf
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-user"
+                            name="type" placeholder="Enter the type" required>
+                    </div>
+                    <hr>
+                    <div class="row float-right mt-3">
+                        <a href="#">
+                            <button href="#" class="btn btn-primary btn-user" name="submit" type="submit">
+                                Proceed
+                            </button>
+                        </a>
+                        <a href="#">
+                            <button class="btn btn-secondary btn-user ml-2" type="button" data-dismiss="modal">Cancel</button>
+                        </a>
+                    </div>
+                </form>
+                
+            </div>
+           <!--  <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" type="submit" id="edit" href="#">Proceed</a>
+            </div> -->
         </div>
-        <div class="modal-body">
-            <form method="post" action="/admin/products_types/create" class="user">
-                @csrf
-                <div class="form-group">
-                    <input type="text" class="form-control form-control-user"
-                        name="type" placeholder="Enter the type" required>
-                </div>
-                <hr>
-                <div class="row float-right mt-3">
-                    <a href="#">
-                        <button href="#" class="btn btn-primary btn-user" name="submit" type="submit">
-                            Proceed
-                        </button>
-                    </a>
-                    <a href="#">
-                        <button class="btn btn-secondary btn-user ml-2" type="button" data-dismiss="modal">Cancel</button>
-                    </a>
-                </div>
-            </form>
-            
-        </div>
-       <!--  <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" type="submit" id="edit" href="#">Proceed</a>
-        </div> -->
     </div>
 </div>
-</div>
+
+
 
 <!-- Paid Modal-->
 <div class="modal fade" id="activeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
