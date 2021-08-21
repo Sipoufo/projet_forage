@@ -73,7 +73,7 @@ class ManageAdminController extends Controller
                 $photoPath = $request->image->storeAs('/administrators',$photo);   
             }else{
                 $photo = "";
-                $photoPath = "administrators/leopard.jpg";
+                $photoPath = "noPath";
             }
 
             $firstname = $request->input('firstname');
@@ -83,6 +83,9 @@ class ManageAdminController extends Controller
             $phone = $request->input('phone');
             $home = $request->input('home');
             $password = md5(sha1($request->input('password')));
+
+            $lat = $request->input('lat');
+            $lng = $request->input('lng');
             
 
             $url = "http://localhost:4000/admin/auth/register";
@@ -100,6 +103,8 @@ class ManageAdminController extends Controller
                 'password' => $password,
                 'email' => $email,
                 "description" => $home,
+                "longitude" => $lng,
+                "latitude" => $lat,
                 "profileImage" => $photoPath,
             );
             $data_json = json_encode($data);
@@ -192,7 +197,7 @@ class ManageAdminController extends Controller
                 $photoPath = $request->image->storeAs('/customers',$photo);   
             }else{
                 $photo = "";
-                $photoPath = "customers/Cascade.jpg";
+                $photoPath = "noPath";
             }
 
             $firstname = $request->input('firstname');
@@ -203,6 +208,9 @@ class ManageAdminController extends Controller
             $home = $request->input('home');
             $identifier = $request->input('identifier');
             $password = md5(sha1($request->input('password')));
+
+            $lat = $request->input('lat');
+            $lng = $request->input('lng');
             
             // return $firstname.' '.$lastname.' '.$birthdate.' '.$email.' '.$phone.' '.$home.' '.$identifier.' '.$password.' '.$photoPath;
 
@@ -221,6 +229,8 @@ class ManageAdminController extends Controller
                 'password' => $password,
                 'email' => $email,
                 "description" => $home,
+                "longitude" => $lng,
+                "latitude" => $lat,
                 "IdCompteur" => $identifier,
                 "profileImage" => $photoPath,
             );
@@ -353,10 +363,7 @@ class ManageAdminController extends Controller
             $birthdate = $request->input('birthdate');
             $email = $request->input('email');
             $phone = $request->input('phone');
-            $home = $request->input('home');
             $identifier = $request->input('identifier');
-            $longitude = $request->input('lng');
-            $latitude = $request->input('lat');
             
 
             $url = "http://localhost:4000/admin/manageCompte/client/update/".$id;
@@ -372,11 +379,8 @@ class ManageAdminController extends Controller
                 'birthday' => $birthdate,
                 'phone' => $phone,
                 'email' => $email,
-                "description" => $home,
                 "IdCompteur" => $identifier,
                 "profileImage" => $photoPath,
-                "longitude" => $longitude,
-                "latitude" => $latitude,
             );
             $data_json = json_encode($data);
 
@@ -440,6 +444,51 @@ class ManageAdminController extends Controller
             
         }else{
             Session::flash('error', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back();
+        }
+    }
+
+    public function location(Request $request){
+
+        $id = $request->input('id');
+        $description = $request->input('description');
+        $lat = $request->input('lat');
+        $lng = $request->input('lng');
+
+        $url = "http://localhost:4000/login/localisation/".$id;
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $data = array(
+            "description" => $description,
+            "longitude" => $lng,
+            "latitude" => $lat
+        );
+        $data_json = json_encode($data);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        curl_close($ch); 
+
+        $response = json_decode($response);
+        
+        if ($response->status == 200){
+            Session::flash('message', 'Action Successfully done!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back();
+            
+        }else{
+            Session::flash('message', ucfirst($response->error));
             Session::flash('alert-class', 'alert-danger');
             return redirect()->back();
         }

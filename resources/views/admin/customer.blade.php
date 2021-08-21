@@ -64,18 +64,10 @@
             >
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Payment information</h6>
-                <a class="collapse-item" href="/admin/facture">Facture</a>
+                <a class="collapse-item" href="/admin/facture">Invoices</a>
                 <a class="collapse-item" href="/admin/status">Status</a>
             </div>
             </div>
-        </li>
-
-        <!-- Nav Item - Payment -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/map">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Map</span>
-            </a>
         </li>
 
         <!-- Nav Item - Stock -->
@@ -166,20 +158,31 @@
             foreach($informations as $key => $info) { 
                 $location = $info['localisation'];
                 $description = $location['description'];
+
+                if($description != ""){
+                    $description = $location['description'];
+                }else{
+                    $description = "Not set";
+                }
+
                 $status = $info['status'];
                 $delete = $info['isDelete'];
 
                 if($delete){
                     $card='bg-danger';
                     $state = 'Deleted';
+                    $badge = 'badge-danger';
+
                 }elseif($status == 1){
                     $card='bg-success';
                     $class='btn-success';
                     $state = 'Active';
+                    $badge = 'badge-success';
                 }
                 else{
                     $card='bg-warning';
                     $class='btn-warning';
+                    $badge = 'badge-warning';
                     $state = 'Blocked';
                 }
 
@@ -187,64 +190,93 @@
                     $status = 0;
                 }
 
+
+                if($info['profileImage'] != "noPath"){
+                    $image = url('storage/'.$info['profileImage']);
+                }else{
+                    $image = "/img/undraw_profile.svg";
+                }
+
             ?>
             <div class="col-md-6 col-lg-4">
-                    <div class="card shadow mb-4">
+                    <div class="card shadow mb-4" style="width:18rem;">
                         <div class="card-header py-3 <?= $card ?>">
-            
-                                <h6 class="m-0 font-weight-bold text-white" style="font-size:25px;"><?=$info['name']?>
 
-                                <a href="/admin/customer/delete/<?= $info['_id'] ?>" class="btn <?= $card ?> float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
-                                    <span class="icon"  style="color:white;">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                </a>
+                            <div class="row">
 
-                                <a href="/admin/customer/edit/<?= $info['_id'] ?>" class="btn <?= $card ?> float-right" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                                    <span class="icon"  style="color:white;">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-                                </a>
+                                <img class="img-profile rounded-circle float-left" src='<?= $image ?>' width="50" height="50"/>
 
-                                </h6>
+                                <div class="ml-2" style="position:absolute;left:60;margin:auto;top:30;">
+                                    <h6 class="font-weight-bold text-white" style="font-size:18px;"><?=$info['name']?></h6>   
+                                </div>
+
+                            </div>
+                            
                         </div>
-                        <?php 
-                            if(!empty($info['profileImage'])){
-                                $image = url('storage/'.$info['profileImage']);
-                            }else{
-                                $image = "/img/undraw_profile.svg";
-                            }
+                        
+                        <div class="card-body ">
+                            <hr>
 
-                        ?>
-                        <div class="card-body text-center"><img class="img-profile rounded-circle w-75" src='<?= $image ?>' />
-                            <hr /> 
-                            <table>
-                                <tr>
-                                    <td>Nom : </td>
-                                    <td><?=$info['name'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Number: </td>
-                                    <td><?= $info['phone'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Address: </td>
-                                    <td><?= $description ?></td>
-                                </tr>
-                            </table>
+                            <div class="text-center">
+                            
+                                <table>
+                                    <tr>
+                                        <td>Number: </td>
+                                        <td><?= $info['phone'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address: </td>
+                                        <td><?= $description ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Meter ID: </td>
+                                        <td><?= $info['IdCompteur'] ?></td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <hr>
+                        </div>
+
+                        <div class="card-footer <?= $card?>" >
+
                             <?php
                                 if($delete){ ?>
-                                    <span class="text" style="font-size:25px;color:black;"><?= $state ?></span>       
+                                    <div class="text text-center" style="font-size:20px;color:black;"><?= $state ?></div>       
                             <?php }else{ ?>
 
-                                <a href="/admin/customer/block/<?= $info['_id']?>/<?= $status ?>" class="btn <?= $class ?> btn-icon-split text-center" style="margin-top:10px;">
+                                <a href="/admin/customer/block/<?= $info['_id']?>/<?= $status ?>" class="btn <?= $class ?>">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-exclamation-triangle"></i>
                                     </span>
                                     <span class="text" style="margin:auto;"><?= $state ?></span>
                                 </a>
 
-                            <?php } ?>
+                                <div class="float-right">
+
+                                    <a href="locationModal" id="toLocation" locate="<?= $info['_id'] ?>" data-toggle="modal" data-target="#locationModal" class="btn <?= $card ?> locationModal" data-bs-toggle="tooltip" data-bs-placement="bottom" title="location">
+                                        <span class="icon"  style="color:white;">
+                                            <i class="fas fa-globe"></i></i>
+                                        </span>
+                                    </a>
+
+                                    <a href="/admin/customer/edit/<?= $info['_id'] ?>" class="btn <?= $card ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                        <span class="icon"  style="color:white;">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </a>
+
+                                    <a href="/admin/customer/delete/<?= $info['_id'] ?>" class="btn <?= $card ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                                        <span class="icon"  style="color:white;">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                    </a>
+
+                                </div>
+
+                          <?php } ?> 
+
                         </div>
                     </div>
                 </div>
@@ -253,5 +285,100 @@
      ?>       
     
     </div> 
+
+
+    <!-- Location Modal -->
+    <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Location</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/admin/customer/location" class="user">
+                        @csrf
+                        <input type="hidden" id="id" name="id"  value="">
+                        <input type="hidden" name="lat" id="lat"  value="">
+                        <input type="hidden" name="lng" id="lng"  value="">
+
+                        <div class="input-group mt-3">
+                            <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
+                            <input type="text" class="form-control" placeholder="description of the location" id="description" name="description" value="" required>                
+                        </div>
+
+                        <div class="input-group mt-3">
+                            <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">Lat</i></span></div>
+                            <input type="number" class="form-control" name="latsee" id="latsee" value="" disabled>                
+                        </div>
+
+                        <div class="input-group mt-3">
+                            <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">Lng</i></span></div>
+                            <input type="text" class="form-control" name="lngsee" id="lngsee" value="" disabled>                
+                        </div>
+
+                        <hr>
+                        <div class="row float-right mt-3">
+                            <a href="#">
+                                <button href="#" class="btn btn-primary btn-user" name="submit" type="submit">
+                                    Proceed
+                                </button>
+                            </a>
+                            <a href="#">
+                                <button class="btn btn-secondary btn-user ml-2" type="button" data-dismiss="modal">Cancel</button>
+                            </a>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+    $("body").on('click','#toLocation',function(event){
+
+        event.preventDefault();
+
+        var id = $(this).attr('locate');
+
+       function myPosition(position) {
+
+        $('#lat').val(position.coords.latitude);
+        $('#latsee').val(position.coords.latitude);
+        $('#lng').val(position.coords.longitude);
+        $('#lngsee').val(position.coords.longitude);
+        $('#id').val(id);
+       }
+
+       function errorPosition(error) {
+          var info = "Error while getting your location : ";
+          
+          switch(error.code) {
+              case error.TIMEOUT:
+                  info += "Timeout !";
+              break;
+              case error.PERMISSION_DENIED:
+              info += "Permission denied";
+              break;
+              case error.POSITION_UNAVAILABLE:
+                  info += "Your location could not be determined";
+              break;
+              case error.UNKNOWN_ERROR:
+                  info += "Unknown Error";
+              break;
+          }
+       }
+
+      if(navigator.geolocation)
+        navigator.geolocation.getCurrentPosition(myPosition,errorPosition,{enableHighAccuracy:true});      
+    }); 
+
+    </script>
 
 @stop

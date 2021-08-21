@@ -58,7 +58,7 @@
             >
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Payment information</h6>
-                <a class="collapse-item" href="/admin/facture">Facture</a>
+                <a class="collapse-item" href="/admin/facture">Invoices</a>
                 <a class="collapse-item" href="/admin/status">Status</a>
             </div>
             </div>
@@ -124,8 +124,8 @@
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Manage Products</h1>
-    <a href="/admin/manage_products/remove" class="btn btn-primary"> Remove a product </a>
+    <h1 class="h3 mb-0 text-gray-800">Manage Products - Add</h1>
+    <a href="/admin/manage_products/remove" class="btn btn-primary"> Use a product </a>
 </div>
 
 <div class="row">

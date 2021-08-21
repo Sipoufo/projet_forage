@@ -58,7 +58,7 @@
             >
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Payment information</h6>
-                <a class="collapse-item" href="/admin/facture">Facture</a>
+                <a class="collapse-item" href="/admin/facture">Invoices</a>
                 <a class="collapse-item" href="/admin/status">Status</a>
             </div>
             </div>
@@ -128,87 +128,107 @@
         <h1 class="h3 mb-0 text-gray-800">Consumption</h1> 
     </div>
 
-        <div class="flex d-flex justify-content-between mb-1">
-            <!-- Detail Part -->
-            <form action="{{url('/admin/search_invoices')}}" method="post" role="form">
-                @csrf
-                <div class="flex d-flex align-items-center">
-                    entries :
-                    <select class="form-control ml-2" style="width: 70px;" id="select_size" name="select_size" value="<?= $size ?>">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                    </select>
-                    <input type="submit" name="send_pagination" id="send_pagination" placeholder="Show" class="ml-1 btn btn-primary">
+    <div class="flex d-flex justify-content-between mb-1">
+        <!-- Detail Part -->
+        <form action="{{url('/admin/search_invoices')}}" method="post" role="form">
+            @csrf
+            <div class="flex d-flex align-items-center">
+                entries :
+                <select class="form-control ml-2" style="width: 70px;" id="select_size" name="select_size" value="<?= $size ?>">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                </select>
+                <input type="submit" name="send_pagination" id="send_pagination" placeholder="Show" class="ml-1 btn btn-primary">
+            </div>
+        </form>
+        <form action="{{url('/admin/search_invoices')}}" method="post" role="form">
+            @csrf
+            <div class="flex d-flex align-items-center">
+                search By : 
+                <select class="form-control ml-2" name="type" id="type" style="width: 100px;">
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+                </select>
+                <input type="number" name="search" id="search" class="form-control ml-2" style="width: 100px;"/>
+                <input type="submit" name="send_search" id="send_search" class="ml-1 btn btn-primary">
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <!-- Detail Part -->
+        <div class="col-lg-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Invoices</h6>
                 </div>
-            </form>
-            <form action="{{url('/admin/search_invoices')}}" method="post" role="form">
-                @csrf
-                <div class="flex d-flex align-items-center">
-                    search By : 
-                    <select class="form-control ml-2" name="type" id="type" style="width: 100px;">
-                    <option value="month">Month</option>
-                    <option value="year">Year</option>
-                    </select>
-                    <input type="number" name="search" id="search" class="form-control ml-2" style="width: 100px;"/>
-                    <input type="submit" name="send_search" id="send_search" class="ml-1 btn btn-primary">
-                </div>
-            </form>
-        </div>
-        <div class="row">
-            <!-- Detail Part -->
-            <div class="col-lg-12">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Facture</h6>
-                    </div>
-                    <div class="card-body container-fluid">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                        <thead class="thead thead-danger">
-                        <tr>
-                            <th>Name</th>
-                            <th style="text-align: center">Consumption</th>
-                            <th style="text-align: center">Amount</th>
-                            <th style="text-align: center">UnPaid</th>
-                            <th style="text-align: center">Pénalité</th>
-                            <th style="text-align: center">Date Paiement</th>
-                            <th style="text-align: right">Action</th>
-                        </tr>
-                        </thead>
+                <div class="card-body container-fluid">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                    <thead class="thead thead-danger">
+                    <tr>
+                        <th>Name</th>
+                        <th style="text-align: center">Consumption</th>
+                        <th style="text-align: center">Amount</th>
+                        <th style="text-align: center">UnPaid</th>
+                        <th style="text-align: center">Pénalité</th>
+                        <th style="text-align: center">Date Paiement</th>
+                        <th style="text-align: right">Action</th>
+                    </tr>
+                    </thead>
 
-                        <tbody>
-                            @foreach($invoices as $invoice)
-                            <tr>
-                                <td>{{$client[$loop ->index]->name}}</td>
-                                <td style="text-align: center">{{$invoice -> consommation}} m<sup>3</sup></td>
-                                <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
-                                <td style="text-align: center">{{$invoice -> montantImpaye}} FCFA</td>
-                                <td style="text-align: center">{{$invoice -> penalite}} FCFA</td>
-                                <td style="text-align: center">{{$invoice -> dateFacturation}}</td>
-                                <td style="text-align: right">
-                                    <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-primary pull-right">
-                                        <i class="fa fa-pencil-alt" style="font-size: 20px;">
-                                        </i> 
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                        </table>
-                    </div>
-                    </div>
+                    <tbody>
+                        @foreach($invoices as $invoice)
+                        <tr>
+                            <td>{{$client[$loop ->index]->name}}</td>
+                            <td style="text-align: center">{{$invoice -> consommation}} m<sup>3</sup></td>
+                            <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
+                            <td style="text-align: center">{{$invoice -> montantImpaye}} FCFA</td>
+                            <td style="text-align: center">{{$invoice -> penalite}} FCFA</td>
+                            <td style="text-align: center">{{$invoice -> dateFacturation}}</td>
+                            <td style="text-align: right">
+                                <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-primary pull-right">
+                                    <i class="fa fa-pencil-alt" style="font-size: 20px;">
+                                    </i> 
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    </table>
+                </div>
                 </div>
             </div>
         </div>
-        <div class="flex d-flex justify-content-end mb-1">
-            <!-- Detail Part -->
-            @for($i = 0; $i < $page; $i++)
-                <a href="{{ url('/admin/consumption/page/'.($i+1).'/size/'.$size) }}">
-                <button class="ml-1 btn btn-primary"  style="width: 40px;" name="page_search" id="page_search">{{$i + 1}}</button>
+    </div>
+    <div class="flex d-flex justify-content-end mb-1">
+        <div style="border: 1px; border-style: solid; border-radius: 5px;">
+            @if($previous_page > 1 || ($previous_page == 1 && $page_en_cours > 1))
+                <a href="{{ url('/admin/consumption/page/'.$previous_page.'/size/'.$size) }}">
+                    <button class="btn bg-white"> <i class="fas fa-angle-double-left" style="color: blue;"></i> </button>
                 </a>
-            @endfor
+                <a href="{{ url('/admin/consumption/page/'.$previous_page.'/size/'.$size) }}">
+                    <button class="btn bg-white" style="color: blue;border-radius: 0px;">{{$previous_page}}</button>
+                </a>
+            @else
+                <button class="btn bg-white" style="border-radius: 0px;"> <i class="fas fa-angle-double-left"></i> </button>
+            @endif
+            <!-- Detail Part -->
+            <a href="{{ url('/admin/consumption/page/'.$page_en_cours.'/size/'.$size) }}">
+                    <button class="btn btn-primary"  style="width: 40px;border-radius: 0px;" name="page_search" id="page_search">{{$page_en_cours}}</button>
+            </a>
+            @if($next_page > 1)
+                <a href="{{ url('/admin/consumption/page/'.$next_page.'/size/'.$size) }}">
+                    <button class="btn"  style="width: 40px;border-radius: 0px; color: black;" name="page_search" id="page_search">{{$next_page}}</button>
+                </a>
+                <a href="{{ url('/admin/consumption/page/'.$next_page.'/size/'.$size) }}">
+                    <button class="btn bg-white" style="width: 40px;border: none;border-radius: 0px;"> <i class="fas fa-angle-double-right" style="color: blue;"></i> </button>
+                </a>
+            @else
+                <button class="btn bg-white" style="width: 40px;border-radius: 0px;"> <i class="fas fa-angle-double-right"></i> </button>
+            @endif
         </div>
+    </div>
 
 @stop

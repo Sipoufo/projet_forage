@@ -58,7 +58,7 @@
             >
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Payment information</h6>
-                <a class="collapse-item" href="/admin/facture">Facture</a>
+                <a class="collapse-item" href="/admin/facture">Invoices</a>
                 <a class="collapse-item" href="/admin/status">Status</a>
             </div>
             </div>
@@ -297,7 +297,7 @@
                 }else{
                     $nextDisabled = '';
                     $nextAriadisabled = '';
-                    $nextHref = '/admin/stock/'.$nextPage;
+                    $nextHref = '/admin/stock/'.$nextPage ;
                 }
 
             ?>
@@ -311,18 +311,18 @@
                       </a>
                     </li>
                     <?php 
-                        for($i=1; $i<=$totalPages; $i++){
+                        // for($i=1; $i<=$totalPages; $i++){
 
-                            if($page == $i){
-                                $active = 'active';
-                                $ariacurrent = 'page'; 
-                            }else{
-                                $active = '';
-                                $ariacurrent = '';
-                            }
+                        //     if($page == $i){
+                        //         $active = 'active';
+                        //         $ariacurrent = 'page'; 
+                        //     }else{
+                        //         $active = '';
+                        //         $ariacurrent = '';
+                        //     }
+                         // }
                     ?>
-                    <li class="page-item <?= $active ?>" aria-current="<?= $ariacurrent ?>"><a class="page-link" href="/admin/stock/<?= $i ?>"><?= $i ?></a></li>
-                    <?php } ?>
+                    <li class="page-item active" aria-current="page"><a class="page-link" href="/admin/stock/<?= $page ?>"><?= $page ?></a></li>
                     
                     <li class="page-item <?=$nextDisabled?>">
                       <a class="page-link" href="<?= $nextHref ?>" aria-label="Next" aria-disabled="<?=$nextAriadisabled?>">
@@ -406,9 +406,9 @@
                     <form method="post" action="/admin/stock/update" class="user" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-
-                        <input type="hidden" name="id" id="id" value="">
-
+                        
+                        <input type="hidden" id="id" name="id"  value="">
+                        
                         <div class="form-group">
                             <input type="text" class="form-control @error('name') is-invalid @enderror"
                                 id="name" name="name" placeholder="Enter your product name" value="" required>

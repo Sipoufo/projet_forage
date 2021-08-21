@@ -58,7 +58,7 @@
             >
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Payment information</h6>
-                <a class="collapse-item" href="/admin/facture">Facture</a>
+                <a class="collapse-item" href="/admin/facture">Invoices</a>
                 <a class="collapse-item" href="/admin/status">Status</a>
             </div>
             </div>
@@ -171,12 +171,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-
-                <?php $localisation = $data['localisation']; ?>  
-                <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
-                    <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="<?= $localisation['description']?>" required>                
-                </div>
                   
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-water'></i></span></div>
@@ -191,8 +185,6 @@
                     @enderror              
                 </div>
                 <input type="hidden" name="profileImage" id="profileImage" value="<?= $data['profileImage']?>"/>
-                <input type="hidden" name="lat" id="lat" value="<?= $localisation['latitude']?>"/> 
-                <input type="hidden" name="lng" id="lng" value="<?= $localisation['longitude']?>"/>
 
                 <div class="row float-right mt-3"> 
                     <a href="/admin/customer">

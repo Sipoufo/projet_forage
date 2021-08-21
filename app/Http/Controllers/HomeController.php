@@ -73,30 +73,28 @@ class HomeController extends Controller
 
 	        	}else{
 
-			        if(!empty($location['longitude']) && !empty($location['latitude'])){
+	        		$request->session()->put('id',$userdata['_id']);
+			        $request->session()->put('name',$userdata['name']);
+			        $request->session()->put('profile',$userdata['profile']);
 
-			              $request->session()->put('id',$userdata['_id']);
-			        	  $request->session()->put('name',$userdata['name']);
-			        	  $request->session()->put('profile',$userdata['profile']);
+	        	  	if(array_key_exists('profileImage', $userdata)){
+	        		$request->session()->put('photo',$userdata['profileImage']);
+	        	  	}
 
-			        	  if(array_key_exists('profileImage', $userdata)){
-			        		$request->session()->put('photo',$userdata['profileImage']);
-			        	  }
-			        	  // $request->session()->put('photo',$userdata['profileImage']);
+	        	  	setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
 
-			              setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
+		            if($userdata['profile'] != 'user'){
+		              return redirect()->route('adminHome');
+		            }else{
+		              return redirect()->route('clientHome');
+		            }
+			     //    if(!empty($location['longitude']) && !empty($location['latitude'])){
 
-			              if($userdata['profile'] != 'user'){
-			              	return redirect()->route('allInvoicesThatHaveAdvenced');
-			              }else{
-			              	return redirect()->route('clientHome');
-			              } 
-			              
-			        }else{
-			        	  $request->session()->put('profile',$userdata['profile']);
-						  setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
-			              return redirect()->route('seeClauses');
-			        }
+			     //    }else{
+			     //    	  $request->session()->put('profile',$userdata['profile']);
+						  // setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
+			     //          return redirect()->route('seeClauses');
+			     //    }
 	        	}
 
 	        }
@@ -118,7 +116,8 @@ class HomeController extends Controller
 
     public function adminHome()
 	{
-        $alltoken = $_COOKIE['token'];
+
+		$alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
         $tokentab = explode('=',$token);
@@ -128,7 +127,7 @@ class HomeController extends Controller
         $curl = curl_init();
         
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://localhost:4000/admin/facture/2021/08/20/1',
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/getByStatus/false',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -144,39 +143,34 @@ class HomeController extends Controller
         $response = json_decode($response);
     
         $i=0;
-        $invoices = array();
-		$bill = array();
+        $invoicesAdvenced = array();
+        //echo "je";
+
+        $year = date("Y");
+        //echo $year;
+        
+        $month = date("m");
+        //echo $month;
+
         foreach($response as $key => $value){
             if($i >= 1){
                 //echo $value;
-				$bill = $value;
+                $invoicesAdvenced = $value;
                 //dump($value);
             }
             $i = $i + 1;
             //dump($key);
         }
 
-		//dump($bill);
-		
-    	// return view('admin/dashboard',['invoices' => $invoicesAdvenced]);
-
-		foreach($bill as $value){
-            if($i >= 1){
-                //echo $value;
-				if (($value -> montantImpaye != 0) && ($value -> montantImpaye > 0)) {
-					array_push($invoices,$value);
-				}
-                //dump($invoices);
-            }
-            $i = $i + 1;
-            //dump($key);
+        //dump($invoicesAdvenced);
+        if (gettype($invoicesAdvenced) != "array") {
+            // echo "je t'aime";
+            $invoicesAdvenced = array();
         }
-
-        //dump($invoices);
 
         $client = array();
 
-        foreach($invoices as $invoice){
+        foreach($invoicesAdvenced as $invoice){
 
             $idClient = $invoice -> idClient;
             //echo $idClient;
@@ -210,11 +204,162 @@ class HomeController extends Controller
             }
         
         }
+    
+        $ch = curl_init();
+            
+        curl_setopt_array($ch, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/'.$year.'/'.$month.'/1000/1',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $re = curl_exec($ch);
+        curl_close($ch);
+        $res = json_decode($re);
 
-        //dump($client);
-        //curl_close($url);
-        return view('admin/dashboard',['invoices' => $invoices, 'client' => $client]);
-        //return view('admin/facture',['invoices' => $invoices]);
+        $earnly = 0;
+        $invoices_paid = array();
+        $invoices_month = array();
+        $invoices_year = array();
+        $row = 0;
+        
+        foreach($res as $key => $value){
+            if($i >= 3){
+                $row = count($value);
+                if ($row > 0) {
+                    if ($value->facturePay) {
+                        $earnly = $value->montantVerse + $earnly;
+                        //array_push($invoices_paid,$value);
+                        $invoices_paid = $value;
+                    }
+                    $invoices_month = $value;
+                }
+            }
+            $i = $i + 1;
+        }
+        
+        $people = array();
+        $number0fClient = 0;
+        
+        if ($invoices_paid > 0) {
+            foreach($invoices_paid as $invoice){
+
+                $idClient = $invoice->idClient;
+                $url = curl_init();
+                curl_setopt_array($url, array(
+                    CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'GET',
+                    CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+                ));
+                
+                $response = curl_exec($url);
+                $response = json_decode($response);
+            
+                $i=0;
+
+                foreach($response as $key => $value){
+                    if($i >= 1){
+                        array_push($people,$value);
+                    }
+                    $i = $i + 1;
+                }
+            }
+        }
+        $number0fClient = count($people);
+        
+        $url_client = curl_init();
+        curl_setopt_array($url_client, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $user = curl_exec($url_client);
+        $user = json_decode($user);
+        $user_list = array();
+    
+        foreach($user as $key => $value){
+            if($i >= 3){
+                $user_list = $value;
+            }
+            $i = $i + 1;
+        }
+        $numberOfAllClient = count($user_list);
+        $pourcent = ($number0fClient / $numberOfAllClient) * 100;
+        //dump($invoicesAdvenced);
+
+        // annuel
+        $url_annuel = curl_init();
+        curl_setopt_array($url_annuel, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/factureByYear/'.$year,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $invoices_annuel = curl_exec($url_annuel);
+        $invoices_annuel = json_decode($invoices_annuel);
+        $invoices_annuel_list = array();
+    
+        foreach($invoices_annuel as $key => $value){
+            if($i >= 3){
+                $invoices_annuel_list = $value;
+            }
+            $i = $i + 1;
+        }
+
+
+        $url1 = "http://localhost:4000/stock/getAll";
+        $data1 = array(
+            'page' => 1,
+            'limit' => 0,
+        );
+        $data_json1 = json_encode($data1);
+        
+        $ch1 = curl_init();
+        curl_setopt($ch1, CURLOPT_URL, $url1);
+        curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch1, CURLOPT_POST, 1);
+        curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
+        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+        $response1  = curl_exec($ch1);
+        curl_close($ch1); 
+        $response1 = json_decode($response1,true);
+        $data1= $response1['result']['docs'];
+
+
+        return view('admin/dashboard',[
+            'invoices' => $invoicesAdvenced, 
+            'client' => $client,
+            'pourcent' => $pourcent,
+            'earnly' => $earnly,
+            'earnly_invoices' => $invoices_annuel_list,
+            'materials' => $data1
+        ]);
+
     }
     
 }

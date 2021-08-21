@@ -58,7 +58,7 @@
             >
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Payment information</h6>
-                <a class="collapse-item" href="/admin/facture">Facture</a>
+                <a class="collapse-item" href="/admin/facture">Invoices</a>
                 <a class="collapse-item" href="/admin/status">Status</a>
             </div>
             </div>
@@ -142,7 +142,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
 <!-- Content Row -->
 <div class="row">
 <!-- Earnings (Monthly) Card Example -->
-<div class="col-xl-3 col-md-6 mb-4">
+<div class="col-xl-4 col-md-6 mb-4">
   <div class="card border-left-primary shadow h-100 py-2">
     <div class="card-body">
       <div class="row no-gutters align-items-center">
@@ -158,7 +158,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
             Earnings (Monthly)
           </div>
           <div class="h5 mb-0 font-weight-bold text-gray-800">
-            400 000Fcfa
+            {{$earnly}}Fcfa
           </div>
         </div>
         <div class="col-auto">
@@ -170,7 +170,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
 </div>
 
 <!-- Earnings (Monthly) Card Example -->
-<div class="col-xl-3 col-md-6 mb-4">
+<!--<div class="col-xl-3 col-md-6 mb-4">
   <div class="card border-left-success shadow h-100 py-2">
     <div class="card-body">
       <div class="row no-gutters align-items-center">
@@ -195,10 +195,10 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
       </div>
     </div>
   </div>
-</div>
+</div>-->
 
 <!-- Earnings (Monthly) Card Example -->
-<div class="col-xl-3 col-md-6 mb-4">
+<div class="col-xl-4 col-md-6 mb-4">
   <div class="card border-left-info shadow h-100 py-2">
     <div class="card-body">
       <div class="row no-gutters align-items-center">
@@ -224,7 +224,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
                   text-gray-800
                 "
               >
-                80%
+                {{$pourcent}}%
               </div>
             </div>
             <div class="col">
@@ -232,7 +232,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
                 <div
                   class="progress-bar bg-info"
                   role="progressbar"
-                  style="width: 50%"
+                  style="width: {{$earnly}}%"
                   aria-valuenow="50"
                   aria-valuemin="0"
                   aria-valuemax="100"
@@ -252,7 +252,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
 </div>
 
 <!-- Pending Requests Card Example -->
-<div class="col-xl-3 col-md-6 mb-4">
+<div class="col-xl-4 col-md-6 mb-4">
   <div class="card border-left-warning shadow h-100 py-2">
     <div class="card-body">
       <div class="row no-gutters align-items-center">
@@ -268,7 +268,17 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
             Nb. product remaining
           </div>
           <div class="h5 mb-0 font-weight-bold text-gray-800">
-            200
+            <?php
+              if($materials){
+                $left = 0;
+                foreach($materials as $material){
+                   $left += $material['quantity'];
+                }
+                echo $left;
+              }else{
+                echo '0';
+              }  
+            ?>
           </div>
         </div>
         <div class="col-auto">
@@ -303,9 +313,10 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
     </div>
     <!-- Card Body -->
     <div class="card-body">
-      <div class="chart-area">
+      <canvas id="lineChart"></canvas>
+      <!--<div class="chart-area">
         <canvas id="myAreaChart"></canvas>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>
@@ -318,7 +329,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
   <!-- Project Card Example -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Facture</h6>
+      <h6 class="m-0 font-weight-bold text-primary">Invoices</h6>
     </div>
     <div class="card-body container-fluid">
       <div class="table-responsive" *ngIf="classes.length>0">
@@ -456,6 +467,72 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
 </div>
 </div>
 
+<script>
 
+//line
+var ctxL = document.getElementById("lineChart").getContext('2d');
+var myLineChart = new Chart(ctxL, {
+type: 'line',
+data: {
+labels: ["January", "February", "March", "April", "May", "June", "July","August","September","October","November","December"],
+datasets: [
+{
+label: "Invoices",
+data: [
+    <?php
+
+if(isset($earnly_invoices)){
+
+  $dates = ["January", "February", "March", "April", "May", "June", "July","August","September","October","November","December"];
+
+    //Datas
+    $tbl_data = array(); //data table
+    $k = 0; //counter
+    foreach ($dates as $date) {
+
+      $data= 0;
+
+      foreach ($earnly_invoices as $material => $value){
+        //dump($value -> dateFacturation);
+        if(date('F', strtotime($date)) == date('F', strtotime($value -> dateFacturation))){
+          $data += $value -> montantVerse;
+        }
+      }
+
+      $tbl_data[$k] = $data;
+      $k++;
+      // echo '"'.$data.'"';
+    }
+
+    $c = 0; //counter
+    foreach ($tbl_data as $data) {
+      echo '"'.$data.'"';
+      if($c<(count($tbl_data)-1)){
+        echo ', ';
+      }
+      $c++;
+    }
+
+}
+        
+    ?>
+],
+backgroundColor: [
+'rgba(0, 137, 132, .2)',
+],
+borderColor: [
+'rgba(0, 10, 130, .7)',
+],
+borderWidth: 2
+}
+]
+},
+options: {
+responsive: true
+}
+});
+
+
+</script>
 
 @stop

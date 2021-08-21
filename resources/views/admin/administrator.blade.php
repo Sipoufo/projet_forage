@@ -58,7 +58,7 @@
             >
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Payment information</h6>
-                <a class="collapse-item" href="/admin/facture">Facture</a>
+                <a class="collapse-item" href="/admin/facture">Invoices</a>
                 <a class="collapse-item" href="/admin/status">Status</a>
             </div>
             </div>
@@ -165,7 +165,7 @@
                     $phone = $info['phone'];
                     $registered_at = date('d-m-Y H:i:s', strtotime($info['createdAt'])); 
 
-                    if(!empty($info['profileImage'])){
+                    if($info['profileImage'] != "noPath"){
                         $image = url('storage/'.$info['profileImage']);
                     }else{
                         $image = "/img/undraw_profile.svg";
@@ -251,6 +251,7 @@
         </tbody>
       </table>
     </div>
-    <?php } ?>        
+    <?php } ?> 
+
 
 @stop
