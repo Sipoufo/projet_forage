@@ -47,14 +47,17 @@
                     
                 @endif
 
+                {{-- <div class="d-none d-lg-block position-absolute" style="left: 40%; z-index: 1;"><img src="images/icons/Logo.png" class="rounded-circle" alt="" style="width: 60%"></div>
+                <div class="d-block d-lg-none position-absolute" style="left: 28%; z-index: 1;"><img src="images/icons/Logo.png" class="rounded-circle" alt="" style="width: 63%"></div> --}}
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image" style="z-index: 0"></div>
+                            <div class="col-lg-6" style="z-index: 0">
+                                <div class="d-none d-lg-block position-absolute ml-5"><img src="images/icons/logo1.png" style="width:80%"></div>
                                 <div class="p-5">
-                                    <div class="text-center">
+                                    <div class="text-center mt-5">
                                         <h1 class="h4 text-gray-900 mb-4">Sign In</h1>
 
                                         @if(Session::has('message'))

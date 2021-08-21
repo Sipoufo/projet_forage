@@ -21,14 +21,11 @@
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/css/admin_invoice.css" rel="stylesheet">
     <script src="/vendor/jquery/jquery.min.js"></script>
-<<<<<<< HEAD
     <script src="/js/admin_invoice.js"></script>
-=======
 
     <!-- Page level plugins -->
     <script src="{{asset('js/chart.js/Chart.min.js')}}"></script>
 
->>>>>>> 014df9bcf3da5b0c579b95663ac29d1c7bc48d85
 </head>
 <body id="page-top">
 
@@ -37,7 +34,7 @@
 
         <!-- Sidebar -->
         <ul
-        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+        class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion"
         id="accordionSidebar"
         >
         <!-- Sidebar - Brand -->
@@ -45,10 +42,7 @@
             class="sidebar-brand d-flex align-items-center justify-content-center"
             href="index.html"
         >
-            <div class="sidebar-brand-icon rotate-n-15">
-            <i class="far fa-grin-wink" style="font-size: 40px"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">Forage Admin</div>
+        <img src="/images/icons/logo3.png" style="width: 130%">
         </a>
 
         <!-- Divider -->

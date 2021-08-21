@@ -87,7 +87,7 @@ class HomeController extends Controller
 			              setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
 
 			              if($userdata['profile'] != 'user'){
-			              	return redirect()->route('adminHome');
+			              	return redirect()->route('allInvoicesThatHaveAdvenced');
 			              }else{
 			              	return redirect()->route('clientHome');
 			              } 
