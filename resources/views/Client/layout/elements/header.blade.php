@@ -39,10 +39,7 @@
             class="sidebar-brand d-flex align-items-center justify-content-center"
             href="index.html"
         >
-            <div class="sidebar-brand-icon rotate-n-15">
-            <i class="far fa-grin-wink" style="font-size: 40px"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">MENU</div>
+        <img src="/images/icons/logo3.png" style="width: 130%">
         </a>
 
         <!-- Divider -->

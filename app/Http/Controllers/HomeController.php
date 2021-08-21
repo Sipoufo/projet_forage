@@ -222,6 +222,7 @@ class HomeController extends Controller
         $re = curl_exec($ch);
         curl_close($ch);
         $res = json_decode($re);
+        // $res = $res->result;
 
         $earnly = 0;
         $invoices_paid = array();
@@ -229,6 +230,7 @@ class HomeController extends Controller
         $invoices_year = array();
         $row = 0;
         
+        print_r($res);
         foreach($res as $key => $value){
             if($i >= 3){
                 $row = count($value);
