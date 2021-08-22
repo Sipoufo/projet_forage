@@ -186,7 +186,7 @@
                             <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
                             <td style="text-align: center">{{$invoice -> montantImpaye}} FCFA</td>
                             <td style="text-align: center">{{$invoice -> penalite}} FCFA</td>
-                            <td style="text-align: center">{{$invoice -> dateFacturation}}</td>
+                            <td style="text-align: center">{{date('d-m-Y H:i:s', strtotime($invoice -> dateFacturation))}}</td>
                             <td style="text-align: right">
                                 <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-primary pull-right">
                                     <i class="fa fa-pencil-alt" style="font-size: 20px;">

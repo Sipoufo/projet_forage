@@ -184,7 +184,7 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">date Facturation</div>
-                            <input type="text" disabled class="form-control" placeholder="new index" id="newIndex" name="newIndex" value="<?= $invoice  -> dateFacturation?>" required>                  
+                            <input type="text" disabled class="form-control" placeholder="new index" id="newIndex" name="newIndex" value="<?= date('d-m-Y ', strtotime($invoice -> dateFacturation))?>" required>                  
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -198,13 +198,13 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Date of spicy</div>
-                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= $invoice  -> dateReleveNewIndex?>" required>                  
+                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= date('d-m-Y ', strtotime($invoice  -> dateReleveNewIndex))?>" required>                  
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Date Limit of paiement</div>
-                            <input type="text" disabled class="form-control" id="dataPaid" name="dataPaid" placeholder="Date of payement" value="<?= $invoice  -> dataLimitePaid?>" required>                  
+                            <input type="text" disabled class="form-control" id="dataPaid" name="dataPaid" placeholder="Date of payement" value="<?= date('d-m-Y ', strtotime($invoice  -> dataLimitePaid))?>" required>                  
                         </div>
                     </div>
                 </div>
@@ -243,7 +243,7 @@
                         @endif
                         <a href="/admin/home">
                             <a class="ml-2 btn btn-primary" type="button" href="{{ url('/admin/print/'.$invoice->_id) }}">Print to pdf</a>
-                            <button class="btn btn-secondary ml-2" type="button">Cancel</button>
+                            <button class="btn btn-secondary ml-2 back" type="button">Cancel</button>
                         </a>
                     </div>
                 </div>
@@ -288,4 +288,12 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+$('.back').on('click', function(){
+    history.back();
+});
+
+</script>
 @stop

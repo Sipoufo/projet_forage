@@ -252,7 +252,6 @@
         if($("#setLocation").is(':checked'))
 
             // checked
-            event.preventDefault();
 
            function myPosition(position) {
             $('#lat').val(position.coords.latitude);
