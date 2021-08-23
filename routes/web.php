@@ -149,8 +149,7 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/admin/facture',[AdminController::class, 'allClient']);
 
-		Route::post('/admin/facture/save',[AdminController::class, 'addBil']);
-		// Route::match(['post','get'], '/admin/facture/save', [AdminController::class, 'addBil']);
+		Route::match(['post','get'],'/facture/addInvoice',[AdminController::class, 'addOneInvoice']);
 
 		Route::get('/admin/status',[AdminController::class, 'adminStatus'])->name('adminStatus');
 
@@ -169,8 +168,6 @@ Route::group(['middleware' => 'checksession'], function () {
 		Route::match(['get','delete'],'/admin/products_types/delete/{id}',[AdminController::class, 'deleteType'])->name('deleteType');
 
 		Route::get('/admin/print/{invoice_id}',[AdminController::class, 'print']);
-
-		// Route::delete('/admin/remove',[AdminController::class, 'deleteProduct'])->name('adminDelete');
 
 		Route::get('/admin/stock/{id}',[AdminController::class, 'viewStock'])->name('viewStock');
 

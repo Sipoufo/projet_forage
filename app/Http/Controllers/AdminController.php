@@ -2014,10 +2014,11 @@ class AdminController extends Controller{
         return view('admin/facture',['users' => $users]);
     }
 
-    public function addBil()
+    public function addOneInvoice()
     {
-            // echo "Je passe";
-            $users = array();
+            // echo "Je passe ffffffffjjksksllslslls";
+            // var_dump("expression");
+            // $users = array();
             $message = null;
             $alltoken = $_COOKIE['token'];
             $alltokentab = explode(';', $alltoken);
@@ -2025,36 +2026,36 @@ class AdminController extends Controller{
             $tokentab = explode('=',$token);
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
-            echo "Ok : ".$Authorization;
+            // echo "Ok : ".$Authorization;
 
-            $curl = curl_init();
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'GET',
-                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
-            ));
+            // $curl = curl_init();
+            // curl_setopt_array($curl, array(
+            //     CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
+            //     CURLOPT_RETURNTRANSFER => true,
+            //     CURLOPT_ENCODING => '',
+            //     CURLOPT_MAXREDIRS => 10,
+            //     CURLOPT_TIMEOUT => 0,
+            //     CURLOPT_FOLLOWLOCATION => true,
+            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //     CURLOPT_CUSTOMREQUEST => 'GET',
+            //     CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            // ));
             
-            $response = curl_exec($curl);
-            curl_close($curl);
-            $response = json_decode($response);
+            // $response = curl_exec($curl);
+            // curl_close($curl);
+            // $response = json_decode($response);
         
-            $i=0;
+            // $i=0;
     
-            foreach($response as $key => $value){
-                if($i >= 1){
-                    //echo $value;
-                    $users = $value;
-                    //dump($value);
-                }
-                $i = $i + 1;
-                //dump($key);
-            }
+            // foreach($response as $key => $value){
+            //     if($i >= 1){
+            //         //echo $value;
+            //         $users = $value;
+            //         //dump($value);
+            //     }
+            //     $i = $i + 1;
+            //     //dump($key);
+            // }
 
 
             $curl = curl_init();
@@ -2074,7 +2075,9 @@ class AdminController extends Controller{
             $response = curl_exec($curl);
             curl_close($curl);
             $response = json_decode($response, true);
+
             if(array_key_exists('result', $response)) {
+
                 if($response['result']){
                     
 
@@ -2130,21 +2133,15 @@ class AdminController extends Controller{
 
                     $response = json_decode($response);
 
-                    // if ($response->status == 200){
-                    //     $messageOK = "Action Done Successfully";
-                    // }else{
-                    //     $messageErr = ucfirst($response->error);
-                    // }
-
                     if ($response->status == 200){
                         Session::flash('message', 'Action Successfully done!');
                         Session::flash('alert-class', 'alert-success');
-                        return redirect()->back()->withInput(['users' => $users]);
+                        return redirect()->back();
                         
                     }else{
                         Session::flash('message', ucfirst($response->error));
                         Session::flash('alert-class', 'alert-danger');
-                        return redirect()->back()->withInput(['users' => $users]);
+                        return redirect()->back();
                     }
 
                 }
@@ -2152,10 +2149,9 @@ class AdminController extends Controller{
                 $messageErr = "Please entrer the static informations <a href='/admin/profil'>Here</a>";
                 Session::flash('message', $messageErr);
                 Session::flash('alert-class', 'alert-danger');
-                return redirect()->back()->withInput(['users' => $users]);
+                return redirect()->back();
             }
 
-            // return view('admin/facture',['users' => $users,'messageOK' => $messageOK,'messageErr' => $messageErr]);
     }
 
     public function finance(){

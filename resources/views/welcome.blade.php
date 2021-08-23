@@ -79,8 +79,9 @@
 
                                         <hr>
                                         
-                                        <p style="font-size:20px;"><b><i class="fas fa-exclamation"></i> Important : If it is your fisrt time to sign in, you have to accept location in order to gain access to site.</b></p>
+                                        <p style="font-size:18px;" class="text-center"><b>Welcome to K-FOURRAGE</b></p>
 
+                                        <p class="text-center">We are at your service</p>
                                     </form>
                                     <hr>
                                     <div class="text-center">

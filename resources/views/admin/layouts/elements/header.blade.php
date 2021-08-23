@@ -23,7 +23,7 @@
 
     <script src="/vendor/jquery/jquery.min.js"></script>
 
-    <script src="/js/admin_invoice.js"></script>
+    <!-- <script src="/js/admin_invoice.js"></script> -->
 
 
     <!-- Page level plugins -->

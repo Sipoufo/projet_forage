@@ -139,14 +139,14 @@
                 </div>
             @endif
             
-            <form method="post" action="/admin/facture/save" class="col-lg-8 offset-lg-2">
+            <form method="post" action="/facture/addInvoice" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group mb-3">
                     <div class="input-group">Personnel</div>
         
                     <select name="idClient" id="idClient" class="form-control">
                         @foreach($users as $user)
-                            <option value={{$user -> _id}}>{{ $user -> name }}</option>
+                            <option value='{{$user->_id}}'>{{$user->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -165,7 +165,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <div class="input-group">Money</div>
-                    <input type="number" class="form-control" placeholder="money who give" id="amountPaid" name="amountPaid" required>                  
+                    <input type="number" class="form-control" placeholder="money given" id="amountPaid" name="amountPaid" required>                  
                 </div>
                 <div class="form-group mb-3">
                     <div class="input-group">Observation</div>
@@ -180,10 +180,12 @@
                     <input type="date" class="form-control" id="dataPaid" name="dataPaid" placeholder="Date of payement" required>                  
                 </div>
                 <div class="row float-right">
-                        <button class="btn btn-primary" type="submit">Register</button>
-                    <a href="/admin/administrator">
-                        <button class="btn btn-secondary ml-2" type="button">Cancel</button>
+                    <a href="#">
+                        <button class="btn btn-primary" name="submit" type="submit">Add</button>
                     </a>
+                    <!-- <a href="/admin/administrator">
+                        <button class="btn btn-secondary ml-2" type="button">Cancel</button>
+                    </a> -->
                 </div>
                 
             </form>
