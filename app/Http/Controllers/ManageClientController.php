@@ -329,8 +329,8 @@ class ManageClientController extends Controller
             $Authorization = 'Bearer '.$tokenVal;
 
             $data = array(
-                'oldpassword' => $oldpassword,
-                'newpassword' => $newpassword,
+                'oldPassword' => $oldpassword,
+                'newPassword' => $newpassword,
             );
             $data_json = json_encode($data);
 
@@ -389,6 +389,8 @@ class ManageClientController extends Controller
         curl_close($curl);
         $invoice = json_decode($response, true);
 
+        // print_r($invoice['result']);
+
         $curl2 = curl_init();
         curl_setopt_array($curl2, array(
             CURLOPT_URL => 'http://localhost:4000/client/auth/'.$invoice['result']['idClient'],
@@ -405,7 +407,6 @@ class ManageClientController extends Controller
         curl_close($curl2);
         $client = json_decode($response2, true);
         
-        print_r($client);
         $curl3 = curl_init();
         curl_setopt_array($curl3, array(
             CURLOPT_URL => 'http://localhost:4000/admin/auth/'.$invoice['result']['idAdmin'],
@@ -421,8 +422,8 @@ class ManageClientController extends Controller
         $response3 = curl_exec($curl3);
         curl_close($curl3);
         $admin = json_decode($response3, true);
-        // return view('facturePdf/generator',['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
-        // echo($admin['result']['phone']);
+
+        echo($admin['result']['phone']);
         
         $pdf = PDF::loadView('facturePdf/generator', ['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
         

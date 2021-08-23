@@ -134,6 +134,38 @@ class ManageAdminController extends Controller
         
     }
 
+    public function paidInvoice(Request $request){
+        $id = $request->input('id');
+
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $curl = curl_init();
+        
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://localhost:4000/admin/facture/statusPaidFacture/'.$id,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'PUT',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+            
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $response = json_decode($response, true);
+            print_r($response);
+
+            return redirect()->back();
+    }
+
 
     public function viewCustomers(){
 

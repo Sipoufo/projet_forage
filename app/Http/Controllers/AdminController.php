@@ -683,8 +683,8 @@ class AdminController extends Controller{
             $Authorization = 'Bearer '.$tokenVal;
 
             $data = array(
-                'oldpassword' => $oldpassword,
-                'newpassword' => $newpassword,
+                'oldPassword' => $oldpassword,
+                'newPassword' => $newpassword,
             );
             $data_json = json_encode($data);
 
@@ -2016,7 +2016,6 @@ class AdminController extends Controller{
 
     public function addOneInvoice()
     {
-            // echo "Je passe ffffffffjjksksllslslls";
             // var_dump("expression");
             // $users = array();
             $message = null;
@@ -2075,10 +2074,10 @@ class AdminController extends Controller{
             $response = curl_exec($curl);
             curl_close($curl);
             $response = json_decode($response, true);
-
+            print_r($response);
             if(array_key_exists('result', $response)) {
 
-                if($response['result']){
+                if(!empty($response['result'])){
                     
 
                     $newIndex = $_POST['newIndex'];
@@ -2094,15 +2093,26 @@ class AdminController extends Controller{
                     // je definie l'url de connexion.
                     $url = "http://localhost:4000/admin/facture/".$idClient;
                     // je definie la donnée de ma facture.
-                    $facture = array(
-                        'newIndex' => $newIndex,
-                        'observation' => $observation,
-                        'penalite' => $penalty,
-                        'dataPaid' => $dataPaid,
-                        'montantVerse' => $amountPaid,
-                        'dateReleveNewIndex' => $dateSpicy,
-                        'oldIndex' => $oldIndex,
-                    );
+                    if(!empty($observation)){
+                        $facture = array(
+                            'newIndex' => $newIndex,
+                            'observation' => $observation,
+                            'penalite' => $penalty,
+                            'dataPaid' => $dataPaid,
+                            'montantVerse' => $amountPaid,
+                            'dateReleveNewIndex' => $dateSpicy,
+                            'oldIndex' => $oldIndex,
+                        );
+                    }else {
+                        $facture = array(
+                            'newIndex' => $newIndex,
+                            'penalite' => $penalty,
+                            'dataPaid' => $dataPaid,
+                            'montantVerse' => $amountPaid,
+                            'dateReleveNewIndex' => $dateSpicy,
+                            'oldIndex' => $oldIndex,
+                        );
+                    }
 
                     // j'encode cette donnée là'.
                     $data_json = json_encode($facture);
@@ -2144,12 +2154,13 @@ class AdminController extends Controller{
                         return redirect()->back();
                     }
 
+                }else {
+                    echo "Je passe ffffffffjjksksllslslls";
+                    $messageErr = 'Please entrer the static informations in ';
+                    Session::flash('messageErr', $messageErr);
+                    Session::flash('alert-class', 'alert-danger');
+                    return redirect()->back();
                 }
-            }else {
-                $messageErr = "Please entrer the static informations <a href='/admin/profil'>Here</a>";
-                Session::flash('message', $messageErr);
-                Session::flash('alert-class', 'alert-danger');
-                return redirect()->back();
             }
 
     }

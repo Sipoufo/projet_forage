@@ -135,6 +135,8 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/admin/customer',[ManageAdminController::class, 'viewCustomers']);
 
+		Route::post('/admin/paidInvoce',[ManageAdminController::class, 'paidInvoice']);
+
 		Route::get('/admin/customer/addCustomer',[ManageAdminController::class, 'addCustomers']);
 
 		Route::post('/admin/customer/addCustomer/store',[ManageAdminController::class, 'storeCustomers']);

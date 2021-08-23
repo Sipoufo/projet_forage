@@ -38,30 +38,11 @@
         </li>
 
         <!-- Nav Item - Payment -->
-        <li class="nav-item active">
-            <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseUtilities"
-            aria-expanded="true"
-            aria-controls="collapseUtilities"
-            >
-            <i class="fas fa-file-invoice-dollar"></i>
-            <span>Payment</span>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/facture">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Invoices</span>
             </a>
-            <div
-            id="collapseUtilities"
-            class="collapse"
-            aria-labelledby="headingUtilities"
-            data-parent="#accordionSidebar"
-            >
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Payment information</h6>
-                <a class="collapse-item" href="/admin/facture">Invoices</a>
-                <a class="collapse-item" href="/admin/status">Status</a>
-            </div>
-            </div>
         </li>
 
         <!-- Nav Item - Stock -->
@@ -165,7 +146,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <div class="col-auto">
-                                        <a href="#.php" data-toggle="modal" data-target="#activeModal"><i class="fas fa-frown fa-2x" style='color:red'></i></a>
+                                        <a href="#.php" data-toggle="modal" smile="<?= $invoice['result'][$i]['_id'] ?>" data-target="#activeModal" id="paid"><i class="fas fa-frown fa-2x" style='color:red'></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -180,4 +161,53 @@
         ?>
     </div>
 
+    <!-- Paid Modal-->
+<div class="modal fade" id="activeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create a product Type</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Do you really want to put it as payment ?
+                <form action="/admin/paidInvoce/" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <input type="hidden" name="id" id="id">
+                    </div>
+                    <hr>
+                    <div class="row float-right mt-3">
+                        <a href="#">
+                            <button href="#" class="btn btn-success btn-user" name="submit" type="submit">
+                                Paid
+                            </button>
+                        </a>
+                        <a href="#">
+                            <button class="btn btn-secondary btn-user ml-2" type="button" data-dismiss="modal">Cancel</button>
+                        </a>
+                    </div>
+                </form>
+                
+            </div>
+           <!--  <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" type="submit" id="edit" href="#">Proceed</a>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+<script>
+    $("body").on('click','#paid',function(event){
+
+    var id = $(this).attr('smile');
+
+    $('#id').val(id);
+   
+    }); 
+</script>
 @stop
+
