@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Mockery\Undefined;
 use Validator;
 
 class HomeController extends Controller
@@ -140,39 +141,43 @@ class HomeController extends Controller
         
         $response = curl_exec($curl);
         curl_close($curl);
-        $response = json_decode($response);
-    
-        $i=0;
+        $response = json_decode($response, true);
+
         $invoicesAdvenced = array();
-        //echo "je";
+        if(array_key_exists('result', $response)) {
+            $invoicesAdvenced = $response['result'];
+        }
+        // $i=0;
+        // $invoicesAdvenced = array();
+        // //echo "je";
 
         $year = date("Y");
-        //echo $year;
+        // //echo $year;
         
         $month = date("m");
-        //echo $month;
+        // //echo $month;
 
-        foreach($response as $key => $value){
-            if($i >= 1){
-                //echo $value;
-                $invoicesAdvenced = $value;
-                //dump($value);
-            }
-            $i = $i + 1;
-            //dump($key);
-        }
+        // foreach($response as $key => $value){
+        //     if($i >= 1){
+        //         //echo $value;
+        //         $invoicesAdvenced = $value;
+        //         //dump($value);
+        //     }
+        //     $i = $i + 1;
+        //     //dump($key);
+        // }
 
         //dump($invoicesAdvenced);
-        if (gettype($invoicesAdvenced) != "array") {
-            // echo "je t'aime";
-            $invoicesAdvenced = array();
-        }
+        // if (gettype($invoicesAdvenced) != "array") {
+        //     // echo "je t'aime";
+        //     $invoicesAdvenced = array();
+        // }
 
         $client = array();
 
         foreach($invoicesAdvenced as $invoice){
 
-            $idClient = $invoice -> idClient;
+            $idClient = $invoice['idClient'];
             //echo $idClient;
             $url = curl_init();
             curl_setopt_array($url, array(
@@ -192,23 +197,24 @@ class HomeController extends Controller
         
             $i=0;
 
-            foreach($response as $key => $value){
-                if($i >= 1){
-                    //echo $value;
-                    //$client = $value;
-                    array_push($client,$value);
-                    //dump($value);
-                }
-                $i = $i + 1;
-                //dump($key);
-            }
+            array_push($client,$response->result);
+            // foreach($response as $key => $value){
+            //     if($i >= 1){
+            //         //echo $value;
+            //         //$client = $value;
+            //         array_push($client,$value);
+            //         //dump($value);
+            //     }
+            //     $i = $i + 1;
+            //     //dump($key);
+            // }
         
         }
     
         $ch = curl_init();
             
         curl_setopt_array($ch, array(
-            CURLOPT_URL => 'http://localhost:4000/admin/facture/'.$year.'/'.$month.'/1000/1',
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/'.$year.'/'.$month.'/0/1',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -222,30 +228,24 @@ class HomeController extends Controller
         $re = curl_exec($ch);
         curl_close($ch);
         $res = json_decode($re);
-        // $res = $res->result;
+        $resu = $res->result;
+        
 
         $earnly = 0;
         $invoices_paid = array();
         $invoices_month = array();
         $invoices_year = array();
         $row = 0;
-        
-        print_r($res);
-        foreach($res as $key => $value){
-            if($i >= 3){
-                $row = count($value);
-                if ($row > 0) {
-                    if ($value->facturePay) {
-                        $earnly = $value->montantVerse + $earnly;
-                        //array_push($invoices_paid,$value);
-                        $invoices_paid = $value;
-                    }
-                    $invoices_month = $value;
-                }
+        //array_push($invoices_paid,$value);
+
+        $invoices_month = $res->result;
+        foreach ($resu as $tab) {
+            if($tab->facturePay){
+                array_push($invoices_paid,$tab);
+                $earnly = $tab->montantVerse + $earnly;
             }
-            $i = $i + 1;
         }
-        
+
         $people = array();
         $number0fClient = 0;
         
@@ -270,13 +270,7 @@ class HomeController extends Controller
                 $response = json_decode($response);
             
                 $i=0;
-
-                foreach($response as $key => $value){
-                    if($i >= 1){
-                        array_push($people,$value);
-                    }
-                    $i = $i + 1;
-                }
+                array_push($people,$response->result);
             }
         }
         $number0fClient = count($people);
@@ -295,17 +289,19 @@ class HomeController extends Controller
         ));
         
         $user = curl_exec($url_client);
-        $user = json_decode($user);
+        curl_close($url_client); 
+        $user = json_decode($user, true);
+
         $user_list = array();
-    
-        foreach($user as $key => $value){
-            if($i >= 3){
-                $user_list = $value;
-            }
-            $i = $i + 1;
+        if(array_key_exists('result', $user)){
+            $user_list = $user['result'];
         }
+
         $numberOfAllClient = count($user_list);
-        $pourcent = ($number0fClient / $numberOfAllClient) * 100;
+        $pourcent = 0;
+        if($numberOfAllClient != 0){
+            $pourcent = number_format((($number0fClient / $numberOfAllClient) * 100), 2);
+        }
         //dump($invoicesAdvenced);
 
         // annuel
@@ -324,14 +320,14 @@ class HomeController extends Controller
         
         $invoices_annuel = curl_exec($url_annuel);
         $invoices_annuel = json_decode($invoices_annuel);
-        $invoices_annuel_list = array();
+        $invoices_annuel_list = $invoices_annuel->result;
     
-        foreach($invoices_annuel as $key => $value){
-            if($i >= 3){
-                $invoices_annuel_list = $value;
-            }
-            $i = $i + 1;
-        }
+        // foreach($invoices_annuel as $key => $value){
+        //     if($i >= 3){
+        //         $invoices_annuel_list = $value;
+        //     }
+        //     $i = $i + 1;
+        // }
 
 
         $url1 = "http://localhost:4000/stock/getAll";

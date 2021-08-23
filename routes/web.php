@@ -149,7 +149,8 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/admin/facture',[AdminController::class, 'allClient']);
 
-		Route::post('/admin/facture',[AdminController::class, 'addInvoice']);
+		Route::post('/admin/facture/save',[AdminController::class, 'addBil']);
+		// Route::match(['post','get'], '/admin/facture/save', [AdminController::class, 'addBil']);
 
 		Route::get('/admin/status',[AdminController::class, 'adminStatus'])->name('adminStatus');
 

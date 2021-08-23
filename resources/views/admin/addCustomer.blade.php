@@ -186,7 +186,7 @@
 
                 <div class="input-group mt-3 pl-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
-                    <input type="text" class="form-control" placeholder="description of the location" id="home" name="home" value="{{ old('home') }}" required>                
+                    <input type="text" class="form-control" placeholder="description of the location" id="home" name="home" value="{{ old('home') }}">                
                 </div>
 
                 <div class="input-group mt-3 pl-3">
@@ -252,7 +252,6 @@
         if($("#setLocation").is(':checked'))
 
             // checked
-            event.preventDefault();
 
            function myPosition(position) {
             $('#lat').val(position.coords.latitude);

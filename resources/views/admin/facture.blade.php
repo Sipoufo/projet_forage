@@ -130,19 +130,17 @@
     <div class="card-body">
         <div class="container">
             
-            <?php if (isset($messageOK)){?>
-                    <div class="alert alert-success alert-dismissible fade show"><i class="fas fa-check-circle"></i> <?= $messageOK ?> 
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    </div>
-            <?php } ?>
-            <?php if (isset($messageErr)){?>
-                    <div class="alert alert-danger alert-dismissible fade show"><i class="fas fa-exclamation-triangle"></i><?= $messageErr ?> 
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    </div>
-            <?php } ?>
+            @if(Session::has('message'))
+                <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+                    {{ Session::get('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             
-            <form method="post" action="/admin/facture" class="col-lg-8 offset-lg-2">
-                {{csrf_field()}}
+            <form method="post" action="/admin/facture/save" class="col-lg-8 offset-lg-2">
+                @csrf
                 <div class="form-group mb-3">
                     <div class="input-group">Personnel</div>
         
@@ -171,7 +169,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <div class="input-group">Observation</div>
-                    <input type="text" class="form-control" placeholder="Observation" id="observation" name="observation" required>                  
+                    <input type="text" class="form-control" placeholder="Observation" id="observation" name="observation">                  
                 </div>
                 <div class="form-group mb-3">
                     <div class="input-group">Date of spicy</div>
@@ -182,9 +180,7 @@
                     <input type="date" class="form-control" id="dataPaid" name="dataPaid" placeholder="Date of payement" required>                  
                 </div>
                 <div class="row float-right">
-                    <a href="#">
-                        <button class="btn btn-primary" name="connect" type="submit">Register</button>
-                    </a>
+                        <button class="btn btn-primary" type="submit">Register</button>
                     <a href="/admin/administrator">
                         <button class="btn btn-secondary ml-2" type="button">Cancel</button>
                     </a>

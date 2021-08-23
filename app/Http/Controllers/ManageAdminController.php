@@ -205,12 +205,14 @@ class ManageAdminController extends Controller
             $birthdate = $request->input('birthdate');
             $email = $request->input('email');
             $phone = $request->input('phone');
-            $home = $request->input('home');
+            if($request->input('home')){
+                $home = $request->input('home');
+                $lat = $request->input('lat');
+                $lng = $request->input('lng');
+            }
             $identifier = $request->input('identifier');
             $password = md5(sha1($request->input('password')));
 
-            $lat = $request->input('lat');
-            $lng = $request->input('lng');
             
             // return $firstname.' '.$lastname.' '.$birthdate.' '.$email.' '.$phone.' '.$home.' '.$identifier.' '.$password.' '.$photoPath;
 
@@ -222,18 +224,30 @@ class ManageAdminController extends Controller
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
-            $data = array(
-                'name' => $firstname.' '.$lastname,
-                'birthday' => $birthdate,
-                'phone' => $phone,
-                'password' => $password,
-                'email' => $email,
-                "description" => $home,
-                "longitude" => $lng,
-                "latitude" => $lat,
-                "IdCompteur" => $identifier,
-                "profileImage" => $photoPath,
-            );
+            if($request->input('home')){
+                $data = array(
+                    'name' => $firstname.' '.$lastname,
+                    'birthday' => $birthdate,
+                    'phone' => $phone,
+                    'password' => $password,
+                    'email' => $email,
+                    "description" => $home,
+                    "longitude" => $lng,
+                    "latitude" => $lat,
+                    "IdCompteur" => $identifier,
+                    "profileImage" => $photoPath,
+                );
+            }else {
+                $data = array(
+                    'name' => $firstname.' '.$lastname,
+                    'birthday' => $birthdate,
+                    'phone' => $phone,
+                    'password' => $password,
+                    'email' => $email,
+                    "IdCompteur" => $identifier,
+                    "profileImage" => $photoPath,
+                );
+            }
             $data_json = json_encode($data);
             
             $ch = curl_init();

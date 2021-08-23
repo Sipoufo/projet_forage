@@ -325,7 +325,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
 <!-- Content Row -->
 <div class="row">
 <!-- Content Column -->
-<div class="col-lg-6 mb-4">
+<div class="col-lg-10 offset-lg-1 mb-4">
   <!-- Project Card Example -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -347,8 +347,8 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
             @foreach($invoices as $invoice)
               <tr>
                 <td>{{$client[$loop ->index]->name}}</td>
-                <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
-                <td style="text-align: center">{{$invoice -> montantImpaye}}FCFA</td>
+                <td style="text-align: center">{{$invoice['montantConsommation']}}</td>
+                <td style="text-align: center">{{$invoice['montantImpaye']}}FCFA</td>
                 <td style="text-align: right">
                   <i
                     class="fas fa-lightbulb"
@@ -364,107 +364,6 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
   </div>
 </div>
 
-<div class="col-lg-6 mb-4">
-  <!-- Illustrations -->
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Product</h6>
-    </div>
-    <div class="card-body">
-      <div id="demo" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
-        <ul class="carousel-indicators">
-          <li
-            data-target="#demo"
-            data-slide-to="0"
-            class="active"
-          ></li>
-          <li data-target="#demo" data-slide-to="1"></li>
-          <li data-target="#demo" data-slide-to="2"></li>
-        </ul>
-
-        <!-- The slideshow -->
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img
-              class="img-fluid px-3 px-sm-4 mt-3 mb-4"
-              style="width: 25rem"
-              src="/img/undraw_posting_photo.svg"
-              alt="Los Angeles"
-            />
-            <div class="carousel-caption-description">
-              <p>
-                This is the caption description text for image 1.
-              </p>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img
-              class="img-fluid px-3 px-sm-4 mt-3 mb-4"
-              style="width: 25rem"
-              src="/img/undraw_posting_photo.svg"
-              alt="Chicago"
-            />
-            <div class="carousel-caption-description">
-              <p>
-                This is the caption description text for image 2.
-              </p>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img
-              class="img-fluid px-3 px-sm-4 mt-3 mb-4"
-              style="width: 25rem"
-              src="/img/undraw_posting_photo.svg"
-              alt="New York"
-            />
-            <div class="carousel-caption-description">
-              <p>
-                This is the caption description text for image 3.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Left and right controls -->
-        <a
-          class="carousel-control-prev"
-          href="#demo"
-          data-slide="prev"
-        >
-          <i
-            class="fas fa-hand-point-left"
-            style="font-size: 40px; color: black"
-          ></i>
-        </a>
-        <a
-          class="carousel-control-next"
-          href="#demo"
-          data-slide="next"
-        >
-          <i
-            class="fas fa-hand-point-right"
-            style="font-size: 40px; color: black"
-          ></i>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Approach -->
-  <!-- <div class="card shadow mb-4">
-                  <div class="card-header py-3">
-                      <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-                  </div>
-                  <div class="card-body">
-                      <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
-                          CSS bloat and poor page performance. Custom CSS classes are used to create
-                          custom components and custom utility classes.</p>
-                      <p class="mb-0">Before working with this theme, you should become familiar with the
-                          Bootstrap framework, especially the utility classes.</p>
-                  </div>
-              </div> -->
-</div>
 </div>
 
 <script>
@@ -494,7 +393,7 @@ if(isset($earnly_invoices)){
 
       foreach ($earnly_invoices as $material => $value){
         //dump($value -> dateFacturation);
-        if(date('F', strtotime($date)) == date('F', strtotime($value -> dateFacturation))){
+        if(date('F', strtotime($date)) == date('F', strtotime($value -> createdAt))){
           $data += $value -> montantVerse;
         }
       }
