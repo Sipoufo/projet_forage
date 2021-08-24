@@ -105,70 +105,146 @@
 @section('content')
 
     <div class="container">
-      <h1 class="text-primary text-center" style="margin-top:20px;">Legal notice & privacy policy</h1>
+      <h1 class="text-primary text-center" style="margin-top:20px;">Privacy policy</h1>
     
       <hr>
       <br>
       <div class="row">
-        <div class="col-xs-12 col-md-4">
-          <h4>Website editor  :</h4>
-          <p>
-            Editorial manager: Aboutir Emploi - Jean-Marc BOUTINEAU
-            <br>
-            Address : 303 Avenue Jean Guiton - 17000 La Rochelle - France
-            <br>
-            Telephone : 05 46 30 63 06
-            <br>
-            E-mail : <a href="mailto:#">contact@aboutiremploi.fr</a>
-          </p>
-        </div>
-        <div class="col-xs-12 col-md-4">
-          <h4>Hosting :</h4>
+        <div class="col-md-8 offset-md-3">
+          {{-- <h4>Hosting :</h4>
           <p>
             Host: OVH France
             <br>
             Address: 2 rue Kellermann - 59100 ROUBAIX
             <br>
             Website: <a href="#">www.ovh.com/fr</a>
-          </p>
-        </div>
-        <div class="col-xs-12 col-md-4">
-          <h4> Development : </h4>
+          </p> --}}
           <p>
-            Montgomery Ouest
+            This policy applies to the : <b>M. Tanguy Kuate</b>
             <br>
-            Address: 8 rue de la Bonette - 17000 LA ROCHELLE
+            Tel : <b>+237 697752242</b>
             <br>
-            Website : <a href="#">www.montgomery-ouest.com</a>
+            Date of last update : <b>21 August 2021</b>
           </p>
         </div>
       </div>
       <br>
       <div class="row">
-        <div class="col-xs-12 col-md-6">
-          <h2 class="text-primary"> Legal Notice </h2>
-          <br>
+        <div class="col-md-10 offset-1 text-center">
           <p>
-            Please read carefully the various terms and conditions of the legal notices for use of this site before browsing its pages. By connecting to this site, you accept without reservation the present terms and conditions in accordance with article n°6 of the Law n°2004-575 of 21 June 2004 for confidence in the digital economy.
+            Your privacy is of the utmost importance to <b>M. Tanguy Kuate</b>, who is responsible for this site.
           </p>  
           <br>
-          <h4>Terms of use</h4>
-          This site (www.aboutiremploi.fr) is offered in different web languages (HTML, HTML5, Javascript, CSS, etc...) for a better comfort of use and a more pleasant graphics, we recommend you to use modern browsers like Safari, Firefox, Google Chrome, etc...
-          The legal notices were generated on the Legal Notice Generator site, offered by Welye.
-
-          Aboutir Emploi uses all the means at its disposal to ensure reliable information and a reliable update of its websites. However, errors or omissions may occur. The Internet user must therefore ensure that the information is accurate and report any changes to the site that he or she considers useful. Aboutir Emploi is in no way responsible for the use made of this information, and for any direct or indirect prejudice that may result from it.
+      </div>
+      <div class="row">
+        <div class="col-md-6 text-center">
+          <h4 class="text-primary">
+            The purpose of this privacy policy is to explain to you:
+          </h4>  
+          <br>
+          <ul class="text-left">
+            <li>How your personal information is collected and processed. Personal information is any information that can identify you. This includes your first and last name, your age, your postal address, your e-mail address and your location;</li>
+            <li>What are your rights regarding this information;</li>
+            <li>Who is responsible for processing the personal information collected and processed?</li>
+            <li>To whom this information is provided ;</li>
+          </ul>
         </div>
-        <div class="col-xs-12 col-md-6">
-          <h2 class="text-primary"> Privacy Policy</h2>
+        <div class="col-md-4 offset-2">
+          <h4 class="text-primary text-center">
+            Personal information collected:
+          </h4>  
+          <br>
+          <ul class="text-left">
+            <li>Name</li>
+            <li>Postal address</li>
+            <li>E-mail adresse</li>
+            <li>Phone number</li>
+            <li>Age/date of birth</li>
+            <li>Geolocation data</li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <p class="text-center">
+            "The personal information we collect is collected through the collection methods described below, in the "Forms and Collection Methods" and following sections".
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <h4 class="text-primary text-center">
+            purpose of collecting your informations:
+          </h4>  
+          <br>
+          <ul class="text-left">
+            <li>Statistics;</li>
+            <li>Contact;</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h4 class="text-primary text-center">
+            Sharing of personal information:
+          </h4>  
           <br>
           <p>
-            In the context of the implementation of the new Regulation on the Protection of Personal Data (RGPD) from 25 May 2018, the companies ABOUTIR EMPLOI and TRANSPARENCE RH wish to present its personal data privacy policy.
-            This document is available on our website www.aboutiremploi.fr or on request at: acettrgpd@orange.fr
+            We will not sell to third parties or generally market the personal information collected.
           </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <h4 class="text-primary text-center">
+            Duration of retention of personal information:
+          </h4>  
           <br>
-          <h4>Our commitment to privacy</h4>
-          We do everything possible to protect your data, and we are committed to ensuring the highest level of security and confidentiality, in accordance with the applicable French and European regulations (Regulation 2016/679/EU and Law n° 78-17 of 6 January 1978).
-          In this document, we present our policy on the information, collection and processing of your personal data and the procedures for accessing, modifying, deleting and portability of your data.
+          <p>
+            The data controller will keep all personal information collected in its computer systems on the site under reasonable security conditions for an unlimited period of time
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h4 class="text-primary text-center">
+            Hosting of personal information:
+          </h4>  
+          <br>
+          <p>
+            Our site is hosted by <b>Not set</b>, whose registered office is located at the following address: <b>Not set</b>
+            <br>
+            The host can be contacted on the following telephone number : <b>Not set</b>
+            <br>
+            The personal information we collect and process is transferred to the following country or countries: Cameroon.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10 offset-1">
+          <h4 class="text-primary text-center">
+            Person responsible for the processing of personal information :
+          </h4>  
+          <br>
+          <p>
+            The personal information we collect is kept in a secure environment. People working for us are required to respect the confidentiality of your information.
+            <br>
+            To ensure the security of your personal information, we use the following measure: Phone number/password 
+          </p>
+          <p>
+            We are committed to maintaining a high level of privacy by incorporating the latest technological innovations to ensure the confidentiality of your transactions. However, as no mechanism offers maximum security, there is always a degree of risk involved when using the Internet to transmit personal information.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10 offset-1">
+          <h4 class="text-primary text-center">
+            Security :
+          </h4>  
+          <br>
+          <p>
+            The controller of personal information <b>Mr. Tanguy Kuate</b> is responsible for determining the purposes and means of processing personal information.
+          </p>
+          <p>
+            The data controller undertakes to protect the personal information collected, not to pass it on to third parties without your knowledge and to respect the purposes for which the information was collected.
+            In addition, the data controller undertakes to notify you if your personal information is corrected or deleted. In the event that the integrity, confidentiality or security of your personal information is compromised, the data controller undertakes to inform you by any means.
+          </p>
         </div>
       </div>
       <br>
