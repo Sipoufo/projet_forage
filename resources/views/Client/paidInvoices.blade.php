@@ -45,12 +45,16 @@
         </li>
 
         <!-- Nav Item - Profile Setting -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Profile Setting</span>
-            </a>
-        </li>
+        @if(Session::has('status'))
+            @if(Session::get('status') != 0)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Profile Setting</span>
+                    </a>
+                </li>
+            @endif
+        @endif
 
         <!-- Nav Item - Policy -->
         <li class="nav-item">
@@ -70,7 +74,7 @@
 
 @stop
         @section('content')
-            <h1>                            
+            <h1>
                 <i class='bx bx-grid-alt'></i>
                 <span class="nav_name">Invoice Paid</span>
             </h1>
@@ -78,7 +82,7 @@
             <!-- Default Card Example -->
             <?php
                 $lengthPaid = count($data['result']);
-                for ($i=0; $i < $lengthPaid; $i++) { 
+                for ($i=0; $i < $lengthPaid; $i++) {
             ?>
                 <div class="card mb-4 containter-fluid">
                     <div class="card-header row">
@@ -167,6 +171,5 @@
                     # code...
                 }
             ?>
-            
+
 @stop
-        

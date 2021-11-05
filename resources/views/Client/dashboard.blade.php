@@ -45,12 +45,16 @@
         </li>
 
         <!-- Nav Item - Profile Setting -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Profile Setting</span>
-            </a>
-        </li>
+        @if(Session::has('status'))
+            @if(Session::get('status') != 0)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Profile Setting</span>
+                    </a>
+                </li>
+            @endif
+        @endif
 
         <!-- Nav Item - Policy -->
         <li class="nav-item">
@@ -239,7 +243,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Unpaid Invoices</h6>
                 </div>
                 <div class="card-body container-fluid">
-                    <?php 
+                    <?php
                         $lengthInvoid = count($informations['result']['factureInvoice']);
                         for ($i=0; $i < $lengthInvoid; $i++) {
                     ?>
@@ -284,7 +288,7 @@
                                 </div>
                             </div>
                         </div>
-                    <?php 
+                    <?php
                         }
                     ?>
                 </div>

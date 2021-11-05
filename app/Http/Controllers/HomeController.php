@@ -45,12 +45,12 @@ class HomeController extends Controller
 	          }
 	    );
 	    $response  = curl_exec($ch);
-	    curl_close($ch); 
+	    curl_close($ch);
 
 	    $informations = json_decode($response, true);
 
 	    if($informations['status'] == 200){
-	        
+
 	        $userdata = $informations['result'];
 	        $cookie = $headers['set-cookie'];
 	        $tokentab = explode(';', $cookie[0]);
@@ -67,28 +67,27 @@ class HomeController extends Controller
 
 	        }else{
 
-	        	if($userdata['status'] != 1){
+	        	$request->session()->put('id',$userdata['_id']);
+			    $request->session()->put('name',$userdata['name']);
+			    $request->session()->put('profile',$userdata['profile']);
+                $request->session()->put('status',$userdata['status']);
 
-	        	Session::flash('message', 'You have been blocked!');
-	        	return redirect()->back();
+	        	if(array_key_exists('profileImage', $userdata)){
+	        	$request->session()->put('photo',$userdata['profileImage']);
+	        	}
 
-	        	}else{
+	        	setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
 
-	        		$request->session()->put('id',$userdata['_id']);
-			        $request->session()->put('name',$userdata['name']);
-			        $request->session()->put('profile',$userdata['profile']);
-
-	        	  	if(array_key_exists('profileImage', $userdata)){
-	        		$request->session()->put('photo',$userdata['profileImage']);
-	        	  	}
-
-	        	  	setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
-
-		            if($userdata['profile'] != 'user'){
-		              return redirect()->route('adminHome');
-		            }else{
-		              return redirect()->route('clientHome');
-		            }
+		        if($userdata['profile'] != 'user'){
+                    if($userdata['status'] == 0){
+                        Session::flash('message', 'You have been blocked');
+                        return redirect()->back()->withInput();
+                    }else{
+                        return redirect()->route('adminHome');
+                    }
+		        }else{
+		            return redirect()->route('clientHome');
+		        }
 			     //    if(!empty($location['longitude']) && !empty($location['latitude'])){
 
 			     //    }else{
@@ -96,10 +95,8 @@ class HomeController extends Controller
 						  // setcookie('token', $cookie[0],time() + $timeout,null,null,false,true);
 			     //          return redirect()->route('seeClauses');
 			     //    }
-	        	}
 
 	        }
-
 	    }else{
 	        $err  = $informations['error'];
 	        Session::flash('message', $err);
@@ -124,9 +121,9 @@ class HomeController extends Controller
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/getByStatus/false',
             CURLOPT_RETURNTRANSFER => true,
@@ -138,7 +135,7 @@ class HomeController extends Controller
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response, true);
@@ -153,7 +150,7 @@ class HomeController extends Controller
 
         $year = date("Y");
         // //echo $year;
-        
+
         $month = date("m");
         // //echo $month;
 
@@ -191,10 +188,10 @@ class HomeController extends Controller
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-            
+
             $response = curl_exec($url);
             $response = json_decode($response);
-        
+
             $i=0;
 
             array_push($client,$response->result);
@@ -208,11 +205,11 @@ class HomeController extends Controller
             //     $i = $i + 1;
             //     //dump($key);
             // }
-        
+
         }
-    
+
         $ch = curl_init();
-            
+
         curl_setopt_array($ch, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/'.$year.'/'.$month.'/0/1',
             CURLOPT_RETURNTRANSFER => true,
@@ -224,12 +221,12 @@ class HomeController extends Controller
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $re = curl_exec($ch);
         curl_close($ch);
         $res = json_decode($re);
         $resu = $res->result;
-        
+
 
         $earnly = 0;
         $invoices_paid = array();
@@ -248,7 +245,7 @@ class HomeController extends Controller
 
         $people = array();
         $number0fClient = 0;
-        
+
         if ($invoices_paid > 0) {
             foreach($invoices_paid as $invoice){
 
@@ -265,16 +262,16 @@ class HomeController extends Controller
                     CURLOPT_CUSTOMREQUEST => 'GET',
                     CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
                 ));
-                
+
                 $response = curl_exec($url);
                 $response = json_decode($response);
-            
+
                 $i=0;
                 array_push($people,$response->result);
             }
         }
         $number0fClient = count($people);
-        
+
         $url_client = curl_init();
         curl_setopt_array($url_client, array(
             CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
@@ -287,9 +284,9 @@ class HomeController extends Controller
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $user = curl_exec($url_client);
-        curl_close($url_client); 
+        curl_close($url_client);
         $user = json_decode($user, true);
 
         $user_list = array();
@@ -317,11 +314,11 @@ class HomeController extends Controller
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $invoices_annuel = curl_exec($url_annuel);
         $invoices_annuel = json_decode($invoices_annuel);
         $invoices_annuel_list = $invoices_annuel->result;
-    
+
         // foreach($invoices_annuel as $key => $value){
         //     if($i >= 3){
         //         $invoices_annuel_list = $value;
@@ -336,7 +333,7 @@ class HomeController extends Controller
             'limit' => 0,
         );
         $data_json1 = json_encode($data1);
-        
+
         $ch1 = curl_init();
         curl_setopt($ch1, CURLOPT_URL, $url1);
         curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -344,13 +341,13 @@ class HomeController extends Controller
         curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
         curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
         $response1  = curl_exec($ch1);
-        curl_close($ch1); 
+        curl_close($ch1);
         $response1 = json_decode($response1,true);
         $data1= $response1['result']['docs'];
 
 
         return view('admin/dashboard',[
-            'invoices' => $invoicesAdvenced, 
+            'invoices' => $invoicesAdvenced,
             'client' => $client,
             'pourcent' => $pourcent,
             'earnly' => $earnly,
@@ -359,5 +356,5 @@ class HomeController extends Controller
         ]);
 
     }
-    
+
 }

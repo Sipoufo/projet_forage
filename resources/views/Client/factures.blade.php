@@ -45,12 +45,16 @@
         </li>
 
         <!-- Nav Item - Profile Setting -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Profile Setting</span>
-            </a>
-        </li>
+        @if(Session::has('status'))
+            @if(Session::get('status') != 0)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Profile Setting</span>
+                    </a>
+                </li>
+            @endif
+        @endif
 
         <!-- Nav Item - Policy -->
         <li class="nav-item">
@@ -70,7 +74,7 @@
 
 @stop
         @section('main')
-            <h1>                            
+            <h1>
                 <i class='bx bx-grid-alt'></i>
                 <span class="nav_name">Invoice</span>
             </h1>
@@ -161,7 +165,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="card mb-4 containter-fluid">
                 <div class="card-header row bg-danger">
                     <div class="col-md-12 col-lg-2 text-white">
@@ -253,9 +257,8 @@
                     </div>
                 </div>
             </div>
-            
-            
 
-            
+
+
+
 @stop
-        

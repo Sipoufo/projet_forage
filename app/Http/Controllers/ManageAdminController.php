@@ -61,7 +61,7 @@ class ManageAdminController extends Controller
                 'image.max' => 'The :attribute must not sized over 2Mo',
             ]
         );
- 
+
         if ($validator->fails()) {
 
             return back()->withErrors($validator)->withInput();
@@ -70,7 +70,7 @@ class ManageAdminController extends Controller
 
             if($request->file()) {
                 $photo =  $request->file('image')->getClientOriginalName();
-                $photoPath = $request->image->storeAs('/administrators',$photo);   
+                $photoPath = $request->image->storeAs('/administrators',$photo);
             }else{
                 $photo = "";
                 $photoPath = "noPath";
@@ -86,7 +86,7 @@ class ManageAdminController extends Controller
 
             $lat = $request->input('lat');
             $lng = $request->input('lng');
-            
+
 
             $url = "http://localhost:4000/admin/auth/register";
             $alltoken = $_COOKIE['token'];
@@ -108,7 +108,7 @@ class ManageAdminController extends Controller
                 "profileImage" => $photoPath,
             );
             $data_json = json_encode($data);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -116,22 +116,22 @@ class ManageAdminController extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
-            
+
             if ($response->status == 200){
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
                 return redirect()->back();
-                
+
             }else{
                 Session::flash('message', ucfirst($response->error));
                 Session::flash('alert-class', 'alert-danger');
                 return redirect()->back();
             }
         }
-        
+
     }
 
     public function paidInvoice(Request $request){
@@ -145,7 +145,7 @@ class ManageAdminController extends Controller
         $Authorization = 'Bearer '.$tokenVal;
 
         $curl = curl_init();
-        
+
             curl_setopt_array($curl, array(
                 CURLOPT_URL => 'http://localhost:4000/admin/facture/statusPaidFacture/'.$id,
                 CURLOPT_RETURNTRANSFER => true,
@@ -157,7 +157,7 @@ class ManageAdminController extends Controller
                 CURLOPT_CUSTOMREQUEST => 'PUT',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-            
+
             $response = curl_exec($curl);
             curl_close($curl);
             $response = json_decode($response, true);
@@ -192,6 +192,24 @@ class ManageAdminController extends Controller
         return view('admin/customer',['customers' => $response]);
     }
 
+    public function blockedCustomers(){
+        $url = "http://localhost:4000/admin/auth/getClient";
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($response,true);
+        return view('admin/blockedCustomer',['customers' => $response]);
+    }
+
     public function addCustomers(){
         return view('/admin/addCustomer');
     }
@@ -217,7 +235,7 @@ class ManageAdminController extends Controller
                 'image.max' => 'The :attribute must not sized over 2Mo',
             ]
         );
- 
+
         if ($validator->fails()) {
 
             return back()->withErrors($validator)->withInput();
@@ -226,7 +244,7 @@ class ManageAdminController extends Controller
 
             if($request->file()) {
                 $photo =  $request->file('image')->getClientOriginalName();
-                $photoPath = $request->image->storeAs('/customers',$photo);   
+                $photoPath = $request->image->storeAs('/customers',$photo);
             }else{
                 $photo = "";
                 $photoPath = "noPath";
@@ -245,7 +263,7 @@ class ManageAdminController extends Controller
             $identifier = $request->input('identifier');
             $password = md5(sha1($request->input('password')));
 
-            
+
             // return $firstname.' '.$lastname.' '.$birthdate.' '.$email.' '.$phone.' '.$home.' '.$identifier.' '.$password.' '.$photoPath;
 
             $url = "http://localhost:4000/client/auth/register";
@@ -281,7 +299,7 @@ class ManageAdminController extends Controller
                 );
             }
             $data_json = json_encode($data);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -289,21 +307,21 @@ class ManageAdminController extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
-            
+
             if ($response->status == 200){
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
                 return redirect()->back();
-                
+
             }else{
                 Session::flash('message', ucfirst($response->error));
                 Session::flash('alert-class', 'alert-danger');
                 return redirect()->back();
             }
-        }  
+        }
     }
 
     public function blockCustomer($id,$status){
@@ -327,7 +345,7 @@ class ManageAdminController extends Controller
         }
 
         $data_json = json_encode($data);
-      
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -335,14 +353,14 @@ class ManageAdminController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        curl_close($ch); 
+        curl_close($ch);
 
         $response = json_decode($response);
-            
+
         if ($response->status == 200){
 
             return redirect()->back();
-            
+
         }else{
             Session::flash('error', ucfirst($response->error));
             Session::flash('alert-class', 'alert-danger');
@@ -389,7 +407,7 @@ class ManageAdminController extends Controller
                 'photo.max' => 'The :attribute must not sized over 2Mo',
             ]
         );
- 
+
         if ($validator->fails()) {
 
             return back()->withErrors($validator)->withInput();
@@ -398,7 +416,7 @@ class ManageAdminController extends Controller
 
             if($request->file()) {
                 $photo =  $request->file('photo')->getClientOriginalName();
-                $photoPath = $request->photo->storeAs('/customers',$photo);   
+                $photoPath = $request->photo->storeAs('/customers',$photo);
             }else{
                 $photo = "";
                 $photoPath = $request->input('profileImage');
@@ -410,7 +428,7 @@ class ManageAdminController extends Controller
             $email = $request->input('email');
             $phone = $request->input('phone');
             $identifier = $request->input('identifier');
-            
+
 
             $url = "http://localhost:4000/admin/manageCompte/client/update/".$id;
             $alltoken = $_COOKIE['token'];
@@ -431,7 +449,7 @@ class ManageAdminController extends Controller
             $data_json = json_encode($data);
 
             // print_r($data_json);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -439,17 +457,17 @@ class ManageAdminController extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
 
             // print_r($response);
-            
+
             if ($response->status == 200){
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
                 return redirect()->back();
-                
+
             }else{
                 Session::flash('message', ucfirst($response->error));
                 Session::flash('alert-class', 'alert-danger');
@@ -472,7 +490,7 @@ class ManageAdminController extends Controller
             'isDelete' => 'true',
         );
         $data_json = json_encode($data);
-      
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -480,14 +498,14 @@ class ManageAdminController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        curl_close($ch); 
+        curl_close($ch);
 
         $response = json_decode($response);
-            
+
         if ($response->status == 200){
 
             return redirect()->back();
-            
+
         }else{
             Session::flash('error', ucfirst($response->error));
             Session::flash('alert-class', 'alert-danger');
@@ -524,15 +542,15 @@ class ManageAdminController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        curl_close($ch); 
+        curl_close($ch);
 
         $response = json_decode($response);
-        
+
         if ($response->status == 200){
             Session::flash('message', 'Action Successfully done!');
             Session::flash('alert-class', 'alert-success');
             return redirect()->back();
-            
+
         }else{
             Session::flash('message', ucfirst($response->error));
             Session::flash('alert-class', 'alert-danger');
@@ -561,7 +579,7 @@ class ManageAdminController extends Controller
         }
 
         $data_json = json_encode($data);
-      
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -569,14 +587,14 @@ class ManageAdminController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        curl_close($ch); 
+        curl_close($ch);
 
         $response = json_decode($response);
-            
+
         if ($response->status == 200){
 
             return redirect()->back();
-            
+
         }else{
             Session::flash('error', ucfirst($response->error));
             Session::flash('alert-class', 'alert-danger');
@@ -623,7 +641,7 @@ class ManageAdminController extends Controller
                 'photo.max' => 'The :attribute must not sized over 2Mo',
             ]
         );
- 
+
         if ($validator->fails()) {
 
             return back()->withErrors($validator)->withInput();
@@ -632,7 +650,7 @@ class ManageAdminController extends Controller
 
             if($request->file()) {
                 $photo =  $request->file('photo')->getClientOriginalName();
-                $photoPath = $request->photo->storeAs('/administrators',$photo);   
+                $photoPath = $request->photo->storeAs('/administrators',$photo);
             }else{
                 $photo = "";
                 $photoPath = $request->input('profileImage');
@@ -646,7 +664,7 @@ class ManageAdminController extends Controller
             $home = $request->input('home');
             $longitude = $request->input('lng');
             $latitude = $request->input('lat');
-            
+
 
             $url = "http://localhost:4000/admin/manageCompte/admin/update/".$id;
             $alltoken = $_COOKIE['token'];
@@ -669,7 +687,7 @@ class ManageAdminController extends Controller
             $data_json = json_encode($data);
 
             // print_r($data_json);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -677,17 +695,17 @@ class ManageAdminController extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
 
             // print_r($response);
-            
+
             if ($response->status == 200){
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
                 return redirect()->back();
-                
+
             }else{
                 Session::flash('message', ucfirst($response->error));
                 Session::flash('alert-class', 'alert-danger');
@@ -710,7 +728,7 @@ class ManageAdminController extends Controller
             'isDelete' => 'true',
         );
         $data_json = json_encode($data);
-      
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -718,14 +736,14 @@ class ManageAdminController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        curl_close($ch); 
+        curl_close($ch);
 
         $response = json_decode($response);
-            
+
         if ($response->status == 200){
 
             return redirect()->back();
-            
+
         }else{
             Session::flash('error', ucfirst($response->error));
             Session::flash('alert-class', 'alert-danger');

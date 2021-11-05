@@ -107,7 +107,7 @@
 
 <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Profile</h1> 
+        <h1 class="h3 mb-0 text-gray-800">Profile</h1>
     </div>
 
     @if(Session::has('message'))
@@ -119,11 +119,11 @@
         </div>
     @endif
 
-  
-<div class="container"> 
+
+<div class="container">
   <div class="row gutters-sm">
 
-      <div class="col-md-4">      
+      <div class="col-md-4">
           <div class="portlet light profile-sidebar-portlet bordered">
               <div class="text-center profile-userpic">
                 @if(Session::has('photo'))
@@ -140,7 +140,7 @@
                     @php
                         $photo = '/img/undraw_profile.svg'
                     @endphp
-                @endif 
+                @endif
                   <img src="{{$photo}}" class="rounded-circle" alt="<?= $data['profile']?>"> </div>
               <div class="profile-usertitle">
                   <div class="profile-usertitle-name"> <?= $data['name']?> </div>
@@ -148,7 +148,7 @@
 
                   @if($data['profile'] == "superAdmin")
 
-                    <div class="profile-usertitle-job"> 
+                    <div class="profile-usertitle-job">
 
                       <a href="#" id="location" locate="<?= $data['_id']?>" class="btn text-primary" style="size:18px;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
                           <span class="icon">
@@ -162,7 +162,7 @@
               </div>
           </div>
       </div>
-      <div class="col-md-8"> 
+      <div class="col-md-8">
           <div class="portlet light bordered">
               <div class="portlet-title tabbable-line">
                   <div class="caption caption-md">
@@ -172,15 +172,16 @@
               </div>
               <div class="portlet-body">
                   <div>
-                  
+
                       <!-- Nav tabs -->
                       <ul class="nav nav-tabs" role="tablist" id="tabMenu">
                           <li role="presentation" class="nav-item"><a class="nav-link active ?>" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
                           <li role="presentation" class="nav-item"><a class="nav-link" href="#update" aria-controls="update" role="tab" data-toggle="tab">Update</a></li>
                           <li role="presentation" class="nav-item"><a class="nav-link" href="#password_form" aria-controls="password_form" role="tab" data-toggle="tab">Password</a></li>
                           <li role="presentation"class="nav-item"><a class="nav-link" href="#settings" aria-controls="settings" role="tab" data-toggle="tab">General Settings</a></li>
+                          <li role="presentation"class="nav-item"><a class="nav-link" href="#sanction" aria-controls="sanction" role="tab" data-toggle="tab">Sanctions</a></li>
                       </ul>
-                  
+
                       <!-- Tab panes -->
                       <div class="tab-content">
                           <div role="tabpanel" class="tab-pane fade show active" id="profile">
@@ -228,14 +229,14 @@
                                 </div>
                                 <?php $localisation = $data['localisation'] ;?>
                                 <div class="col-sm-9 text-secondary">
-                                  <?php 
+                                  <?php
                                     if(array_key_exists('description', $localisation)) {
                                         if ($data['localisation']['description']) {
                                             echo $localisation['description'];
                                         } else {
                                             echo "Not set";
                                         }
-                                        
+
                                     } else {
                                         echo "Not set";
                                     }
@@ -262,7 +263,7 @@
                               </div>
                               <hr>
                           </div>
-                         
+
 
                           <div role="tabpanel" class="tab-pane fade " id="update">
                               <br>
@@ -274,49 +275,49 @@
                                       <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="name" id="name" name="name" value="<?= $data['name']?>" required>
                                           @error('name')
                                               <div class="invalid-feedback">{{ $message }}</div>
-                                          @enderror                          
+                                          @enderror
                                   </div>
 
                                   <div class="input-group mt-3">
                                       <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-birthday-cake'></i></span></div>
-                                      <input type="date" class="form-control" id="birth_date" name="birthdate" value="<?= $data['birthday']?>" required>                         
+                                      <input type="date" class="form-control" id="birth_date" name="birthdate" value="<?= $data['birthday']?>" required>
                                   </div>
-                                   
+
                                   <div class="input-group mt-3">
                                       <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">@</span></div>
-                                      <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="<?= $data['email']?>">                    
+                                      <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="<?= $data['email']?>">
                                        @error('email')
                                               <div class="invalid-feedback">{{ $message }}</div>
-                                       @enderror  
+                                       @enderror
                                   </div>
-                                  
+
                                   <div class="input-group mt-3">
                                       <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-phone-volume'></i></span></div>
-                                      <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="<?= $data['phone']?>" required>                
+                                      <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="<?= $data['phone']?>" required>
                                       @error('phone')
                                               <div class="invalid-feedback">{{ $message }}</div>
                                       @enderror
                                   </div>
-                                  <?php $localisation = $data['localisation']; ?> 
+                                  <?php $localisation = $data['localisation']; ?>
                                   <div class="input-group mt-3">
                                       <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
-                                      <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="<?php if(array_key_exists('description', $localisation)){echo $localisation['description'];} ?>" required>                
+                                      <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="<?php if(array_key_exists('description', $localisation)){echo $localisation['description'];} ?>" required>
                                   </div>
 
                                   <div class="input-group mt-3">
                                       <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-image'></i></span></div>
-                                      <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo">    
+                                      <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo">
                                       @error('photo')
                                               <div class="invalid-feedback">{{ $message }}</div>
-                                      @enderror              
+                                      @enderror
                                   </div>
 
                                   <hr>
-                                 
+
                                   <a href="#">
                                       <button class="btn btn-block btn-primary" type="submit">Proceed</button>
                                   </a>
-                                 
+
                               </form>
                       </div>
 
@@ -329,31 +330,31 @@
 
                                 <div class="input-group mt-3">
                                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                                    <input type="password" class="form-control" placeholder="Old password" id="oldpassword" name="oldpassword" value="{{ old('password') }}" required>                  
+                                    <input type="password" class="form-control" placeholder="Old password" id="oldpassword" name="oldpassword" value="{{ old('password') }}" required>
                                 </div>
-                                  
+
                                 <div class="input-group mt-3">
                                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                                    <input type="password" class="form-control @error('newpassword') is-invalid @enderror" placeholder="New password" id="newpassword" name="newpassword" value="{{ old('password') }}" required>                  
+                                    <input type="password" class="form-control @error('newpassword') is-invalid @enderror" placeholder="New password" id="newpassword" name="newpassword" value="{{ old('password') }}" required>
                                     @error('newpassword')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                
+
                                 <div class="input-group mt-3">
                                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="{{ old('confirmpassword') }}" required>                  
+                                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="{{ old('confirmpassword') }}" required>
                                     @error('confirmpassword')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <hr>
-                               
+
                                 <a href="#">
                                     <button class="btn btn-block btn-primary" type="submit">Proceed</button>
                                 </a>
-                               
+
                           </form>
                       </div>
 
@@ -364,7 +365,7 @@
                               @csrf
                               <div class="input-group mt-3">
                                   <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class="fas fa-cube"></i></span></div>
-                                  <input type="number" class="form-control @error('meterprice') is-invalid @enderror" placeholder="Price per cubic meter" id="meterprice" name="meterprice" value="{{ old('meterprice') }}" required>                  
+                                  <input type="number" class="form-control @error('meterprice') is-invalid @enderror" placeholder="Price per cubic meter" id="meterprice" name="meterprice" value="{{ old('meterprice') }}" required>
                                   @error('meterprice')
                                           <div class="invalid-feedback">{{ $message }}</div>
                                   @enderror
@@ -372,24 +373,68 @@
 
                               <div class="input-group mt-3">
                                   <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class="fas fa-tools"></i></span></div>
-                                  <input type="number" class="form-control @error('maintenance') is-invalid @enderror" placeholder="Maintenance costs" id="maintenance" name="maintenance" value="{{ old('maintenance') }}" required>                  
+                                  <input type="number" class="form-control @error('maintenance') is-invalid @enderror" placeholder="Maintenance costs" id="maintenance" name="maintenance" value="{{ old('maintenance') }}" required>
                                   @error('maintenance')
                                           <div class="invalid-feedback">{{ $message }}</div>
                                   @enderror
                               </div>
-                      
+
                               <hr>
-                             
+
                               <a href="#">
                                   <button class="btn btn-block btn-primary" type="submit">Proceed</button>
-                              </a>  
+                              </a>
                           </form>
                       </div>
-                  
+
+                      <div role="tabpanel" class="tab-pane fade " id="sanction">
+                        <br>
+
+                        <form method="post" action="/admin/profile/sanctions" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
+                              @csrf
+                              <div class="input-group">
+                                  <div class="input-group">Sanction Amount</div>
+                                  <div class="col-6">
+                                    <input type="number" class="form-control @error('sanction') is-invalid @enderror" placeholder="sanction amount" id="sanction" name="sanction" value="{{ old('sanction') }}" required>
+                                    @error('sanction')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                  </div>
+
+                              </div>
+
+                              <div class="input-group mt-3">
+                                  <div class="input-group">Step</div>
+                                  <div class="col-4">
+                                    <input type="number" class="form-control @error('step') is-invalid @enderror" placeholder="% sanction step " id="step" name="step" value="{{ old('step') }}" required>
+                                    @error('step')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                  </div>
+
+                              </div>
+                              <div class="input-group mt-3">
+                                  <div class="input-group">Frequency</div>
+                                  <div class="col-6">
+                                    <select name="frequency" id="frequency" class="form-control">
+                                        <option value="1">Every 7 days </option>
+                                        <option value="2">Every 15 days</option>
+                                        <option value="3">Every 1 month</option>
+                                    </select>
+                                  </div>
+                              </div>
+
+                              <hr>
+                              <a href="#">
+                                  <button class="btn btn-block btn-primary" type="submit">Proceed</button>
+                              </a>
+                          </form>
+                      </div>
+
                   </div>
               </div>
           </div>
-      
+        </div>
   </div>
 
   </div>
@@ -413,7 +458,7 @@
         console.log(id);
 
        function myPosition(position) {
-         lat = position.coords.latitude; 
+         lat = position.coords.latitude;
          lng = position.coords.longitude;
 
             <?php
@@ -452,7 +497,7 @@
 
        function errorPosition(error) {
           var info = "Error while getting your location : ";
-          
+
           switch(error.code) {
               case error.TIMEOUT:
                   info += "Timeout !";
@@ -472,8 +517,8 @@
       if(navigator.geolocation)
         navigator.geolocation.getCurrentPosition(myPosition,errorPosition,{enableHighAccuracy:true});
 
-         
-    }); 
+
+    });
 
 </script>
 
@@ -2441,9 +2486,9 @@
     color: #fff
 }
 
-.portlet.box.grey-cararra>.portlet-title>.actions .btn-default.active,
+/* .portlet.box.grey-cararra>.portlet-title>.actions .btn-default.active,
 .portlet.box.grey-cararra>.portlet-title>.actions .btn-default:active,
-.portlet.box.grey-cararra>.portlet-title>.actions .btn-defau
+.portlet.box.grey-cararra>.portlet-title>.actions .btn-defau */
 </style>
 
 @stop

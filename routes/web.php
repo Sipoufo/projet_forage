@@ -31,11 +31,11 @@ Route::post('/reset',[HomeController::class, 'reset']);
 
 
 Route::group(['middleware' => 'checksession'], function () {
-        
-        // Global routes 
+
+        // Global routes
 		Route::get('/logout',[LogoutController::class, 'logout']);
 
-		
+
 		//Client
 
 		Route::get('/home',[ManageClientController::class, 'dashboard'])->name('clientHome');
@@ -138,6 +138,8 @@ Route::group(['middleware' => 'checksession'], function () {
 		Route::post('/admin/paidInvoce',[ManageAdminController::class, 'paidInvoice']);
 
 		Route::get('/admin/customer/addCustomer',[ManageAdminController::class, 'addCustomers']);
+
+        Route::get('/admin/customer/blockedCustomer',[ManageAdminController::class, 'blockedCustomers']);
 
 		Route::post('/admin/customer/addCustomer/store',[ManageAdminController::class, 'storeCustomers']);
 

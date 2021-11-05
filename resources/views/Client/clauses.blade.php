@@ -15,88 +15,58 @@
         <div class="sidebar-heading">Information</div>
 
         <!-- Nav Item - consumption -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/consumption">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>consumption</span>
+        <li class="nav-item ">
+            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Budget</span>
             </a>
+            <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Budget</h6>
+                    <a class="collapse-item" href="/budget-stat" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">statistics</a>
+                    <a class="collapse-item" href="/budget-detail" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Details</a>
+                </div>
+            </div>
         </li>
 
-        <!-- Nav Item - Customer -->
+        <!-- Nav Item - Invoice -->
         <li class="nav-item ">
-            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities1" aria-expanded="true" aria-controls="collapseUtilities1">
-                <i class="fas fa-address-book"></i>
-                <span>Customer</span>
+            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities1" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
+                <i class="fas fa-money-bill-alt"></i>
+                <span>Invoices</span>
             </a>
             <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Customers</h6>
-                    <a class="collapse-item" href="/admin/customer">Manage customers</a>
-                    <a class="collapse-item" href="/admin/administrator">Manage Administrators</a>
+                    <h6 class="collapse-header">Invoices</h6>
+                    <a class="collapse-item" href="/invoices_paid" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">Invoices Paid</a>
+                    <a class="collapse-item" href="/unpaid_invoices" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Unpaid Invoices</a>
                 </div>
             </div>
         </li>
 
-        <!-- Nav Item - Payment -->
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="/admin/facture">
-              <i class="fas fa-file-invoice-dollar"></i>
-              <span>Invoices</span>
-          </a>
-        </li>
+        <!-- Nav Item - Profile Setting -->
+        @if(Session::has('status'))
+            @if(Session::get('status') != 0)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Profile Setting</span>
+                    </a>
+                </li>
+            @endif
+        @endif
 
-        <!-- Nav Item - Stock -->
-        <li class="nav-item ">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Stock</span>
-            </a>
-            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Stock Information</h6>
-                    <a class="collapse-item" href="/admin/products_types">Products type</a>
-                    <a class="collapse-item" href="/admin/manage_products">Manage products</a>
-                    <a class="collapse-item" href="/admin/stock/1">Stock</a>
-                </div>
-            </div>
-        </li>
-
-        <!-- Nav Item - Payment -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/map">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Map</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - Payment -->
+        <!-- Nav Item - Policy -->
         <li class="nav-item active">
-            <a class="nav-link collapsed" href="/admin/clauses">
+            <a class="nav-link collapsed" href="/clauses" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
             <i class="fas fa-list"></i>
             <span>Confidentiality Clauses</span>
             </a>
         </li>
 
-        <!-- Nav Item - profile -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/profile">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - Finances -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/finances">
-            <i class="fas fa-wallet"></i>
-            <span>Finances</span>
-            </a>
-        </li>
-
         <!-- Nav Item - Log out -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/logout">
+        <li class="nav-item ">
+            <a class="nav-link collapsed"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Log Out" href="/logout">
             <i class="fas fa-sign-out-alt"></i>
             <span>Log out</span>
             </a>
@@ -106,7 +76,7 @@
 
     <div class="container">
       <h1 class="text-primary text-center" style="margin-top:20px;">Privacy policy</h1>
-    
+
       <hr>
       <br>
       <div class="row">
@@ -133,14 +103,14 @@
         <div class="col-md-10 offset-1 text-center">
           <p>
             Your privacy is of the utmost importance to <b>M. Tanguy Kuate</b>, who is responsible for this site.
-          </p>  
+          </p>
           <br>
       </div>
       <div class="row">
         <div class="col-md-6 text-center">
           <h4 class="text-primary">
             The purpose of this privacy policy is to explain to you:
-          </h4>  
+          </h4>
           <br>
           <ul class="text-left">
             <li>How your personal information is collected and processed. Personal information is any information that can identify you. This includes your first and last name, your age, your postal address, your e-mail address and your location;</li>
@@ -152,7 +122,7 @@
         <div class="col-md-4 offset-2">
           <h4 class="text-primary text-center">
             Personal information collected:
-          </h4>  
+          </h4>
           <br>
           <ul class="text-left">
             <li>Name</li>
@@ -175,7 +145,7 @@
         <div class="col-md-6">
           <h4 class="text-primary text-center">
             purpose of collecting your informations:
-          </h4>  
+          </h4>
           <br>
           <ul class="text-left">
             <li>Statistics;</li>
@@ -185,7 +155,7 @@
         <div class="col-md-6">
           <h4 class="text-primary text-center">
             Sharing of personal information:
-          </h4>  
+          </h4>
           <br>
           <p>
             We will not sell to third parties or generally market the personal information collected.
@@ -196,7 +166,7 @@
         <div class="col-md-6">
           <h4 class="text-primary text-center">
             Duration of retention of personal information:
-          </h4>  
+          </h4>
           <br>
           <p>
             The data controller will keep all personal information collected in its computer systems on the site under reasonable security conditions for an unlimited period of time
@@ -205,7 +175,7 @@
         <div class="col-md-6">
           <h4 class="text-primary text-center">
             Hosting of personal information:
-          </h4>  
+          </h4>
           <br>
           <p>
             Our site is hosted by <b>Not set</b>, whose registered office is located at the following address: <b>Not set</b>
@@ -220,12 +190,12 @@
         <div class="col-md-10 offset-1">
           <h4 class="text-primary text-center">
             Person responsible for the processing of personal information :
-          </h4>  
+          </h4>
           <br>
           <p>
             The personal information we collect is kept in a secure environment. People working for us are required to respect the confidentiality of your information.
             <br>
-            To ensure the security of your personal information, we use the following measure: Phone number/password 
+            To ensure the security of your personal information, we use the following measure: Phone number/password
           </p>
           <p>
             We are committed to maintaining a high level of privacy by incorporating the latest technological innovations to ensure the confidentiality of your transactions. However, as no mechanism offers maximum security, there is always a degree of risk involved when using the Internet to transmit personal information.
@@ -236,7 +206,7 @@
         <div class="col-md-10 offset-1">
           <h4 class="text-primary text-center">
             Security :
-          </h4>  
+          </h4>
           <br>
           <p>
             The controller of personal information <b>Mr. Tanguy Kuate</b> is responsible for determining the purposes and means of processing personal information.

@@ -15,7 +15,7 @@
         <div class="sidebar-heading">Information</div>
 
         <!-- Nav Item - consumption -->
-        <li class="nav-item ">
+        <li class="nav-item active">
             <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
                 <i class="fas fa-file-invoice-dollar"></i>
                 <span>Budget</span>
@@ -30,19 +30,16 @@
         </li>
 
         <!-- Nav Item - Invoice -->
-        <li class="nav-item ">
-            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities1" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
-                <i class="fas fa-money-bill-alt"></i>
-                <span>Invoices</span>
-            </a>
-            <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Invoices</h6>
-                    <a class="collapse-item" href="/invoices_paid" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">Invoices Paid</a>
-                    <a class="collapse-item" href="/unpaid_invoices" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Unpaid Invoices</a>
-                </div>
-            </div>
-        </li>
+        @if(Session::has('status'))
+            @if(Session::get('status') != 0)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Profile Setting</span>
+                    </a>
+                </li>
+            @endif
+        @endif
 
         <!-- Nav Item - Profile Setting -->
         <li class="nav-item">
@@ -114,34 +111,34 @@
       width: 100%;
       height: 500px;
     }
-    
+
     </style>
-    
+
     <!-- Resources -->
     <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
-    
+
     <!-- Chart code -->
     <script>
     am4core.ready(function() {
-    
+
     // Themes begin
     am4core.useTheme(am4themes_animated);
     // Themes end
-    
+
     // Create chart instance
     var chart = am4core.create("chartdiv", am4charts.XYChart);
 
     // Add data
     data = JSON.parse('<?= $data ?>')
     chart.data = data;
-    
+
     // Create axes
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     //dateAxis.renderer.grid.template.location = 0;
     //dateAxis.renderer.minGridDistance = 30;
-    
+
     var valueAxis1 = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis1.title.text = "Amount";
 
@@ -149,7 +146,7 @@
     valueAxis2.title.text = "Slices";
     valueAxis2.renderer.opposite = true;
     valueAxis2.renderer.grid.template.disabled = true;
-    
+
     // Create series
     var series1 = chart.series.push(new am4charts.ColumnSeries());
     series1.dataFields.valueY = "montant";
@@ -161,7 +158,7 @@
     series1.strokeWidth = 8;
     series1.clustered = false;
     series1.columns.template.width = am4core.percent(40);
-    
+
     var series3 = chart.series.push(new am4charts.LineSeries());
     series3.dataFields.valueY = "tranche";
     series3.dataFields.dateX = "date";
@@ -170,25 +167,24 @@
     series3.tensionX = 0.7;
     series3.yAxis = valueAxis2;
     series3.tooltipText = "{name}\n[bold font-size: 20]{valueY}[/]";
-    
+
     var bullet3 = series3.bullets.push(new am4charts.CircleBullet());
     bullet3.circle.radius = 3;
     bullet3.circle.strokeWidth = 2;
     bullet3.circle.fill = am4core.color("#fff");
-    
+
     // Add cursor
     chart.cursor = new am4charts.XYCursor();
-    
+
     // Add legend
     chart.legend = new am4charts.Legend();
     chart.legend.position = "top";
-    
+
     // Add scrollbar
     chart.scrollbarX = new am4charts.XYChartScrollbar();
     chart.scrollbarX.series.push(series1);
     chart.scrollbarX.series.push(series3);
     chart.scrollbarX.parent = chart.bottomAxesContainer;
-    
+
     }); // end am4core.ready()
     </script>
-        

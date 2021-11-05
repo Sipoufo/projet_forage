@@ -15,7 +15,7 @@
         <div class="sidebar-heading">Information</div>
 
         <!-- Nav Item - consumption -->
-        <li class="nav-item ">
+        <li class="nav-item active">
             <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
                 <i class="fas fa-file-invoice-dollar"></i>
                 <span>Budget</span>
@@ -45,12 +45,16 @@
         </li>
 
         <!-- Nav Item - Profile Setting -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Profile Setting</span>
-            </a>
-        </li>
+        @if(Session::has('status'))
+            @if(Session::get('status') != 0)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Profile Setting</span>
+                    </a>
+                </li>
+            @endif
+        @endif
 
         <!-- Nav Item - Policy -->
         <li class="nav-item">
@@ -94,7 +98,7 @@
                                     <?php
                                         $lengthPaid = count($data['result']);
                                         $count = 0;
-                                        for ($j=0; $j < $lengthPaid; $j++) { 
+                                        for ($j=0; $j < $lengthPaid; $j++) {
                                             $count += $data['result'][$j]['montantVerse'];
                                         }
                                         echo $count;
@@ -130,12 +134,12 @@
                                 for ($i=0; $i < $lengthPaid; $i++) {
                                     $EndTranche = count($data['result'][$i]['tranche']);
                                     if ($EndTranche == 0) {
-                                        $progression = 0; 
+                                        $progression = 0;
                                     } else {
                                         $tranche = $data['result'][$i]['tranche'][$EndTranche-1]['montant'];
                                         $progression = 100/($data['result'][$i]['montantConsommation'] / $tranche);
                                     }
-                                    
+
 
                             ?>
                                 <tr>
@@ -154,7 +158,7 @@
                                                 <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </td>
-                                        <td><span class="badge badge-success">Piad</span></td>
+                                        <td><span class="badge badge-success">Paid</span></td>
                                         <?php
                                         } else {
                                             ?>
@@ -167,7 +171,7 @@
                                     <?php
                                         }
                                     ?>
-                                    
+
                                 </tr>
                             <?php
                                 }
@@ -180,4 +184,3 @@
     </div>
 </div>
 @stop
-        
