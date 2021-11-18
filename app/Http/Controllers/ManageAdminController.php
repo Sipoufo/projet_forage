@@ -427,7 +427,6 @@ class ManageAdminController extends Controller
             $birthdate = $request->input('birthdate');
             $email = $request->input('email');
             $phone = $request->input('phone');
-            $identifier = $request->input('identifier');
 
 
             $url = "http://localhost:4000/admin/manageCompte/client/update/".$id;
@@ -443,7 +442,6 @@ class ManageAdminController extends Controller
                 'birthday' => $birthdate,
                 'phone' => $phone,
                 'email' => $email,
-                "IdCompteur" => $identifier,
                 "profileImage" => $photoPath,
             );
             $data_json = json_encode($data);
@@ -473,6 +471,50 @@ class ManageAdminController extends Controller
                 Session::flash('alert-class', 'alert-danger');
                 return redirect()->back();
             }
+        }
+    }
+
+    public function updateAccount($id, $request){
+
+        $identifier = $request->input('identifier');
+
+        $url = "".$id;
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $data = array(
+            'IdCompteur' => $identifier,
+        );
+        $data_json = json_encode($data);
+
+        // print_r($data_json);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($response);
+
+        // print_r($response);
+
+        if ($response->status == 200){
+            Session::flash('message', 'Action Successfully done!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back();
+
+        }else{
+            Session::flash('message', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back();
         }
     }
 

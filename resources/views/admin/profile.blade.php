@@ -379,6 +379,18 @@
                                   @enderror
                               </div>
 
+                              <div class="input-group mt-3">
+                                  <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class="fas fa-calendar"></i></span></div>
+                                  <div class="col-6">
+                                    <select name="date" id="date" class="form-control">
+                                        <option value="">day of payment</option>
+                                        <?php for($i=1;$i<=30;$i++){?>
+                                        <option value="<?=$i?>"><?=$i?></option>
+                                        <?php } ?>
+                                    </select>
+                                  </div>
+                              </div>
+
                               <hr>
 
                               <a href="#">

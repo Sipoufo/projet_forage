@@ -203,9 +203,7 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::match(['get','put'],'/admin/administrator/saveAdmin/{id}',[ManageAdminController::class, 'saveAdmin'])->name('saveAdmin');
 
-		// Route::get('/admin/clauses', function() {
-		//     return view('admin/adminClauses');
-		// });
+        Route::match(['get','post'],'/admin/customer/account/update/{id}',[ManageAdminController::class, 'updateAccount'])->name('updateAccount');
 
 		Route::get('/admin/map', function() {
 		    return view('admin/maps');
