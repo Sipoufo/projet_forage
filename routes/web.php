@@ -117,25 +117,7 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/admin/home',[HomeController::class, 'adminHome'])->name('adminHome');
 
-		Route::post('/admin/search_invoices',[AdminController::class, 'searchByMonthOrYear'])->name('searchByMonthOrYear');
-
-		Route::get('/admin/consumption',[AdminController::class, 'allInvoices'])->name('allInvoices');
-
-		Route::get('/admin/consumption/page/{page_size}/size/{size}',[AdminController::class, 'search'])->name('search');
-
-		Route::get('/admin/detail-consumption/{invoice_id}/edit',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
-
-		Route::put('/admin/detail-consumption',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
-
-		Route::post('/admin/facture/{invoice_id}',[AdminController::class, 'updateInvoice'])->name('updateInvoice');
-
-		Route::get('/admin/paid/{invoice_id}/client/{client_id}',[AdminController::class, 'getClientByInvoices'])->name('getClientByInvoices');
-
-		Route::post('/admin/paid',[AdminController::class, 'finishToPaidInvoice'])->name('finishToPaidInvoice');
-
 		Route::get('/admin/customer',[ManageAdminController::class, 'viewCustomers']);
-
-		Route::post('/admin/paidInvoce',[ManageAdminController::class, 'paidInvoice']);
 
 		Route::get('/admin/customer/addCustomer',[ManageAdminController::class, 'addCustomers']);
 
@@ -149,9 +131,51 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::post('/admin/administrator/addAdministrator/store',[ManageAdminController::class, 'storeAdministrators']);
 
+		
+
 		Route::get('/admin/facture',[AdminController::class, 'allClient']);
 
-		Route::match(['post','get'],'/facture/addInvoice',[AdminController::class, 'addOneInvoice']);
+		Route::post('/admin/facture/addInvoice',[AdminController::class, 'addOneInvoice'])->name('addOneInvoice');
+
+		Route::match(['post','get'],'/admin/invoice/addInformation',[AdminController::class, 'adminInvoiceInformation']);
+
+		Route::match(['post','get'],'/admin/facture/search_custumer',[AdminController::class, 'adminSearchInvoiceByCustumer']);
+
+		Route::post('/admin/paidInvoce',[ManageAdminController::class, 'paidInvoice']);
+
+		Route::post('/admin/search_invoices',[AdminController::class, 'searchByMonthOrYear'])->name('searchByMonthOrYear');
+
+
+		Route::get('/admin/consumption',[AdminController::class, 'allInvoices'])->name('allInvoices');
+
+		Route::get('/admin/consumption/page/{page_size}/size/{size}',[AdminController::class, 'searchAll'])->name('searchAll');
+
+
+		Route::get('/admin/consumption-that-are-paid',[AdminController::class, 'allPaidInvoices'])->name('allPaidInvoices');
+
+		Route::get('/admin/consumption-that-are-paid/page/{page_size}/size/{size}',[AdminController::class, 'searchAllPaid'])->name('searchAllPaid');
+
+
+		Route::get('/admin/consumption-that-are-unpaid',[AdminController::class, 'allUnPaidInvoices'])->name('allUnPaidInvoices');
+
+		Route::get('/admin/consumption-that-are-unpaid/page/{page_size}/size/{size}',[AdminController::class, 'searchAllUnPaid'])->name('searchAllUnPaid');
+
+
+		Route::get('/admin/detail-consumption/{invoice_id}/edit',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
+
+		Route::put('/admin/detail-consumption',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
+
+		Route::post('/admin/facture/{invoice_id}',[AdminController::class, 'updateInvoice'])->name('updateInvoice');
+
+		Route::get('/admin/paid/{invoice_id}/client/{client_id}',[AdminController::class, 'getClientByInvoices'])->name('getClientByInvoices');
+
+		Route::post('/admin/paid',[AdminController::class, 'finishToPaidInvoice'])->name('finishToPaidInvoice');
+
+		Route::get('/admin/allUnPaidInvoices',[AdminController::class, 'allUnPaidInvoices'])->name('allUnPaidInvoices');
+
+		Route::get('/admin/allPaidInvoices',[AdminController::class, 'allPaidInvoices'])->name('allPaidInvoices');
+
+
 
 		Route::get('/admin/status',[AdminController::class, 'adminStatus'])->name('adminStatus');
 
@@ -200,10 +224,6 @@ Route::group(['middleware' => 'checksession'], function () {
 		Route::match(['get','put'],'/admin/customer/saveCustomer/{id}',[ManageAdminController::class, 'saveCustomer'])->name('saveCustomer');
 
 		Route::match(['get','put'],'/admin/administrator/saveAdmin/{id}',[ManageAdminController::class, 'saveAdmin'])->name('saveAdmin');
-
-		// Route::get('/admin/clauses', function() {
-		//     return view('admin/adminClauses');
-		// });
 
 		Route::get('/admin/map', function() {
 		    return view('admin/maps');
