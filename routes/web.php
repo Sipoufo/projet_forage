@@ -31,11 +31,11 @@ Route::post('/reset',[HomeController::class, 'reset']);
 
 
 Route::group(['middleware' => 'checksession'], function () {
-        
-        // Global routes 
+
+        // Global routes
 		Route::get('/logout',[LogoutController::class, 'logout']);
 
-		
+
 		//Client
 
 		Route::get('/home',[ManageClientController::class, 'dashboard'])->name('clientHome');
@@ -163,7 +163,13 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/admin/detail-consumption/{invoice_id}/edit',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
 
+<<<<<<< HEAD
 		Route::put('/admin/detail-consumption',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
+=======
+        Route::get('/admin/customer/blockedCustomer',[ManageAdminController::class, 'blockedCustomers']);
+
+		Route::post('/admin/customer/addCustomer/store',[ManageAdminController::class, 'storeCustomers']);
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
 
 		Route::post('/admin/facture/{invoice_id}',[AdminController::class, 'updateInvoice'])->name('updateInvoice');
 
@@ -225,6 +231,11 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::match(['get','put'],'/admin/administrator/saveAdmin/{id}',[ManageAdminController::class, 'saveAdmin'])->name('saveAdmin');
 
+<<<<<<< HEAD
+=======
+        Route::match(['get','post'],'/admin/customer/account/update/{id}',[ManageAdminController::class, 'updateAccount'])->name('updateAccount');
+
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
 		Route::get('/admin/map', function() {
 		    return view('admin/maps');
 		});

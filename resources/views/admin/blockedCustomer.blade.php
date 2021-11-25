@@ -22,18 +22,10 @@
 
         <!-- Nav Item - consumption -->
         <li class="nav-item">
-            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Consumption</span>
+            <a class="nav-link collapsed" href="/admin/consumption">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>consumption</span>
             </a>
-            <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities2" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Consumption</h6>
-                    <a class="collapse-item" href="/admin/consumption" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">All</a>
-                    <a class="collapse-item" href="/admin/consumption-that-are-paid" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">Consumption Paid</a>
-                    <a class="collapse-item" href="/admin/consumption-that-are-unpaid" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Consumption UnPaid</a>
-                </div>
-            </div>
         </li>
 
         <!-- Nav Item - Customer -->
@@ -53,7 +45,7 @@
 
         <!-- Nav Item - Payment -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/invoice/addInformation">
+            <a class="nav-link collapsed" href="/admin/facture">
                 <i class="fas fa-file-invoice-dollar"></i>
                 <span>Invoices</span>
             </a>
@@ -120,14 +112,9 @@
 @section('content')
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-right justify-content-between mb-4">
-        <a href="/admin/customer/addCustomer" class="btn btn-primary"> Add a customer </a>
-        <h1 class="h3 mb-0 text-gray-800">Customers</h1>
-        <a href="/admin/customer/blockedCustomer" class="btn btn-warning"><i class="fas fa-exclamation-triangle mr-2"></i>Blocked</a>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800"><a href="/admin/customer" class="mr-3"><i class="fas fa-chevron-circle-left"></i></a>Blocked Customers</h1>
     </div>
-
-
-
 
     @if(Session::has('error'))
         <div class="alert alert-danger alert-dismissible fade show">
@@ -161,11 +148,11 @@
                 $status = $info['status'];
                 $delete = $info['isDelete'];
 
-                if($status == 1){
-                    $card='bg-success';
-                    $class='btn-success';
-                    $state = 'Active';
-                    $badge = 'badge-success';
+                if($status == 0){
+                    $card='bg-warning';
+                    $class='btn-warning';
+                    $badge = 'badge-warning';
+                    $state = 'Blocked';
                 }
 
                 if(empty($status)){
@@ -179,7 +166,7 @@
                     $image = "/img/undraw_profile.svg";
                 }
 
-                if(!$delete && $status==1){
+                if(!$delete && $status==0){
 
             ?>
 
@@ -236,7 +223,7 @@
 
                                 <div class="float-right">
 
-                                    <a href="locationModal" id="toLocation" locate="<?= $info['_id'] ?>" desc="<?= $info['localisation']['description'] ? $info['localisation']['description'] : ""?>" data-toggle="modal" data-target="#locationModal" class="btn <?= $card ?> locationModal" data-bs-toggle="tooltip" data-bs-placement="bottom" title="location">
+                                    <a href="locationModal" id="toLocation" locate="<?= $info['_id'] ?>" data-toggle="modal" data-target="#locationModal" class="btn <?= $card ?> locationModal" data-bs-toggle="tooltip" data-bs-placement="bottom" title="location">
                                         <span class="icon"  style="color:white;">
                                             <i class="fas fa-globe"></i></i>
                                         </span>
@@ -326,7 +313,6 @@
         event.preventDefault();
 
         var id = $(this).attr('locate');
-        var desc = $(this).attr('desc');
 
        function myPosition(position) {
 
@@ -335,7 +321,6 @@
         $('#lng').val(position.coords.longitude);
         $('#lngsee').val(position.coords.longitude);
         $('#id').val(id);
-        $('#description').val(desc);
        }
 
        function errorPosition(error) {

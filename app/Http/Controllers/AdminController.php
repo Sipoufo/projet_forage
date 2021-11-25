@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use PDF;
 
 class AdminController extends Controller{
-	
+
     public function adminConsumption(){
     	return view('admin/consumption');
     }
@@ -200,7 +200,7 @@ class AdminController extends Controller{
         // print_r($response);
         $client = array();
         $lengthPaid = count($invoice['result']);
-        for ($i=0; $i < $lengthPaid; $i++) { 
+        for ($i=0; $i < $lengthPaid; $i++) {
             $curl2 = curl_init();
             curl_setopt_array($curl2, array(
                 CURLOPT_URL => 'http://localhost:4000/client/auth/'.$invoice['result'][$i]['idClient'],
@@ -241,7 +241,7 @@ class AdminController extends Controller{
         $result = $response['result'];
 
         return view('admin/manageProducts',['data' => $result]);
-    	
+
     }
 
     public function productsType(){
@@ -264,9 +264,9 @@ class AdminController extends Controller{
         return view('admin/productsType',['data' => $response]);
 
     }
-    
+
     public function createType(Request $request){
-        
+
         $type = $request->input('type');
 
         $url = "http://localhost:4000/stock/type";
@@ -282,7 +282,7 @@ class AdminController extends Controller{
             'name' => $type,
         );
         $data_json = json_encode($data);
-        
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -290,7 +290,7 @@ class AdminController extends Controller{
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        curl_close($ch); 
+        curl_close($ch);
 
         $data = json_decode($response,true);
 
@@ -306,7 +306,7 @@ class AdminController extends Controller{
     }
 
     public function storeProduct(Request $request){
-    	
+
         $validator = Validator::make($request->all(), [
             'name' =>  'bail|required',
             'quantity' => 'bail|required',
@@ -321,7 +321,7 @@ class AdminController extends Controller{
                 'image.max' => 'The :attribute must not sized over 2Mo',
             ],
         );
- 
+
         if ($validator->fails()) {
 
             return back()->withErrors($validator)->withInput();
@@ -335,7 +335,7 @@ class AdminController extends Controller{
             $description = $request->input('description');
 
             $photo =  $request->file('image')->getClientOriginalName();
-            $photoPath = $request->image->storeAs('/products',$photo); 
+            $photoPath = $request->image->storeAs('/products',$photo);
 
             $url = "http://localhost:4000/stock/";
             $alltoken = $_COOKIE['token'];
@@ -356,7 +356,7 @@ class AdminController extends Controller{
             $data_json = json_encode($data);
 
             // print_r($data_json);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -364,12 +364,12 @@ class AdminController extends Controller{
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
 
             // print_r($response);
-            
+
             if ($response->status == 200){
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
@@ -400,7 +400,7 @@ class AdminController extends Controller{
             'limit' => 0,
         );
         $data_json = json_encode($data);
-        
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -408,14 +408,14 @@ class AdminController extends Controller{
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        curl_close($ch); 
+        curl_close($ch);
 
         $response = json_decode($response,true);
 
         $data= $response['result']['docs'];
 
         return view('admin/remove',['materials' => $data]);
-    
+
     }
 
     public function removeProduct(Request $request){
@@ -437,7 +437,7 @@ class AdminController extends Controller{
         );
 
         $data_json = json_encode($data);
-        
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -445,10 +445,10 @@ class AdminController extends Controller{
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        curl_close($ch); 
+        curl_close($ch);
 
         $response = json_decode($response);
-        
+
         if ($response->status == 200){
             Session::flash('message', ucfirst($response->error));
             Session::flash('alert-class', 'alert-success');
@@ -461,7 +461,7 @@ class AdminController extends Controller{
     }
 
     public function deleteType($id){
-    	
+
         $url = "http://localhost:4000/stock/type/".$id;
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
@@ -469,19 +469,19 @@ class AdminController extends Controller{
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-        
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        curl_close($ch); 
+        curl_close($ch);
 
         $response = json_decode($response);
 
         // print_r($response);
-        
+
         if ($response->status == 200){
             Session::flash('message', 'Action Successfully done!');
             Session::flash('alert-class', 'alert-success');
@@ -529,7 +529,7 @@ class AdminController extends Controller{
                 'type' => $type,
             );
             $data_json1 = json_encode($data1);
-            
+
             $ch1 = curl_init();
             curl_setopt($ch1, CURLOPT_URL, $url1);
             curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -537,7 +537,7 @@ class AdminController extends Controller{
             curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
             curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
             $response1  = curl_exec($ch1);
-            curl_close($ch1); 
+            curl_close($ch1);
 
             $data1 = json_decode($response1,true);
 
@@ -579,7 +579,7 @@ class AdminController extends Controller{
         curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
         $response1  = curl_exec($ch1);
-        curl_close($ch1); 
+        curl_close($ch1);
 
         $data = json_decode($response1,true);
 
@@ -602,7 +602,7 @@ class AdminController extends Controller{
                 'image.max' => 'The :attribute must not sized over 2Mo',
             ],
         );
- 
+
         if ($validator->fails()) {
 
             return back()->withErrors($validator)->withInput();
@@ -611,10 +611,10 @@ class AdminController extends Controller{
 
             if($request->file()) {
                 $photo =  $request->file('image')->getClientOriginalName();
-                $photoPath = $request->image->storeAs('/products',$photo);    
+                $photoPath = $request->image->storeAs('/products',$photo);
             }else{
                 $photo = "";
-                $photoPath = $request->input('oldimage') ;   
+                $photoPath = $request->input('oldimage') ;
             }
 
             $name = $request->input('name');
@@ -644,7 +644,7 @@ class AdminController extends Controller{
             $data_json = json_encode($data);
 
             // print_r($data_json);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -652,12 +652,12 @@ class AdminController extends Controller{
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
 
             // print_r($response);
-            
+
             if ($response->status == 200){
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
@@ -738,7 +738,7 @@ class AdminController extends Controller{
                 'photo.max' => 'The :attribute must not sized over 2Mo',
             ]
         );
- 
+
         if ($validator->fails()) {
 
             return back()->withErrors($validator)->withInput(['tab'=>'update']);
@@ -747,7 +747,7 @@ class AdminController extends Controller{
 
             if($request->file()) {
                 $photo =  $request->file('photo')->getClientOriginalName();
-                $photoPath = $request->photo->storeAs('/administrators',$photo);   
+                $photoPath = $request->photo->storeAs('/administrators',$photo);
             }else{
                 $photo = "";
                 if(Session::has('photo')){
@@ -763,7 +763,7 @@ class AdminController extends Controller{
             $email = $request->input('email');
             $phone = $request->input('phone');
             $home = $request->input('home');
-            
+
 
             $url = "http://localhost:4000/admin/auth/update";
             $alltoken = $_COOKIE['token'];
@@ -784,7 +784,7 @@ class AdminController extends Controller{
             $data_json = json_encode($data);
 
             // print_r($data_json);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -793,26 +793,26 @@ class AdminController extends Controller{
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
 
             //print_r($response);
-            
+
             if ($response->status == 200){
                 $request->session()->put('name',$name);
                 $request->session()->put('photo',$photoPath);
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
                 return redirect()->back()->withInput(['tab'=>'update']);
-                
+
             }else{
                 Session::flash('message', ucfirst($response->error));
                 Session::flash('alert-class', 'alert-danger');
                 return redirect()->back()->withInput(['tab'=>'update']);
             }
         }
-        
+
     }
 
     public function changePassword(Request $request){
@@ -837,7 +837,7 @@ class AdminController extends Controller{
 
             $newpassword = md5(sha1($request->input('newpassword')));
             $oldpassword = md5(sha1($request->input('oldpassword')));
-            
+
             $url = "http://localhost:4000/admin/auth/updatePassword";
             $alltoken = $_COOKIE['token'];
             $alltokentab = explode(';', $alltoken);
@@ -853,7 +853,7 @@ class AdminController extends Controller{
             $data_json = json_encode($data);
 
             // print_r($data_json);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -862,17 +862,17 @@ class AdminController extends Controller{
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
 
             // print_r($response);
-            
+
             if ($response->status == 200){
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
                 return redirect()->back()->withInput(['tab'=>'password_form']);
-                
+
             }else{
                 Session::flash('message', ucfirst($response->error));
                 Session::flash('alert-class', 'alert-danger');
@@ -899,11 +899,11 @@ class AdminController extends Controller{
             'prixUnitaire' => $meterprice,
             'fraisEntretien' => $maintenance,
         );
-        
+
         $data_json = json_encode($data);
 
         // print_r($data_json);
-        
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -911,17 +911,17 @@ class AdminController extends Controller{
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        curl_close($ch); 
+        curl_close($ch);
 
         $response = json_decode($response);
 
         // print_r($response);
-        
+
         if ($response->status == 200){
             Session::flash('message', 'Action Successfully done!');
             Session::flash('alert-class', 'alert-success');
             return redirect()->back()->withInput(['tab'=>'settings']);
-            
+
         }else{
             Session::flash('message', ucfirst($response->error));
             Session::flash('alert-class', 'alert-danger');
@@ -942,14 +942,14 @@ class AdminController extends Controller{
 
         $year = date("Y");
 		//echo $year;
-        
+
 		$month = date("m");
 		//echo $month;
 
         $page = 1;
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/factureByYear/'.$year,
 
@@ -962,11 +962,11 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
-    
+
         $i=0;
         $invoices = array();
         $invoicesWithPaginator = array();
@@ -1022,7 +1022,7 @@ class AdminController extends Controller{
                 array_push($invoicesWithPaginator,$invoices[$i]);
             }
         }
-        
+
         //dump($invoicesWithPaginator);
 
         if (gettype($invoices) != "array") {
@@ -1048,10 +1048,10 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-            
+
             $response = curl_exec($url);
             $response = json_decode($response);
-        
+
             $i=0;
 
             foreach($response as $key => $value){
@@ -1060,12 +1060,12 @@ class AdminController extends Controller{
                 }
                 $i = $i + 1;
             }
-        
+
         }
         return view('admin/consumption',[
-            'invoices' => $invoicesWithPaginator, 
-            'client' => $client, 
-            'page' => $page, 
+            'invoices' => $invoicesWithPaginator,
+            'client' => $client,
+            'page' => $page,
             'size' => $size,
             'page_en_cours' => $page_en_cours,
             'previous_page' => $previous_page,
@@ -1074,6 +1074,7 @@ class AdminController extends Controller{
     }
     public function searchAllPaid($page_size,$size)
     {
+<<<<<<< HEAD
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
@@ -1117,6 +1118,27 @@ class AdminController extends Controller{
         foreach($response as $key => $value){
             if($i >= 1){
                 $invoices = $value;
+=======
+        if (isset($_POST['send_search']))
+        {
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            $Authorization = 'Bearer '.$tokenVal;
+
+            $type = $_POST['type'];
+            $month = '';
+            $year = '';
+
+            if ($type === "month") {
+                $month = $_POST['search'];
+                $year = date("Y");
+            }else if ($type === 'year'){
+                $month = date("m");
+                $year = $_POST['search'];
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
             }
             $i = $i + 1;
         }
@@ -1133,6 +1155,7 @@ class AdminController extends Controller{
         $previous_page = 1;
         $next_page = 1;
 
+<<<<<<< HEAD
         $arrLength = count($invoices_paid);
 
         $size_final = $size * $page_size;
@@ -1183,6 +1206,16 @@ class AdminController extends Controller{
             $url = curl_init();
             curl_setopt_array($url, array(
                 CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
+=======
+            $page_en_cours = $page;
+            $previous_page = 1;
+            $next_page = 1;
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://localhost:4000/admin/facture/'.$year.'/'.$month.'/'.$size.'/'.$page,
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -1192,10 +1225,16 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
+<<<<<<< HEAD
             
             $response = curl_exec($url);
+=======
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
             $response = json_decode($response);
-        
+
             $i=0;
 
             foreach($response as $key => $value){
@@ -1448,10 +1487,10 @@ class AdminController extends Controller{
                     CURLOPT_CUSTOMREQUEST => 'GET',
                     CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
                 ));
-                
+
                 $response = curl_exec($url);
                 $response = json_decode($response);
-            
+
                 $i=0;
 
                 foreach($response as $key => $value){
@@ -1464,6 +1503,7 @@ class AdminController extends Controller{
                     $i = $i + 1;
                     //dump($key);
                 }
+<<<<<<< HEAD
             
             }
             return view('admin/consumption',[
@@ -2497,6 +2537,47 @@ class AdminController extends Controller{
             $url = curl_init();
             curl_setopt_array($url, array(
                 CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
+=======
+
+            }
+            return view('admin/consumption',[
+                'invoices' => $invoices,
+                'client' => $client,
+                'page' => $page,
+                'size' => $size,
+                'page_en_cours' => $page_en_cours,
+                'previous_page' => $previous_page,
+                'next_page' => $next_page
+            ]);
+        }
+        if (isset($_POST['send_pagination']))
+        {
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            $Authorization = 'Bearer '.$tokenVal;
+
+            $year = date("Y");
+            //echo $year;
+
+            $month = date("m");
+            //echo $month;
+
+            $page = 1;
+
+            $size = $_POST['select_size'];
+
+            $page_en_cours = $page;
+            $previous_page = 1;
+            $next_page = 1;
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://localhost:4000/admin/facture/factureByYear/'.$year,
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -2506,17 +2587,29 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
+<<<<<<< HEAD
             
             $response = curl_exec($url);
+=======
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
             $response = json_decode($response);
-        
+
             $i=0;
+<<<<<<< HEAD
+=======
+            $invoices = array();
+            $invoicesWithPaginator = array();
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
 
             foreach($response as $key => $value){
                 if($i >= 1){
                     array_push($client,$value);
                 }
                 $i = $i + 1;
+<<<<<<< HEAD
             }
         
         }
@@ -2529,6 +2622,76 @@ class AdminController extends Controller{
             'previous_page' => $previous_page,
             'next_page' => $next_page
         ]);
+=======
+                //dump($key);
+            }
+
+            $arrLength = count($invoices);
+            //echo $arrLength;
+
+            if($arrLength < $size){
+                $size = $arrLength;
+                $page_en_cours = 1;
+            }else {
+                $page = $arrLength / $size;
+                $next_page = $page_en_cours + 1;
+            }
+
+            for($i = 0; $i < $size; $i++){
+                //$invoicesWithPaginator = $invoices[$i];
+                array_push($invoicesWithPaginator,$invoices[$i]);
+            }
+
+            //dump($invoicesWithPaginator);
+
+            if (gettype($invoices) != "array") {
+                $invoices = array();
+            }
+
+            //dump($invoices);
+
+            $client = array();
+
+            foreach($invoicesWithPaginator as $invoice){
+
+                $idClient = $invoice  -> idClient;
+                $url = curl_init();
+                curl_setopt_array($url, array(
+                    CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'GET',
+                    CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+                ));
+
+                $response = curl_exec($url);
+                $response = json_decode($response);
+
+                $i=0;
+
+                foreach($response as $key => $value){
+                    if($i >= 1){
+                        array_push($client,$value);
+                    }
+                    $i = $i + 1;
+                }
+
+            }
+            return view('admin/consumption',[
+                'invoices' => $invoicesWithPaginator,
+                'client' => $client,
+                'page' => $page,
+                'size' => $size,
+                'page_en_cours' => $page_en_cours,
+                'previous_page' => $previous_page,
+                'next_page' => $next_page
+            ]);
+        }
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
 
     }
 
@@ -2541,6 +2704,15 @@ class AdminController extends Controller{
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
 
+<<<<<<< HEAD
+=======
+        $year = date("Y");
+		//echo $year;
+
+		$month = date("m");
+		//echo $month;
+
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
         $page = 1;
 
         $size = 5;
@@ -2548,9 +2720,9 @@ class AdminController extends Controller{
         $page_en_cours = 1;
         $previous_page = 1;
         $next_page = 1;
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/getByStatus/true',
             CURLOPT_RETURNTRANSFER => true,
@@ -2562,11 +2734,11 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
-    
+
         $i=0;
         $invoices = array();
         $invoicesWithPaginator = array();
@@ -2623,10 +2795,10 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-            
+
             $response = curl_exec($url);
             $response = json_decode($response);
-        
+
             $i=0;
 
             foreach($response as $key => $value){
@@ -2635,12 +2807,19 @@ class AdminController extends Controller{
                 }
                 $i = $i + 1;
             }
-        
+
         }
+<<<<<<< HEAD
         return view('admin/consumptionThatArePaid',[
             'invoices' => $invoicesWithPaginator, 
             'client' => $client, 
             'page' => $page, 
+=======
+        return view('admin/consumption',[
+            'invoices' => $invoicesWithPaginator,
+            'client' => $client,
+            'page' => $page,
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
             'size' => $size,
             'page_en_cours' => $page_en_cours,
             'previous_page' => $previous_page,
@@ -2656,9 +2835,9 @@ class AdminController extends Controller{
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/one/'.$invoice_id,
             CURLOPT_RETURNTRANSFER => true,
@@ -2670,7 +2849,7 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $response = curl_exec($curl);
         curl_close($curl);
         $invoice = json_decode($response, true);
@@ -2692,7 +2871,7 @@ class AdminController extends Controller{
         $response2 = curl_exec($curl2);
         curl_close($curl2);
         $client = json_decode($response2, true);
-        
+
         $curl3 = curl_init();
         curl_setopt_array($curl3, array(
             CURLOPT_URL => 'http://localhost:4000/admin/auth/'.$invoice['result']['idAdmin'],
@@ -2710,9 +2889,9 @@ class AdminController extends Controller{
         $admin = json_decode($response3, true);
 
         echo($admin['result']['phone']);
-        
+
         $pdf = PDF::loadView('facturePdf/generator', ['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
-        
+
         return $pdf->download('facture-'. $client['result']['name'].'-'.date('F').'.pdf');
         // return view('facturePdf/generator',['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
     }
@@ -2725,9 +2904,9 @@ class AdminController extends Controller{
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/one/'.$invoice_id,
             CURLOPT_RETURNTRANSFER => true,
@@ -2739,11 +2918,11 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
-    
+
         $i=0;
         $invoice = array();
 
@@ -2783,10 +2962,10 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-            
+
             $response = curl_exec($url);
             $response = json_decode($response);
-        
+
             $i=0;
 
             foreach($response as $key => $value){
@@ -2803,7 +2982,7 @@ class AdminController extends Controller{
         }
         return view('admin/detailInvoice',
             [
-                'invoice' => $invoice, 
+                'invoice' => $invoice,
                 'client' => $client,
                 'show' => false,
             ]
@@ -2839,10 +3018,10 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-            
+
             $response = curl_exec($url);
             $response = json_decode($response);
-        
+
             $i=0;
 
             foreach($response as $key => $value){
@@ -2859,7 +3038,7 @@ class AdminController extends Controller{
         }
         return view('admin/detailInvoice',
             [
-                'invoice' => $invoice_id, 
+                'invoice' => $invoice_id,
                 'client' => $client,
                 'show' => true,
             ]
@@ -2875,9 +3054,9 @@ class AdminController extends Controller{
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/getByStatus/false',
             CURLOPT_RETURNTRANSFER => true,
@@ -2889,18 +3068,18 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
-    
+
         $i=0;
         $invoicesAdvenced = array();
         //echo "je";
 
         $year = date("Y");
 		//echo $year;
-        
+
 		$month = date("m");
 		//echo $month;
 
@@ -2938,10 +3117,10 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-            
+
             $response = curl_exec($url);
             $response = json_decode($response);
-        
+
             $i=0;
 
             foreach($response as $key => $value){
@@ -2954,11 +3133,11 @@ class AdminController extends Controller{
                 $i = $i + 1;
                 //dump($key);
             }
-        
+
         }
-    
+
         $ch = curl_init();
-            
+
         curl_setopt_array($ch, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/'.$year.'/'.$month.'/1000/1',
             CURLOPT_RETURNTRANSFER => true,
@@ -2970,7 +3149,7 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $re = curl_exec($ch);
         curl_close($ch);
         $res = json_decode($re);
@@ -2980,7 +3159,7 @@ class AdminController extends Controller{
         $invoices_month = array();
         $invoices_year = array();
         $row = 0;
-        
+
         foreach($res as $key => $value){
             if($i >= 3){
                 $row = count($value);
@@ -2995,10 +3174,10 @@ class AdminController extends Controller{
             }
             $i = $i + 1;
         }
-        
+
         $people = array();
         $number0fClient = 0;
-        
+
         if ($invoices_paid > 0) {
             foreach($invoices_paid as $invoice){
 
@@ -3015,10 +3194,10 @@ class AdminController extends Controller{
                     CURLOPT_CUSTOMREQUEST => 'GET',
                     CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
                 ));
-                
+
                 $response = curl_exec($url);
                 $response = json_decode($response);
-            
+
                 $i=0;
 
                 foreach($response as $key => $value){
@@ -3030,7 +3209,7 @@ class AdminController extends Controller{
             }
         }
         $number0fClient = count($people);
-        
+
         $url_client = curl_init();
         curl_setopt_array($url_client, array(
             CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
@@ -3043,11 +3222,11 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $user = curl_exec($url_client);
         $user = json_decode($user);
         $user_list = array();
-    
+
         foreach($user as $key => $value){
             if($i >= 3){
                 $user_list = $value;
@@ -3071,11 +3250,11 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $invoices_annuel = curl_exec($url_annuel);
         $invoices_annuel = json_decode($invoices_annuel);
         $invoices_annuel_list = array();
-    
+
         foreach($invoices_annuel as $key => $value){
             if($i >= 3){
                 $invoices_annuel_list = $value;
@@ -3084,7 +3263,7 @@ class AdminController extends Controller{
         }
 
         return view('admin/dashboard',[
-            'invoices' => $invoicesAdvenced, 
+            'invoices' => $invoicesAdvenced,
             'client' => $client,
             'pourcent' => $pourcent,
             'earnly' => $earnly,
@@ -3096,16 +3275,16 @@ class AdminController extends Controller{
     public function allInvoicesByClient()
     {
         $idClient = $_POST['idClient'];
-        
+
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/'.$idClient,
             CURLOPT_RETURNTRANSFER => true,
@@ -3117,11 +3296,11 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
-    
+
         $i=0;
         $invoices = array();
 
@@ -3161,7 +3340,7 @@ class AdminController extends Controller{
             );
 
             $data_json = json_encode($facture);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -3169,7 +3348,7 @@ class AdminController extends Controller{
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $messageErr = null;
             $messageOK = null;
@@ -3183,7 +3362,7 @@ class AdminController extends Controller{
             }
 
             $curl = curl_init();
-        
+
             curl_setopt_array($curl, array(
                 CURLOPT_URL => 'http://localhost:4000/admin/facture/one/'.$invoice_id,
                 CURLOPT_RETURNTRANSFER => true,
@@ -3195,14 +3374,14 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-            
+
             $response = curl_exec($curl);
             curl_close($curl);
             $response = json_decode($response);
-        
+
             $i=0;
             $invoice = array();
-    
+
             foreach($response as $key => $value){
                 if($i >= 1){
                     //echo $value;
@@ -3213,18 +3392,18 @@ class AdminController extends Controller{
                 $i = $i + 1;
                 //dump($key);
             }
-    
+
             if (gettype($invoice) != "array" && gettype($invoice) != "object") {
             //    echo "je t'aime";
                 $invoice = array();
             }
-    
+
             //dump($invoice);
-    
+
             if ($invoice -> idClient != null)
             {
                 $client = array();
-    
+
                 $idClient = $invoice -> idClient;
                 //echo $idClient;
                 $url = curl_init();
@@ -3239,12 +3418,12 @@ class AdminController extends Controller{
                     CURLOPT_CUSTOMREQUEST => 'GET',
                     CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
                 ));
-                
+
                 $response = curl_exec($url);
                 $response = json_decode($response);
-            
+
                 $i=0;
-    
+
                 foreach($response as $key => $value){
                     if($i >= 1){
                         //echo $value;
@@ -3257,15 +3436,15 @@ class AdminController extends Controller{
             //echo "oo";
             return view('admin/detailInvoice',
                 [
-                    'invoice' => $invoice, 
+                    'invoice' => $invoice,
                     'client' => $client,
                     'show' => false,
                     'messageOK' => $messageOK,
                     'messageErr' => $messageErr,
                 ]
             );
-    
-    
+
+
         }
     }
     //finish to paid invoice
@@ -3289,7 +3468,7 @@ class AdminController extends Controller{
             $observation = $_POST['observation'];
             $dateSpicy = $_POST['dateSpicy'];
             $amountPaid = $_POST['amountPaid'];
-            
+
             // je definie la donnée de ma facture.
             $facture = array(
                 "newIndex"  => $newIndex,
@@ -3317,7 +3496,7 @@ class AdminController extends Controller{
 
             //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
             curl_setopt($ch, CURLOPT_PUT, 1);
-            
+
             //j'insere la donnée à etre envoyé
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             //enfin d'avoir un retour sur l'etat de la requette on a CURLOPT_RETURNTRANSFER = true
@@ -3349,9 +3528,9 @@ class AdminController extends Controller{
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
             CURLOPT_RETURNTRANSFER => true,
@@ -3363,11 +3542,11 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
-    
+
         $i=0;
         $users = array();
 
@@ -3392,6 +3571,7 @@ class AdminController extends Controller{
     
     public function addOneInvoice()
     {
+<<<<<<< HEAD
         $message = null;
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
@@ -3446,9 +3626,119 @@ class AdminController extends Controller{
                 $response  = curl_exec($ch);
                 //var_dump($response);
                 curl_close($ch);
+=======
+            // var_dump("expression");
+            // $users = array();
+            $message = null;
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            $Authorization = 'Bearer '.$tokenVal;
+            // echo "Ok : ".$Authorization;
+
+            // $curl = curl_init();
+            // curl_setopt_array($curl, array(
+            //     CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
+            //     CURLOPT_RETURNTRANSFER => true,
+            //     CURLOPT_ENCODING => '',
+            //     CURLOPT_MAXREDIRS => 10,
+            //     CURLOPT_TIMEOUT => 0,
+            //     CURLOPT_FOLLOWLOCATION => true,
+            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //     CURLOPT_CUSTOMREQUEST => 'GET',
+            //     CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            // ));
+
+            // $response = curl_exec($curl);
+            // curl_close($curl);
+            // $response = json_decode($response);
+
+            // $i=0;
+
+            // foreach($response as $key => $value){
+            //     if($i >= 1){
+            //         //echo $value;
+            //         $users = $value;
+            //         //dump($value);
+            //     }
+            //     $i = $i + 1;
+            //     //dump($key);
+            // }
+
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://localhost:4000/admin/facture/getStaticInformation',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $response = json_decode($response, true);
+            print_r($response);
+            if(array_key_exists('result', $response)) {
+
+                if(!empty($response['result'])){
+
+
+                    $newIndex = $_POST['newIndex'];
+                    $penalty = $_POST['penalty'];
+                    $observation = $_POST['observation'];
+                    $dateSpicy = $_POST['dateSpicy'];
+                    $dataPaid = $_POST['dataPaid'];
+                    $idClient = $_POST['idClient'];
+                    $amountPaid = $_POST['amountPaid'];
+                    $oldIndex = $_POST['oldIndex'];
+                    // echo $idClient;
+
+                    // je definie l'url de connexion.
+                    $url = "http://localhost:4000/admin/facture/".$idClient;
+                    // je definie la donnée de ma facture.
+                    if(!empty($observation)){
+                        $facture = array(
+                            'newIndex' => $newIndex,
+                            'observation' => $observation,
+                            'penalite' => $penalty,
+                            'dataPaid' => $dataPaid,
+                            'montantVerse' => $amountPaid,
+                            'dateReleveNewIndex' => $dateSpicy,
+                            'oldIndex' => $oldIndex,
+                        );
+                    }else {
+                        $facture = array(
+                            'newIndex' => $newIndex,
+                            'penalite' => $penalty,
+                            'dataPaid' => $dataPaid,
+                            'montantVerse' => $amountPaid,
+                            'dateReleveNewIndex' => $dateSpicy,
+                            'oldIndex' => $oldIndex,
+                        );
+                    }
+
+                    // j'encode cette donnée là'.
+                    $data_json = json_encode($facture);
+                    //var_dump($data_json);
+                    // Initialisez une session CURL.
+                    $ch = curl_init();
+
+                    // Je definie les propriétés de connexion
+                    //CURLOPT_URL : permet de definir l'url
+                    curl_setopt($ch, CURLOPT_URL, $url);
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
 
                 $response = json_decode($response);
 
+<<<<<<< HEAD
                 if ($response->status == 200){
                     Session::flash('message', 'Action Successfully done!');
                     Session::flash('alert-class', 'alert-success');
@@ -3456,6 +3746,36 @@ class AdminController extends Controller{
                     
                 }else{
                     Session::flash('message', ucfirst($response->error));
+=======
+                    //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
+                    curl_setopt($ch, CURLOPT_POST, 1);
+
+                    //j'insere la donnée à etre envoyé
+                    curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+                    //enfin d'avoir un retour sur l'etat de la requette on a CURLOPT_RETURNTRANSFER = true
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $response  = curl_exec($ch);
+                    //var_dump($response);
+                    curl_close($ch);
+
+                    $response = json_decode($response);
+
+                    if ($response->status == 200){
+                        Session::flash('message', 'Action Successfully done!');
+                        Session::flash('alert-class', 'alert-success');
+                        return redirect()->back();
+
+                    }else{
+                        Session::flash('message', ucfirst($response->error));
+                        Session::flash('alert-class', 'alert-danger');
+                        return redirect()->back();
+                    }
+
+                }else {
+                    echo "Je passe ffffffffjjksksllslslls";
+                    $messageErr = 'Please entrer the static informations in ';
+                    Session::flash('messageErr', $messageErr);
+>>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
                     Session::flash('alert-class', 'alert-danger');
                     //return redirect()->back();
                 }
@@ -3502,28 +3822,28 @@ class AdminController extends Controller{
         curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
         curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
         $response1  = curl_exec($ch1);
-        curl_close($ch1); 
+        curl_close($ch1);
         $response1 = json_decode($response1,true);
         $data1= $response1['result']['docs'];
 
 
-        $url2 = "http://localhost:4000/admin/facture/factureByYear/".date('Y');    
+        $url2 = "http://localhost:4000/admin/facture/factureByYear/".date('Y');
         $ch2 = curl_init();
         curl_setopt($ch2, CURLOPT_URL, $url2);
         curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
         curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
         $response2  = curl_exec($ch2);
-        curl_close($ch2); 
+        curl_close($ch2);
         $response2 = json_decode($response2,true);
         $data2= $response2['result'];
 
-        $url3 = "http://localhost:4000/stock/getInputMaterialByYear/".date('Y');    
+        $url3 = "http://localhost:4000/stock/getInputMaterialByYear/".date('Y');
         $ch3 = curl_init();
         curl_setopt($ch3, CURLOPT_URL, $url3);
         curl_setopt($ch3, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
         curl_setopt($ch3, CURLOPT_RETURNTRANSFER, true);
         $response3  = curl_exec($ch3);
-        curl_close($ch3); 
+        curl_close($ch3);
         $response3 = json_decode($response3,true);
         $data3= $response3['result'];
 
@@ -3564,7 +3884,7 @@ class AdminController extends Controller{
             'limit' => 0,
         );
         $data_json1 = json_encode($data1);
-        
+
         $ch1 = curl_init();
         curl_setopt($ch1, CURLOPT_URL, $url1);
         curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -3572,48 +3892,48 @@ class AdminController extends Controller{
         curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
         curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
         $response1  = curl_exec($ch1);
-        curl_close($ch1); 
+        curl_close($ch1);
         $response1 = json_decode($response1,true);
         $data1= $response1['result']['docs'];
 
 
-        $url2 = "http://localhost:4000/admin/facture/factureByYear/".$year; 
+        $url2 = "http://localhost:4000/admin/facture/factureByYear/".$year;
         $ch2 = curl_init();
         curl_setopt($ch2, CURLOPT_URL, $url2);
         curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
         curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
         $response2  = curl_exec($ch2);
-        curl_close($ch2); 
+        curl_close($ch2);
         $response2 = json_decode($response2,true);
         $data2= $response2['result'];
 
-        $url3 = "http://localhost:4000/stock/getInputMaterialByYear/".$year;    
+        $url3 = "http://localhost:4000/stock/getInputMaterialByYear/".$year;
         $ch3 = curl_init();
         curl_setopt($ch3, CURLOPT_URL, $url3);
         curl_setopt($ch3, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
         curl_setopt($ch3, CURLOPT_RETURNTRANSFER, true);
         $response3  = curl_exec($ch3);
-        curl_close($ch3); 
+        curl_close($ch3);
         $response3 = json_decode($response3,true);
         $data3= $response3['result'];
 
-        $url4 = "http://localhost:4000/admin/facture/factureByYear/".date('Y');    
+        $url4 = "http://localhost:4000/admin/facture/factureByYear/".date('Y');
         $ch4 = curl_init();
         curl_setopt($ch4, CURLOPT_URL, $url4);
         curl_setopt($ch4, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
         curl_setopt($ch4, CURLOPT_RETURNTRANSFER, true);
         $response4  = curl_exec($ch4);
-        curl_close($ch4); 
+        curl_close($ch4);
         $response4 = json_decode($response4,true);
         $data4= $response4['result'];
 
-        $url5 = "http://localhost:4000/stock/getInputMaterialByYear/".date('Y');    
+        $url5 = "http://localhost:4000/stock/getInputMaterialByYear/".date('Y');
         $ch5 = curl_init();
         curl_setopt($ch5, CURLOPT_URL, $url5);
         curl_setopt($ch5, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
         curl_setopt($ch5, CURLOPT_RETURNTRANSFER, true);
         $response5  = curl_exec($ch5);
-        curl_close($ch5); 
+        curl_close($ch5);
         $response5 = json_decode($response5,true);
         $data5= $response5['result'];
 
@@ -3645,7 +3965,7 @@ class AdminController extends Controller{
             'limit' => 0,
         );
         $data_json1 = json_encode($data1);
-        
+
         $ch1 = curl_init();
         curl_setopt($ch1, CURLOPT_URL, $url1);
         curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -3653,7 +3973,7 @@ class AdminController extends Controller{
         curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
         curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
         $response1  = curl_exec($ch1);
-        curl_close($ch1); 
+        curl_close($ch1);
         $response1 = json_decode($response1,true);
         $data1= $response1['result']['docs'];
 

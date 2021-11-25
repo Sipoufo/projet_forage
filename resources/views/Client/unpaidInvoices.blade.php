@@ -45,12 +45,16 @@
         </li>
 
         <!-- Nav Item - Profile Setting -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Profile Setting</span>
-            </a>
-        </li>
+        @if(Session::has('status'))
+            @if(Session::get('status') != 0)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/user" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Profile Setting</span>
+                    </a>
+                </li>
+            @endif
+        @endif
 
         <!-- Nav Item - Policy -->
         <li class="nav-item">
@@ -79,28 +83,28 @@
                     </button>
                 </div>
             @endif
-            <h1>                            
+            <h1>
                 <i class='bx bx-grid-alt'></i>
                 <span class="nav_name">Invoice Unpaid</span>
             </h1>
-        
-            <?php 
+
+            <?php
                 $alltoken = $_COOKIE['token'];
                 $alltokentab = explode(';', $alltoken);
                 $token = $alltokentab[0];
                 $tokentab = explode('=',$token);
                 $tokenVal = $tokentab[1];
-                $Authorization = 'Bearer '.$tokenVal;   
+                $Authorization = 'Bearer '.$tokenVal;
             ?>
 
             <form style="float: right" hidden>
                 <input type="text" value="<?php echo $Authorization?>" id="authorization">
             </form>
-            
+
             <!-- Default Card Example -->
             <?php
                 $lengthPaid = count($data['result']);
-                for ($i=0; $i < $lengthPaid; $i++) { 
+                for ($i=0; $i < $lengthPaid; $i++) {
             ?>
                 <div class="card mb-4 containter-fluid">
                     <div class="card-header row col-lg-12">
@@ -205,12 +209,12 @@
                             <input type="text" class="form-control" id="modalId" name="modalId" hidden>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">$</span></div>
-                                <input type="number" class="form-control" id="modalUnpaid" name="modalUnpaid" disabled>                  
-                            </div>                            
+                                <input type="number" class="form-control" id="modalUnpaid" name="modalUnpaid" disabled>
+                            </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">$</span></div>
-                                <input type="number" class="form-control" id="montant" name="montant" placeholder="Montant" required>                  
-                            </div>                            
+                                <input type="number" class="form-control" id="montant" name="montant" placeholder="Montant" required>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -220,11 +224,11 @@
                 </div>
                 </div>
             </div>
-            
-            
+
+
 @stop
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>              
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).on('click', '.btnapp', function() {
         var id = $(this).attr('data-id');
@@ -236,4 +240,3 @@
         $('#exampleModal').modal('show');
     });
 </script>
-        
