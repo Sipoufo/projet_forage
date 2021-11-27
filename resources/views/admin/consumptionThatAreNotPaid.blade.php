@@ -163,8 +163,7 @@
                         <th style="text-align: center">Consumption</th>
                         <th style="text-align: center">Amount</th>
                         <th style="text-align: center">UnPaid</th>
-                        <th style="text-align: center">Pénalité</th>
-                        <th style="text-align: center">Date Paiement</th>
+                        <th style="text-align: center">Date of paiement</th>
                         <th style="text-align: right">Action</th>
                     </tr>
                     </thead>
@@ -176,13 +175,69 @@
                             <td style="text-align: center">{{$invoice -> consommation}} m<sup>3</sup></td>
                             <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
                             <td style="text-align: center">{{$invoice -> montantImpaye}} FCFA</td>
-                            <td style="text-align: center">{{$invoice -> penalite}} FCFA</td>
-                            <td style="text-align: center">{{date('d-m-Y H:i:s', strtotime($invoice -> dateFacturation))}}</td>
+                            <td style="text-align: center">{{date('d-m-Y H:i:s', strtotime($invoice -> updatedAt))}}</td>
                             <td style="text-align: right">
                                 <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-primary pull-right">
                                     <i class="fa fa-pencil-alt" style="font-size: 20px;">
-                                    </i> 
+                                    </i>
                                 </a>
+                                <button type="button" class="btn btn-xs btn-primary pull-right" role="button" data-toggle="modal" data-target="#modal-penalty-{{ $invoice->_id }}">
+                                    <i class="far fa-eye" style="font-size: 20px;">
+                                    </i> P
+                                </button>
+                                <button type="button" class="btn btn-xs btn-primary pull-right" role="button" data-toggle="modal" data-target="#modal-tranche-{{ $invoice->_id }}">
+                                    <i class="far fa-eye" style="font-size: 20px;">
+                                    </i> T
+                                </button>
+
+                                <!-- medium modal -->
+                                <div class="modal fade" tabindex="-1" id="modal-penalty-{{ $invoice->_id }}" role="dialog" aria-labelledby="mediumPenaltyModalLabel" data-backdrop="static"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <section>
+                                                    Penalty
+                                                </section>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @foreach($invoice -> penalty as $value)
+                                                    <div class="d-flex flex">
+                                                        <p>{{$value}}</p>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- medium modal -->
+                                <div class="modal fade" tabindex="-1" id="modal-tranche-{{ $invoice->_id }}" role="dialog" aria-labelledby="mediumTrancheModalLabel" data-backdrop="static"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <section>
+                                                    Tranches
+                                                </section>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @foreach($invoice -> tranche as $value)
+                                                    <div class="d-flex flex">
+                                                        <p>{{$value}}</p>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </td>
                         </tr>
                         @endforeach
@@ -221,5 +276,4 @@
             @endif
         </div>
     </div>
-
 @stop

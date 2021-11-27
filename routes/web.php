@@ -137,7 +137,11 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::post('/admin/facture/addInvoice',[AdminController::class, 'addOneInvoice'])->name('addOneInvoice');
 
-		Route::match(['post','get'],'/admin/invoice/addInformation',[AdminController::class, 'adminInvoiceInformation']);
+		Route::get('/admin/addInvoice',[AdminController::class, 'createInvoice'])->name('createInvoice');;
+
+		Route::post('/admin/addInvoice',[AdminController::class, 'adminInvoiceInformation']);
+
+		Route::get('/admin/invoice/addInformation',[AdminController::class, 'adminInvoiceInformation']);
 
 		Route::match(['post','get'],'/admin/facture/search_custumer',[AdminController::class, 'adminSearchInvoiceByCustumer']);
 
@@ -145,6 +149,11 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::post('/admin/search_invoices',[AdminController::class, 'searchByMonthOrYear'])->name('searchByMonthOrYear');
 
+		Route::post('/admin/invoice/information',[AdminController::class, 'getPenaltyAndTranche'])->name('getPenaltyAndTranche');
+
+		Route::post('/admin/getPenalty',[AdminController::class, 'getPenalty'])->name('getPenalty');
+
+		Route::post('/admin/getTranche',[AdminController::class, 'getTranche'])->name('getTranche');
 
 		Route::get('/admin/consumption',[AdminController::class, 'allInvoices'])->name('allInvoices');
 
@@ -163,13 +172,9 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/admin/detail-consumption/{invoice_id}/edit',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
 
-<<<<<<< HEAD
-		Route::put('/admin/detail-consumption',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
-=======
         Route::get('/admin/customer/blockedCustomer',[ManageAdminController::class, 'blockedCustomers']);
 
 		Route::post('/admin/customer/addCustomer/store',[ManageAdminController::class, 'storeCustomers']);
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
 
 		Route::post('/admin/facture/{invoice_id}',[AdminController::class, 'updateInvoice'])->name('updateInvoice');
 
@@ -231,11 +236,8 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::match(['get','put'],'/admin/administrator/saveAdmin/{id}',[ManageAdminController::class, 'saveAdmin'])->name('saveAdmin');
 
-<<<<<<< HEAD
-=======
         Route::match(['get','post'],'/admin/customer/account/update/{id}',[ManageAdminController::class, 'updateAccount'])->name('updateAccount');
 
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
 		Route::get('/admin/map', function() {
 		    return view('admin/maps');
 		});

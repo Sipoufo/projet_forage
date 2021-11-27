@@ -120,7 +120,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
     </div>
         <section class="main">
             <p class="h5">Please enter the information about the invoices that you want to create</p>
-            <form action="" method="post" class="m-5">
+            <form action="/admin/addInvoice" method="post" class="m-5">
                 @csrf
                 <section  class="form-group mb-3 d-flex justify-content-center align-items-center text-center">
                     <input type="number" class="form-control mr-2" id="day" name="day" placeholder="day"

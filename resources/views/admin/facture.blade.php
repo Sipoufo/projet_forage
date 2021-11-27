@@ -111,6 +111,23 @@
         </li>
 @stop
 @section('content')
+@if(Session::has('message'))
+    <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+        {{ Session::get('message') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+@if(Session::has('messageErr'))
+    <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+        {{ Session::get('messageErr') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
 <div class="py-3 d-flex flex-row align-items-center justify-content-between ">
     <h4 class="m-0 font-weight-bold text-primary">
         Add Invoices
@@ -138,7 +155,7 @@
             <section class="card mr-2 mb-2" style="border-radius: 10px; border-color: black; border-style: solid; width: 300px;">
                 <section class="d-flex justify-content-between">
                     <section>
-                        <img src="{{$user ->profileImage}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
+                        <img src="{{$user ->profile}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
                     </section>
                     <section class="mr-2">
                         <h5>{{$user->name}}</h5>

@@ -159,27 +159,13 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Consumption</div>
-                            <input type="number" disabled class="form-control" placeholder="new index" id="newIndex" name="consommation" value="<?= $invoice  -> consommation?>" required>                  
+                            <input type="number" disabled class="form-control" placeholder="consumption" id="consumption" name="consumption" value="<?= $invoice  -> consommation?>" required>                  
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
-                            <div class="input-group">Penalty</div>
-                            <input type="number" class="form-control" placeholder="penalty" id="penalty" name="penalty" value="<?= $invoice  -> penalite?>" required>                  
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <div class="input-group">date Facturation</div>
-                            <input type="text" disabled class="form-control" placeholder="new index" id="newIndex" name="newIndex" value="<?= date('d-m-Y ', strtotime($invoice -> dateFacturation))?>" required>                  
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <div class="input-group">Observation</div>
-                            <input type="text" class="form-control" placeholder="Observation" id="observation" name="observation" value="<?php if(!empty($invoice-> observation)){$invoice-> observation;} else{ echo "Not set";}?>" required>                  
+                            <div class="input-group">Surplus</div>
+                            <input type="number" class="form-control" placeholder="surplus" id="surplus" name="surplus" value="<?= $invoice  -> surplus?>" required>                  
                         </div>
                     </div>
                 </div>
@@ -187,7 +173,7 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Date of spicy</div>
-                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= date('d-m-Y ', strtotime($invoice  -> dateReleveNewIndex))?>" required>                  
+                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= date('d-m-Y ', strtotime($invoice  -> dateReleveOldIndex))?>" required>                  
                         </div>
                     </div>
                     <div class="col-lg-6">

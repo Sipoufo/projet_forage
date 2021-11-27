@@ -76,75 +76,26 @@ class AdminController extends Controller{
                 if ($response->status == 200){
                     Session::flash('message', 'Action Successfully done!');
                     Session::flash('alert-class', 'alert-success');
-                    // return redirect()->back();
+                    return redirect()->back();
                     
                 }else{
                     Session::flash('message', ucfirst($response->error));
                     Session::flash('alert-class', 'alert-danger');
-                    // return redirect()->back();
+                    return redirect()->back();
                 }
             }else {
                 $messageErr = 'Please entrer the static informations in ';
                 Session::flash('messageErr', $messageErr);
                 Session::flash('alert-class', 'alert-danger');
-                // return redirect()->back();
+                return redirect()->back();
             }
         }
 
-        echo 'chien';
-    	//return view('admin/consumption');
+        // echo 'chien';
+        return view('admin/consumption');
     }
 
-    public function adminInvoiceInformation(){
-        if (isset($_POST['submit'])) {
-            $day = $_POST['day'];
-            $month = $_POST['month'];
-            $year = $_POST['year'];
 
-            $time = strtotime($month.'/'.$day.'/'.$year);
-            $date = date('Y-m-d',$time);
-            session()->put('dateOfInvoices',$date);
-            $url = "".$date;
-           
-            $alltoken = $_COOKIE['token'];
-            $alltokentab = explode(';', $alltoken);
-            $token = $alltokentab[0];
-            $tokentab = explode('=',$token);
-            $tokenVal = $tokentab[1];
-            $Authorization = 'Bearer '.$tokenVal;
-            echo 'Bearer '.$tokenVal;
-            dump('Bearer '.$tokenVal);
-            $url = curl_init();
-            curl_setopt_array($url, array(
-                CURLOPT_URL => 'http://localhost:4000/admin/facture/doInvoiceWithDate/'.$date,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'GET',
-                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
-            ));
-            
-            $response = curl_exec($url);
-            $response = json_decode($response);
-        
-            // dump($response);
-            $users = array();
-           
-            if($response->status == 200){
-                $users = $response->result;
-                return view('admin/facture',['users' => $users, 'date' => $date]
-            );
-                
-            }else{
-                echo 'error';
-            }
-        } else {
-            return view('admin/addDateOfFacture');
-        }
-    }
 
     public function adminSearchInvoiceByCustumer(){
         $alltoken = $_COOKIE['token'];
@@ -930,6 +881,7 @@ class AdminController extends Controller{
 
     }
 
+
     //All Invoice that the admin have
     public function searchAll($page_size,$size)
     {
@@ -942,14 +894,14 @@ class AdminController extends Controller{
 
         $year = date("Y");
 		//echo $year;
-
+        
 		$month = date("m");
 		//echo $month;
 
         $page = 1;
-
+        
         $curl = curl_init();
-
+        
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/factureByYear/'.$year,
 
@@ -962,11 +914,11 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-
+        
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
-
+    
         $i=0;
         $invoices = array();
         $invoicesWithPaginator = array();
@@ -1022,7 +974,7 @@ class AdminController extends Controller{
                 array_push($invoicesWithPaginator,$invoices[$i]);
             }
         }
-
+        
         //dump($invoicesWithPaginator);
 
         if (gettype($invoices) != "array") {
@@ -1048,10 +1000,10 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-
+            
             $response = curl_exec($url);
             $response = json_decode($response);
-
+        
             $i=0;
 
             foreach($response as $key => $value){
@@ -1060,21 +1012,21 @@ class AdminController extends Controller{
                 }
                 $i = $i + 1;
             }
-
+        
         }
         return view('admin/consumption',[
-            'invoices' => $invoicesWithPaginator,
-            'client' => $client,
-            'page' => $page,
+            'invoices' => $invoicesWithPaginator, 
+            'client' => $client, 
+            'page' => $page, 
             'size' => $size,
             'page_en_cours' => $page_en_cours,
             'previous_page' => $previous_page,
             'next_page' => $next_page
         ]);
     }
+
     public function searchAllPaid($page_size,$size)
     {
-<<<<<<< HEAD
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
@@ -1118,27 +1070,6 @@ class AdminController extends Controller{
         foreach($response as $key => $value){
             if($i >= 1){
                 $invoices = $value;
-=======
-        if (isset($_POST['send_search']))
-        {
-            $alltoken = $_COOKIE['token'];
-            $alltokentab = explode(';', $alltoken);
-            $token = $alltokentab[0];
-            $tokentab = explode('=',$token);
-            $tokenVal = $tokentab[1];
-            $Authorization = 'Bearer '.$tokenVal;
-
-            $type = $_POST['type'];
-            $month = '';
-            $year = '';
-
-            if ($type === "month") {
-                $month = $_POST['search'];
-                $year = date("Y");
-            }else if ($type === 'year'){
-                $month = date("m");
-                $year = $_POST['search'];
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
             }
             $i = $i + 1;
         }
@@ -1155,7 +1086,6 @@ class AdminController extends Controller{
         $previous_page = 1;
         $next_page = 1;
 
-<<<<<<< HEAD
         $arrLength = count($invoices_paid);
 
         $size_final = $size * $page_size;
@@ -1206,16 +1136,6 @@ class AdminController extends Controller{
             $url = curl_init();
             curl_setopt_array($url, array(
                 CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
-=======
-            $page_en_cours = $page;
-            $previous_page = 1;
-            $next_page = 1;
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://localhost:4000/admin/facture/'.$year.'/'.$month.'/'.$size.'/'.$page,
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -1225,16 +1145,10 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-<<<<<<< HEAD
             
             $response = curl_exec($url);
-=======
-
-            $response = curl_exec($curl);
-            curl_close($curl);
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
             $response = json_decode($response);
-
+        
             $i=0;
 
             foreach($response as $key => $value){
@@ -1255,6 +1169,7 @@ class AdminController extends Controller{
             'next_page' => $next_page
         ]);
     }
+
     public function searchAllUnPaid($page_size,$size)
     {
         $alltoken = $_COOKIE['token'];
@@ -1487,10 +1402,10 @@ class AdminController extends Controller{
                     CURLOPT_CUSTOMREQUEST => 'GET',
                     CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
                 ));
-
+                
                 $response = curl_exec($url);
                 $response = json_decode($response);
-
+            
                 $i=0;
 
                 foreach($response as $key => $value){
@@ -1503,7 +1418,6 @@ class AdminController extends Controller{
                     $i = $i + 1;
                     //dump($key);
                 }
-<<<<<<< HEAD
             
             }
             return view('admin/consumption',[
@@ -2349,7 +2263,7 @@ class AdminController extends Controller{
 
         $page = 1;
 
-        $size = 1;
+        $size = 5;
 
         $page_en_cours = 1;
         $previous_page = 1;
@@ -2537,47 +2451,6 @@ class AdminController extends Controller{
             $url = curl_init();
             curl_setopt_array($url, array(
                 CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
-=======
-
-            }
-            return view('admin/consumption',[
-                'invoices' => $invoices,
-                'client' => $client,
-                'page' => $page,
-                'size' => $size,
-                'page_en_cours' => $page_en_cours,
-                'previous_page' => $previous_page,
-                'next_page' => $next_page
-            ]);
-        }
-        if (isset($_POST['send_pagination']))
-        {
-            $alltoken = $_COOKIE['token'];
-            $alltokentab = explode(';', $alltoken);
-            $token = $alltokentab[0];
-            $tokentab = explode('=',$token);
-            $tokenVal = $tokentab[1];
-            $Authorization = 'Bearer '.$tokenVal;
-
-            $year = date("Y");
-            //echo $year;
-
-            $month = date("m");
-            //echo $month;
-
-            $page = 1;
-
-            $size = $_POST['select_size'];
-
-            $page_en_cours = $page;
-            $previous_page = 1;
-            $next_page = 1;
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://localhost:4000/admin/facture/factureByYear/'.$year,
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -2587,32 +2460,24 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-<<<<<<< HEAD
             
             $response = curl_exec($url);
-=======
-
-            $response = curl_exec($curl);
-            curl_close($curl);
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
             $response = json_decode($response);
-
+        
             $i=0;
-<<<<<<< HEAD
-=======
-            $invoices = array();
-            $invoicesWithPaginator = array();
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
 
             foreach($response as $key => $value){
                 if($i >= 1){
                     array_push($client,$value);
                 }
                 $i = $i + 1;
-<<<<<<< HEAD
             }
         
         }
+        
+        // dump($invoicesWithPaginator);
+        // print_r($invoicesWithPaginator);
+
         return view('admin/consumptionThatAreNotPaid',[
             'invoices' => $invoicesWithPaginator, 
             'client' => $client, 
@@ -2622,76 +2487,6 @@ class AdminController extends Controller{
             'previous_page' => $previous_page,
             'next_page' => $next_page
         ]);
-=======
-                //dump($key);
-            }
-
-            $arrLength = count($invoices);
-            //echo $arrLength;
-
-            if($arrLength < $size){
-                $size = $arrLength;
-                $page_en_cours = 1;
-            }else {
-                $page = $arrLength / $size;
-                $next_page = $page_en_cours + 1;
-            }
-
-            for($i = 0; $i < $size; $i++){
-                //$invoicesWithPaginator = $invoices[$i];
-                array_push($invoicesWithPaginator,$invoices[$i]);
-            }
-
-            //dump($invoicesWithPaginator);
-
-            if (gettype($invoices) != "array") {
-                $invoices = array();
-            }
-
-            //dump($invoices);
-
-            $client = array();
-
-            foreach($invoicesWithPaginator as $invoice){
-
-                $idClient = $invoice  -> idClient;
-                $url = curl_init();
-                curl_setopt_array($url, array(
-                    CURLOPT_URL => 'http://localhost:4000/client/auth/'.$idClient,
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'GET',
-                    CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
-                ));
-
-                $response = curl_exec($url);
-                $response = json_decode($response);
-
-                $i=0;
-
-                foreach($response as $key => $value){
-                    if($i >= 1){
-                        array_push($client,$value);
-                    }
-                    $i = $i + 1;
-                }
-
-            }
-            return view('admin/consumption',[
-                'invoices' => $invoicesWithPaginator,
-                'client' => $client,
-                'page' => $page,
-                'size' => $size,
-                'page_en_cours' => $page_en_cours,
-                'previous_page' => $previous_page,
-                'next_page' => $next_page
-            ]);
-        }
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
 
     }
 
@@ -2704,15 +2499,6 @@ class AdminController extends Controller{
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
 
-<<<<<<< HEAD
-=======
-        $year = date("Y");
-		//echo $year;
-
-		$month = date("m");
-		//echo $month;
-
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
         $page = 1;
 
         $size = 5;
@@ -2720,9 +2506,9 @@ class AdminController extends Controller{
         $page_en_cours = 1;
         $previous_page = 1;
         $next_page = 1;
-
+        
         $curl = curl_init();
-
+        
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/getByStatus/true',
             CURLOPT_RETURNTRANSFER => true,
@@ -2734,11 +2520,11 @@ class AdminController extends Controller{
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-
+        
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
-
+    
         $i=0;
         $invoices = array();
         $invoicesWithPaginator = array();
@@ -2795,10 +2581,10 @@ class AdminController extends Controller{
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
             ));
-
+            
             $response = curl_exec($url);
             $response = json_decode($response);
-
+        
             $i=0;
 
             foreach($response as $key => $value){
@@ -2807,25 +2593,38 @@ class AdminController extends Controller{
                 }
                 $i = $i + 1;
             }
-
+        
         }
-<<<<<<< HEAD
         return view('admin/consumptionThatArePaid',[
             'invoices' => $invoicesWithPaginator, 
             'client' => $client, 
             'page' => $page, 
-=======
-        return view('admin/consumption',[
-            'invoices' => $invoicesWithPaginator,
-            'client' => $client,
-            'page' => $page,
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
             'size' => $size,
             'page_en_cours' => $page_en_cours,
             'previous_page' => $previous_page,
             'next_page' => $next_page
         ]);
 
+    }
+
+    public function getPenalty() {
+        if (isset($_POST['penalty'])) {
+
+        }
+    }
+
+    public function getTranche() {
+        if (isset($_POST['tranche'])) {
+
+        }
+    }
+
+    public function getPenaltyAndTranche() {
+        if (isset($_POST['tranche'])) {
+
+        } else if (isset($_POST['penalty'])) {
+
+        }
     }
 
     public function print($invoice_id){
@@ -2980,6 +2779,8 @@ class AdminController extends Controller{
             //dump($client);
             curl_close($url);
         }
+
+        //dump($invoice);
         return view('admin/detailInvoice',
             [
                 'invoice' => $invoice,
@@ -3571,64 +3372,6 @@ class AdminController extends Controller{
     
     public function addOneInvoice()
     {
-<<<<<<< HEAD
-        $message = null;
-        $alltoken = $_COOKIE['token'];
-        $alltokentab = explode(';', $alltoken);
-        $token = $alltokentab[0];
-        $tokentab = explode('=',$token);
-        $tokenVal = $tokentab[1];
-        $Authorization = 'Bearer '.$tokenVal;
-
-        $curl = curl_init();
-    
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://localhost:4000/admin/facture/getStaticInformation',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
-        ));
-        
-        $response = curl_exec($curl);
-        curl_close($curl);
-        $response = json_decode($response, true);
-        print_r($response);
-        if(array_key_exists('result', $response)) {
-            if(!empty($response['result'])){
-                $newIndex = $_POST['newIndex'];
-                $dateReleveNewIndex = $_POST['date'];
-                $idClient = $_POST['userId'];
-                $oldIndex = $_POST['oldIndex'];
-                // echo $idClient;
-
-                // je definie l'url de connexion.
-                $url = "http://localhost:4000/admin/facture/".$idClient;
-                // je definie la donnée de ma facture.
-                $facture = array(
-                    'newIndex' => $newIndex,
-                    'dateReleveNewIndex' => $dateReleveNewIndex,
-                    'oldIndex' => $oldIndex,
-                );
-                dump($facture);
-
-                $data_json = json_encode($facture);
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $response  = curl_exec($ch);
-                //var_dump($response);
-                curl_close($ch);
-=======
-            // var_dump("expression");
-            // $users = array();
             $message = null;
             $alltoken = $_COOKIE['token'];
             $alltokentab = explode(';', $alltoken);
@@ -3636,37 +3379,6 @@ class AdminController extends Controller{
             $tokentab = explode('=',$token);
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
-            // echo "Ok : ".$Authorization;
-
-            // $curl = curl_init();
-            // curl_setopt_array($curl, array(
-            //     CURLOPT_URL => 'http://localhost:4000/admin/auth/getClient',
-            //     CURLOPT_RETURNTRANSFER => true,
-            //     CURLOPT_ENCODING => '',
-            //     CURLOPT_MAXREDIRS => 10,
-            //     CURLOPT_TIMEOUT => 0,
-            //     CURLOPT_FOLLOWLOCATION => true,
-            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            //     CURLOPT_CUSTOMREQUEST => 'GET',
-            //     CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
-            // ));
-
-            // $response = curl_exec($curl);
-            // curl_close($curl);
-            // $response = json_decode($response);
-
-            // $i=0;
-
-            // foreach($response as $key => $value){
-            //     if($i >= 1){
-            //         //echo $value;
-            //         $users = $value;
-            //         //dump($value);
-            //     }
-            //     $i = $i + 1;
-            //     //dump($key);
-            // }
-
 
             $curl = curl_init();
 
@@ -3734,19 +3446,9 @@ class AdminController extends Controller{
                     // Je definie les propriétés de connexion
                     //CURLOPT_URL : permet de definir l'url
                     curl_setopt($ch, CURLOPT_URL, $url);
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
 
-                $response = json_decode($response);
+                    $response = json_decode($response);
 
-<<<<<<< HEAD
-                if ($response->status == 200){
-                    Session::flash('message', 'Action Successfully done!');
-                    Session::flash('alert-class', 'alert-success');
-                    //return redirect()->back();
-                    
-                }else{
-                    Session::flash('message', ucfirst($response->error));
-=======
                     //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
                     curl_setopt($ch, CURLOPT_POST, 1);
 
@@ -3772,21 +3474,108 @@ class AdminController extends Controller{
                     }
 
                 }else {
-                    echo "Je passe ffffffffjjksksllslslls";
+                    // echo "Je passe ffffffffjjksksllslslls";
                     $messageErr = 'Please entrer the static informations in ';
                     Session::flash('messageErr', $messageErr);
->>>>>>> 6e695ce05158f9bb1652866c9ca48068c7dbf590
                     Session::flash('alert-class', 'alert-danger');
-                    //return redirect()->back();
+                    return redirect()->back();
                 }
             }else {
                 $messageErr = 'Please entrer the static informations in ';
                 Session::flash('messageErr', $messageErr);
                 Session::flash('alert-class', 'alert-danger');
-                //return redirect()->back();
+                return redirect()->back();
             }
-        }
+    }
 
+    public function createInvoice() {
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        // echo 'Bearer '.$tokenVal;
+        // dump('Bearer '.$tokenVal);
+
+        $date = session()->get('dateOfInvoices');
+
+        $url = curl_init();
+        curl_setopt_array($url, array(
+            CURLOPT_URL => 'http://localhost:4000/admin/facture/doInvoiceWithDate/'.$date,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+        ));
+        
+        $response = curl_exec($url);
+        $response = json_decode($response);
+    
+        // dump($response);
+        $users = array();
+        
+        if($response->status == 200){
+            $users = $response->result;
+            return view('admin/facture',['users' => $users, 'date' => $date]);
+        } else {
+            return redirect() -> back();
+        }
+    }
+
+    public function adminInvoiceInformation(){
+        if (isset($_POST['submit'])) {
+            $day = $_POST['day'];
+            $month = $_POST['month'];
+            $year = $_POST['year'];
+
+            $time = strtotime($month.'/'.$day.'/'.$year);
+            $date = date('Y-m-d',$time);
+            session()->put('dateOfInvoices',$date);
+            $url = "".$date;
+           
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            $Authorization = 'Bearer '.$tokenVal;
+            // echo 'Bearer '.$tokenVal;
+            // dump('Bearer '.$tokenVal);
+            $url = curl_init();
+            curl_setopt_array($url, array(
+                CURLOPT_URL => 'http://localhost:4000/admin/facture/doInvoiceWithDate/'.$date,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+            
+            $response = curl_exec($url);
+            $response = json_decode($response);
+        
+            // dump($response);
+            $users = array();
+           
+            if($response->status == 200){
+                $users = $response->result;
+                return view('admin/facture',['users' => $users, 'date' => $date]
+            );
+                
+            }else{
+                echo 'error';
+            }
+        } else {
+            return view('admin/addDateOfFacture');
+        }
     }
 
     public function finance(){
@@ -4054,4 +3843,5 @@ class AdminController extends Controller{
         return view('admin/finances_details_customer',['facturesYear' => $factures,'userdata' => $userdata, 'year' => $year]);
 
     }
+
 }
