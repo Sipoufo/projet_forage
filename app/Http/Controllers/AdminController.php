@@ -515,13 +515,14 @@ class AdminController extends Controller{
 
         $id = $request->session()->get('id');
 
-        $url = "http://localhost:4000/admin/auth/".$id;
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
+
+        $url = "http://localhost:4000/admin/auth/".$id;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -529,10 +530,29 @@ class AdminController extends Controller{
         $response = curl_exec($ch);
         curl_close($ch);
         $response = json_decode($response,true);
-        // echo $url;
-        // print_r($response);
         $userdata = $response['result'];
-        return view('admin/profile',['data' => $userdata]);
+
+        $url1 = "http://localhost:4000/admin/facture/getStaticInformation";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response1 = curl_exec($ch);
+        curl_close($ch);
+        $response1 = json_decode($response1,true);
+
+        if(array_key_exists('result', $response1)) {
+
+            if(!empty($response1['result'])){
+
+                $static = $response1['result'];
+                $index = count($static);
+            }else {
+                $static="";
+            }
+        }
+        //print_r($static);
+        return view('admin/profile',['data' => $userdata,'static' => $static,'index' => $index]);
     }
 
     public function adminEditProfile(Request $request){
@@ -721,7 +741,7 @@ class AdminController extends Controller{
 
         $maintenance = $request->input('maintenance');
         $meterprice = $request->input('meterprice');
-
+        $limitDay = $request->input('date');
 
         $url = "http://localhost:4000/admin/facture/staticInformation";
         $alltoken = $_COOKIE['token'];
@@ -734,6 +754,7 @@ class AdminController extends Controller{
         $data = array(
             'prixUnitaire' => $meterprice,
             'fraisEntretien' => $maintenance,
+            'limiteDay' => $limitDay,
         );
 
         $data_json = json_encode($data);
@@ -762,6 +783,54 @@ class AdminController extends Controller{
             Session::flash('message', ucfirst($response->error));
             Session::flash('alert-class', 'alert-danger');
             return redirect()->back()->withInput(['tab'=>'settings']);
+        }
+
+    }
+
+    public function penality(Request $request){
+
+        $amount = $request->input('sanction');
+        $step = $request->input('step');
+
+        $url = "http://localhost:4000/admin/facture/penality";
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $data = array(
+            'pas' => $step,
+            'amountAdd' => $amount,
+        );
+
+        $data_json = json_encode($data);
+
+        //print_r($data_json);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($response);
+
+        // print_r($response);
+
+        if ($response->status == 200){
+            Session::flash('message', 'Action Successfully done!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back()->withInput(['tab'=>'sanctions']);
+
+        }else{
+            Session::flash('message', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back()->withInput(['tab'=>'sanctions']);
         }
 
     }
@@ -2074,7 +2143,7 @@ class AdminController extends Controller{
             $response = curl_exec($curl);
             curl_close($curl);
             $response = json_decode($response, true);
-            print_r($response);
+            //print_r($response);
             if(array_key_exists('result', $response)) {
 
                 if(!empty($response['result'])){
@@ -2155,7 +2224,6 @@ class AdminController extends Controller{
                     }
 
                 }else {
-                    echo "Je passe ffffffffjjksksllslslls";
                     $messageErr = 'Please entrer the static informations in ';
                     Session::flash('messageErr', $messageErr);
                     Session::flash('alert-class', 'alert-danger');

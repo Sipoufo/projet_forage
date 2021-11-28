@@ -474,11 +474,11 @@ class ManageAdminController extends Controller
         }
     }
 
-    public function updateAccount($id, $request){
+    public function updateAccount($id, Request $request){
 
         $identifier = $request->input('identifier');
 
-        $url = "".$id;
+        $url = "http://localhost:4000/admin/manageCompte/client/idCompte/".$id;
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
@@ -490,9 +490,6 @@ class ManageAdminController extends Controller
             'IdCompteur' => $identifier,
         );
         $data_json = json_encode($data);
-
-        // print_r($data_json);
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -504,18 +501,18 @@ class ManageAdminController extends Controller
 
         $response = json_decode($response);
 
-        // print_r($response);
+        print_r($response);
 
-        if ($response->status == 200){
-            Session::flash('message', 'Action Successfully done!');
-            Session::flash('alert-class', 'alert-success');
-            return redirect()->back();
+        // if ($response->status == 200){
+        //     Session::flash('message', 'Action Successfully done!');
+        //     Session::flash('alert-class', 'alert-success');
+        //     return redirect()->back();
 
-        }else{
-            Session::flash('message', ucfirst($response->error));
-            Session::flash('alert-class', 'alert-danger');
-            return redirect()->back();
-        }
+        // }else{
+        //     Session::flash('message', ucfirst($response->error));
+        //     Session::flash('alert-class', 'alert-danger');
+        //     return redirect()->back();
+        // }
     }
 
     public function deleteCustomer($id){

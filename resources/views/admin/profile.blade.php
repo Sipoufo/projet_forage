@@ -365,7 +365,7 @@
                               @csrf
                               <div class="input-group mt-3">
                                   <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class="fas fa-cube"></i></span></div>
-                                  <input type="number" class="form-control @error('meterprice') is-invalid @enderror" placeholder="Price per cubic meter" id="meterprice" name="meterprice" value="{{ old('meterprice') }}" required>
+                                  <input type="number" class="form-control @error('meterprice') is-invalid @enderror" placeholder="Price per cubic meter" id="meterprice" name="meterprice" value="<?= empty($static) ? "" : $static[$index-1]['prixUnitaire']?>" required>
                                   @error('meterprice')
                                           <div class="invalid-feedback">{{ $message }}</div>
                                   @enderror
@@ -373,7 +373,7 @@
 
                               <div class="input-group mt-3">
                                   <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class="fas fa-tools"></i></span></div>
-                                  <input type="number" class="form-control @error('maintenance') is-invalid @enderror" placeholder="Maintenance costs" id="maintenance" name="maintenance" value="{{ old('maintenance') }}" required>
+                                  <input type="number" class="form-control @error('maintenance') is-invalid @enderror" placeholder="Maintenance costs" id="maintenance" name="maintenance" value="<?= empty($static) ? "" : $static[$index-1]['fraisEntretien']?>" required>
                                   @error('maintenance')
                                           <div class="invalid-feedback">{{ $message }}</div>
                                   @enderror
@@ -383,10 +383,24 @@
                                   <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class="fas fa-calendar"></i></span></div>
                                   <div class="col-6">
                                     <select name="date" id="date" class="form-control">
+                                        <?php
+                                            if(!empty($static)){ ?>
+                                                <option value="<?=$static[$index-1]['limiteDay']?>"><?=$static[$index-1]['limiteDay']?></option>
+                                                <?php for($i=1;$i<=30;$i++){
+                                                    if($i!=$static[$index-1]['limiteDay']){
+                                                    ?>
+                                                <option value="<?=$i?>"><?=$i?></option>
+                                                <?php }
+                                                    }
+                                                ?>
+                                        <?php
+                                            }else{
+                                        ?>
                                         <option value="">day of payment</option>
                                         <?php for($i=1;$i<=30;$i++){?>
                                         <option value="<?=$i?>"><?=$i?></option>
-                                        <?php } ?>
+                                        <?php }
+                                            }?>
                                     </select>
                                   </div>
                               </div>
@@ -417,23 +431,13 @@
 
                               <div class="input-group mt-3">
                                   <div class="input-group">Step</div>
-                                  <div class="col-4">
-                                    <input type="number" class="form-control @error('step') is-invalid @enderror" placeholder="% sanction step " id="step" name="step" value="{{ old('step') }}" required>
+                                  <div class="col-7">
+                                    <input type="number" class="form-control @error('step') is-invalid @enderror" placeholder="Every x number of days" id="step" name="step" value="{{ old('step') }}" required>
                                     @error('step')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                   </div>
 
-                              </div>
-                              <div class="input-group mt-3">
-                                  <div class="input-group">Frequency</div>
-                                  <div class="col-6">
-                                    <select name="frequency" id="frequency" class="form-control">
-                                        <option value="1">Every 7 days </option>
-                                        <option value="2">Every 15 days</option>
-                                        <option value="3">Every 1 month</option>
-                                    </select>
-                                  </div>
                               </div>
 
                               <hr>

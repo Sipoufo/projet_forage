@@ -183,15 +183,15 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/admin/profile',[AdminController::class, 'adminProfile'])->name('adminProfile');
 
-
 		Route::match(['get','put'],'/admin/profile/update',[AdminController::class, 'updateAdmin'])->name('updateAdmin');
 
 		Route::match(['get','put'],'/admin/profile/change_password',[AdminController::class, 'changePassword'])->name('changePassword');
 
 		Route::match(['get','post'],'/admin/profile/save_settings',[AdminController::class, 'saveSettings'])->name('saveSettings');
 
+        Route::match(['get','post'],'/admin/profile/save_settings',[AdminController::class, 'saveSettings'])->name('saveSettings');
 
-		Route::match(['get','put'],'/admin/customer/block/{id}/{status}',[ManageAdminController::class, 'blockCustomer'])->name('blockCustomer');
+		Route::match(['get','post'],'/admin/profile/sanctions',[AdminController::class, 'penality'])->name('penality');
 
 		Route::match(['get','put'],'/admin/administrator/block/{id}/{status}',[ManageAdminController::class, 'blockAdmin'])->name('blockAdmin');
 
@@ -203,7 +203,7 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::match(['get','put'],'/admin/administrator/saveAdmin/{id}',[ManageAdminController::class, 'saveAdmin'])->name('saveAdmin');
 
-        Route::match(['get','post'],'/admin/customer/account/update/{id}',[ManageAdminController::class, 'updateAccount'])->name('updateAccount');
+        Route::match(['get','put'],'/admin/customer/account/update/{id}',[ManageAdminController::class, 'updateAccount'])->name('updateAccount');
 
 		Route::get('/admin/map', function() {
 		    return view('admin/maps');
