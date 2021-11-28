@@ -131,7 +131,7 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::post('/admin/administrator/addAdministrator/store',[ManageAdminController::class, 'storeAdministrators']);
 
-		
+
 
 		Route::get('/admin/facture',[AdminController::class, 'allClient']);
 
@@ -221,8 +221,6 @@ Route::group(['middleware' => 'checksession'], function () {
 		Route::match(['get','put'],'/admin/profile/change_password',[AdminController::class, 'changePassword'])->name('changePassword');
 
 		Route::match(['get','post'],'/admin/profile/save_settings',[AdminController::class, 'saveSettings'])->name('saveSettings');
-
-        Route::match(['get','post'],'/admin/profile/save_settings',[AdminController::class, 'saveSettings'])->name('saveSettings');
 
 		Route::match(['get','post'],'/admin/profile/sanctions',[AdminController::class, 'penality'])->name('penality');
 

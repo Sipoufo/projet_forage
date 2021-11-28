@@ -243,7 +243,7 @@ class AdminController extends Controller{
         $response  = curl_exec($ch);
         curl_close($ch);
 
-        $data = json_decode($response,true);
+        $data = json_decode($response);
 
         if($data['status'] == 200){
             Session::flash('message', 'Action Successfully done!');
@@ -898,6 +898,55 @@ class AdminController extends Controller{
             Session::flash('message', ucfirst($response->error));
             Session::flash('alert-class', 'alert-danger');
             return redirect()->back()->withInput(['tab'=>'settings']);
+        }
+
+    }
+
+    public function penality(Request $request){
+
+        $sanction = $request->input('sanction');
+        $step = $request->input('step');
+
+
+        $url = "http://localhost:4000/admin/facture/penalty";
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+
+        $data = array(
+            'pas' => $step,
+            'amountAdd' => $sanction,
+        );
+
+        $data_json = json_encode($data);
+
+        // print_r($data_json);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($response);
+
+        // print_r($response);
+
+        if ($response->status == 200){
+            Session::flash('message', 'Action Successfully done!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back()->withInput(['tab'=>'sanction']);
+
+        }else{
+            Session::flash('message', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back()->withInput(['tab'=>'sanction']);
         }
 
     }

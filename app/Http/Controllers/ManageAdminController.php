@@ -477,8 +477,10 @@ class ManageAdminController extends Controller
     public function updateAccount($id, Request $request){
 
         $identifier = $request->input('identifier');
+        $recent = $request->input('recentIndex');
+        $old = $request->input('oldIndex');
 
-        $url = "http://localhost:4000/admin/manageCompte/client/idCompte/".$id;
+        $url = "http://localhost:4000/admin/facture/invoicePreCreate/".$id;
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
@@ -488,7 +490,10 @@ class ManageAdminController extends Controller
 
         $data = array(
             'IdCompteur' => $identifier,
+            'newIndex' => $recent,
+            'oldIndex' => $old,
         );
+
         $data_json = json_encode($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -501,18 +506,18 @@ class ManageAdminController extends Controller
 
         $response = json_decode($response);
 
-        print_r($response);
+        //print_r($response);
 
-        // if ($response->status == 200){
-        //     Session::flash('message', 'Action Successfully done!');
-        //     Session::flash('alert-class', 'alert-success');
-        //     return redirect()->back();
+        if ($response->status == 200){
+            Session::flash('message', 'Action Successfully done!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back();
 
-        // }else{
-        //     Session::flash('message', ucfirst($response->error));
-        //     Session::flash('alert-class', 'alert-danger');
-        //     return redirect()->back();
-        // }
+        }else{
+            Session::flash('message', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back();
+        }
     }
 
     public function deleteCustomer($id){
