@@ -129,7 +129,7 @@
                     <option value="15">15</option>
                     <option value="20">20</option>
                 </select>
-                <input type="submit" name="send_pagination" id="send_pagination" placeholder="Show" class="ml-1 btn btn-primary">
+                <input type="submit" name="send_pagination_consumption_paid" id="send_pagination_consumption_paid" placeholder="Show" class="ml-1 btn btn-primary">
             </div>
         </form>
         <form action="{{url('/admin/search_invoices')}}" method="post" role="form">
@@ -143,7 +143,7 @@
                 <option value="meterId">MeterId</option>
                 </select>
                 <input type="number" name="search" id="search" class="form-control ml-2" style="width: 100px;"/>
-                <input type="submit" name="send_search" id="send_search" class="ml-1 btn btn-primary">
+                <input type="submit" name="send_search_consumption_paid" id="send_search_consumption_paid" class="ml-1 btn btn-primary">
             </div>
         </form>
     </div>
@@ -163,7 +163,6 @@
                         <th style="text-align: center">Consumption</th>
                         <th style="text-align: center">Amount</th>
                         <th style="text-align: center">Paid</th>
-                        <th style="text-align: center">UnPaid</th>
                         <th style="text-align: center">Date Of Paiement</th>
                         <th style="text-align: right">Action</th>
                     </tr>
@@ -176,7 +175,6 @@
                             <td style="text-align: center">{{$invoice -> consommation}} m<sup>3</sup></td>
                             <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
                             <td style="text-align: center">{{$invoice -> montantVerse}} FCFA</td>
-                            <td style="text-align: center">{{$invoice -> montantImpaye}} FCFA</td>
                             <td style="text-align: center">{{date('d-m-Y H:i:s', strtotime($invoice -> updatedAt))}}</td>
                             <td style="text-align: right">
                                 <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-primary pull-right">
@@ -253,24 +251,24 @@
     <div class="flex d-flex justify-content-end mb-1">
         <div style="border: 1px; border-style: solid; border-radius: 5px;">
             @if($previous_page > 1 || ($previous_page == 1 && $page_en_cours > 1))
-                <a href="{{ url('/admin/consumption/page/'.$previous_page.'/size/'.$size) }}">
+                <a href="{{ url('/admin/consumption-that-are-paid/page/'.$previous_page.'/size/'.$size) }}">
                     <button class="btn bg-white"> <i class="fas fa-angle-double-left" style="color: blue;"></i> </button>
                 </a>
-                <a href="{{ url('/admin/consumption/page/'.$previous_page.'/size/'.$size) }}">
+                <a href="{{ url('/admin/consumption-that-are-paid/page/'.$previous_page.'/size/'.$size) }}">
                     <button class="btn bg-white" style="color: blue;border-radius: 0px;">{{$previous_page}}</button>
                 </a>
             @else
                 <button class="btn bg-white" style="border-radius: 0px;"> <i class="fas fa-angle-double-left"></i> </button>
             @endif
             <!-- Detail Part -->
-            <a href="{{ url('/admin/consumption/page/'.$page_en_cours.'/size/'.$size) }}">
+            <a href="{{ url('/admin/consumption-that-are-paid/page/'.$page_en_cours.'/size/'.$size) }}">
                     <button class="btn btn-primary"  style="width: 40px;border-radius: 0px;" name="page_search" id="page_search">{{$page_en_cours}}</button>
             </a>
             @if($next_page > 1)
-                <a href="{{ url('/admin/consumption/page/'.$next_page.'/size/'.$size) }}">
+                <a href="{{ url('/admin/consumption-that-are-paid/page/'.$next_page.'/size/'.$size) }}">
                     <button class="btn"  style="width: 40px;border-radius: 0px; color: black;" name="page_search" id="page_search">{{$next_page}}</button>
                 </a>
-                <a href="{{ url('/admin/consumption/page/'.$next_page.'/size/'.$size) }}">
+                <a href="{{ url('/admin/consumption-that-are-paid/page/'.$next_page.'/size/'.$size) }}">
                     <button class="btn bg-white" style="width: 40px;border: none;border-radius: 0px;"> <i class="fas fa-angle-double-right" style="color: blue;"></i> </button>
                 </a>
             @else
@@ -279,92 +277,16 @@
         </div>
     </div>
 
-    <script type="text/javascript">
-        let token = <?php 
-            $alltoken = $_COOKIE['token'];
-            $alltokentab = explode(';', $alltoken);
-            $token = $alltokentab[0];
-            $tokentab = explode('=',$token);
-            $tokenVal = $tokentab[1];
-            echo json_encode($tokenVal); 
-        ?>;
+   <script>
+        let btn_penalty = document.getElementById('penalty');
+        let btn_tranche = document.getElementById('tranche');
 
-        let invoices = new Array();
-        let invoice_search = new Array();
-        let users = new Array();
-
-        let page_size = 0;
-        let size = 0;
-        let year = new Date().getFullYear();
-        let autorization = 'Bearer ' + token;
-        //alert('au : ' + autorization);
-        
-        const header = new Headers();
-        header.append('Content-Type', 'application/json');
-        header.append('Authorization', autorization);
-
-        fetch('http://localhost:4000/admin/facture/factureByYear/' + year, {
-            method: 'GET',
-            mode: 'cors',
-            headers: header
+        btn_tranche.addEventListener("click", (event) => {
+            $('#mediumTrancheModal').modal("show");
         })
-        .then( (response) => response.json())
-        .then(data => {
-            invoices = data;
-        }).catch(error => {console.error('error : ' + error);});
 
-        console.log("Invoices : " + JSON.stringify(invoices));
-        // getInvoice(2,1);
-        function getInvoice(page_size, size) {
-            let page_en_cours = page_size;
-            let previous_page = 1;
-            let next_page = 1;
-            let arrLength = invoices.length;
-            let size_final = size * page_size;
-            size_final = size * page_size;
-            console.log("length : " + arrLength);
-
-            if(arrLength < size){
-                size = arrLength;
-            }else {
-                page = arrLength / size;
-            }
-
-            if (page_en_cours > 1) {
-                previous_page = page_en_cours - 1;
-            }
-
-            if(arrLength < size_final){
-                size_final = arrLength;
-                next_page = page - 1;
-            } else {
-                if(page_size == size) {
-                    next_page = page;
-                }
-            }
-
-            if (size == size_final){
-                for(let i = 0; i < size; i++){
-                    invoice_search.push(invoices[i]);
-                }
-            }else {
-                for(let i = size; i < size_final; i++){
-                    invoice_search.push(invoices[i]);
-                }
-            }
-
-            invoice_search.forEach(
-                (bill) => {
-                    let idClient = bill.idClient;
-                    alert('idclient : ' + idClient);
-                    fetch('http://localhost:4000/client/auth/' + idClient)
-                    .then( (response) => response.json())
-                    .then(data => {
-                        users.push(data);
-                    }).catch(error => {console.error('error : ' + error);});
-                }
-            );
-        }
+        btn_penalty.addEventListener("click", (event) => {
+            $('#mediumPenaltyModal').modal("show");
+        })
     </script>
-
 @stop

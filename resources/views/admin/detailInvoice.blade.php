@@ -16,10 +16,18 @@
 
         <!-- Nav Item - consumption -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/consumption">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>consumption</span>
+            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Consumption</span>
             </a>
+            <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities2" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Consumption</h6>
+                    <a class="collapse-item" href="/admin/consumption" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">All</a>
+                    <a class="collapse-item" href="/admin/consumption-that-are-paid" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">Consumption Paid</a>
+                    <a class="collapse-item" href="/admin/consumption-that-are-unpaid" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Consumption UnPaid</a>
+                </div>
+            </div>
         </li>
 
         <!-- Nav Item - Customer -->
@@ -39,7 +47,7 @@
 
         <!-- Nav Item - Payment -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/facture">
+            <a class="nav-link collapsed" href="/admin/invoice/addInformation">
                 <i class="fas fa-file-invoice-dollar"></i>
                 <span>Invoices</span>
             </a>
@@ -151,27 +159,13 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Consumption</div>
-                            <input type="number" disabled class="form-control" placeholder="new index" id="newIndex" name="consommation" value="<?= $invoice  -> consommation?>" required>                  
+                            <input type="number" disabled class="form-control" placeholder="consumption" id="consumption" name="consumption" value="<?= $invoice  -> consommation?>" required>                  
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
-                            <div class="input-group">Penalty</div>
-                            <input type="number" class="form-control" placeholder="penalty" id="penalty" name="penalty" value="<?= $invoice  -> penalite?>" required>                  
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <div class="input-group">date Facturation</div>
-                            <input type="text" disabled class="form-control" placeholder="new index" id="newIndex" name="newIndex" value="<?= date('d-m-Y ', strtotime($invoice -> dateFacturation))?>" required>                  
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <div class="input-group">Observation</div>
-                            <input type="text" class="form-control" placeholder="Observation" id="observation" name="observation" value="<?php if(!empty($invoice-> observation)){$invoice-> observation;} else{ echo "Not set";}?>" required>                  
+                            <div class="input-group">Surplus</div>
+                            <input type="number" class="form-control" placeholder="surplus" id="surplus" name="surplus" value="<?= $invoice  -> surplus?>" required>                  
                         </div>
                     </div>
                 </div>
@@ -179,7 +173,7 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Date of spicy</div>
-                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= date('d-m-Y ', strtotime($invoice  -> dateReleveNewIndex))?>" required>                  
+                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= date('d-m-Y ', strtotime($invoice  -> dateReleveOldIndex))?>" required>                  
                         </div>
                     </div>
                     <div class="col-lg-6">

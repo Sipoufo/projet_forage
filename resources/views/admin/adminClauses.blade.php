@@ -16,10 +16,18 @@
 
         <!-- Nav Item - consumption -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/consumption">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>consumption</span>
+            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Consumption</span>
             </a>
+            <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities2" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Consumption</h6>
+                    <a class="collapse-item" href="/admin/consumption" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">All</a>
+                    <a class="collapse-item" href="/admin/consumption-that-are-paid" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">Consumption Paid</a>
+                    <a class="collapse-item" href="/admin/consumption-that-are-unpaid" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Consumption UnPaid</a>
+                </div>
+            </div>
         </li>
 
         <!-- Nav Item - Customer -->
@@ -39,7 +47,7 @@
 
         <!-- Nav Item - Payment -->
         <li class="nav-item">
-          <a class="nav-link collapsed" href="/admin/facture">
+          <a class="nav-link collapsed" href="/admin/invoice/addInformation">
               <i class="fas fa-file-invoice-dollar"></i>
               <span>Invoices</span>
           </a>
