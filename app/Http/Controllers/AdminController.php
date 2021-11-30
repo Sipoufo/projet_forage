@@ -664,6 +664,7 @@ class AdminController extends Controller{
                 $index = count($static);
             }else {
                 $static="";
+                $index=0;
             }
         }
         //print_r($static);

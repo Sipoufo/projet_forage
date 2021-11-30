@@ -155,14 +155,56 @@
             <section class="card mr-2 mb-2" style="border-radius: 10px; border-color: black; border-style: solid; width: 300px;">
                 <section class="d-flex justify-content-between">
                     <section>
-                        <img src="{{$user ->profile}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
+                        <img src="{{$user ->profileImage}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
                     </section>
                     <section class="mr-2">
                         <h5>{{$user->name}}</h5>
                         <span>{{$user->IdCompteur}}</span> 
                         <section class="d-flex justify-content-end mt-2 mb-2">
-                            <span class="btn btn-primary index" style="border-radius: 10px;" id="index">Add The {{ $loop->index }} Invoice</span>
+                            <button type="button" class="btn btn-primary index" style="border-radius: 10px;" id="index" role="button" data-toggle="modal" data-target="#modal-{{ $user->_id }}" target="invoice" data-client="{{$user-> _id}}">Add Invoice</span>
                         </section>
+
+                        <!-- medium modal -->
+                        <div class="modal fade" tabindex="-1" id="modal-{{ $user->_id }}" role="dialog" aria-labelledby="mediumModalLabel" data-backdrop="static"
+                            aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <section>
+                                            Add Invoice
+                                        </section>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form data-toggle="validator" action="{{route('addOneInvoice')}}" method="post" class="col-lg-8 offset-lg-2">
+                                            @csrf
+                                            {{method_field('post')}}
+                                            <div class="form-group mb-3" id="b_userId">
+                                                <div class="input-group">User Id</div>
+                                                <input type="text" class="form-control" placeholder="user Id" id="userId" required id="userId">                  
+                                            </div>
+                                            <div class="form-group mb-3" id="b_date">
+                                                <div class="input-group">Date</div>
+                                                <input type="date" class="form-control" placeholder="Date" id="date" name="date" required>                  
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <div class="input-group">New index</div>
+                                                <input type="number" class="form-control" placeholder="new index" id="newIndex" name="newIndex" required>                  
+                                            </div>
+                                            <div class="form-group mb-3" id="b_oldIndex">
+                                                <div class="input-group">Old index</div>
+                                                <input type="number" class="form-control" placeholder="old index" id="oldIndex" name="oldIndex" value="0">                  
+                                            </div>
+                                            <div class="row form-group float-right">
+                                                <button type="submit" class="btn btn-primary" id="addInvoice" name="addInvoice"> Add</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </section>
                 </section>
             </section>
@@ -170,69 +212,61 @@
     </section>
 </div>
 
-<!-- medium modal -->
-<div class="modal fade" tabindex="-1" id="mediumModal" role="dialog" aria-labelledby="mediumModalLabel" data-backdrop="static"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <section>
-                    Add Invoice
-                </section>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form data-toggle="validator" action="{{route('addOneInvoice')}}" method="post" class="col-lg-8 offset-lg-2">
-                    @csrf
-                    {{method_field('post')}}
-                    <div class="form-group mb-3">
-                        <input type="text" class="form-control" placeholder="user Id" id="userId" required id="userId">                  
-                    </div>
-                    <div class="form-group mb-3">
-                        <input type="date" class="form-control" placeholder="user Id" id="date" name="date" required>                  
-                    </div>
-                    <div class="form-group mb-3">
-                        <div class="input-group">New index</div>
-                        <input type="number" class="form-control" placeholder="new index" id="newIndex" name="newIndex" required>                  
-                    </div>
-                    <div class="form-group mb-3" id="b_oldIndex">
-                        <div class="input-group">Old index</div>
-                        <input type="number" class="form-control" placeholder="old index" id="oldIndex" name="oldIndex" value="0">                  
-                    </div>
-                    <div class="row form-group float-right">
-                        <button type="submit" class="btn btn-primary" id="addInvoice" name="addInvoice"> Add</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 <script src="vendor/jquery/jquery.min.js"></script>
 
     <script>
-        var setting = {
-            type: "GET",
-            url: "http://localhost:4000/admin/auth/getClient",
-            headers: {
-                "Authorization": "Bearer " + token
-            },
-        }
-        $.ajax(setting)
-            .done((data) => {
-                console.log(data);
-            }).fail((data) => {
-                console.log('error ' + JSON.stringify(data));
-            })
+        let user = document.getElementById('index');
+        let oldIndex = document.getElementById("b_oldIndex");
+        let b_userId = document.getElementById("b_userId");
+        let userId = document.getElementById("userId");
+
+        let token = <?php 
+            $alltoken = $_COOKIE['token'];
+            $alltokentab = explode(';', $alltoken);
+            $token = $alltokentab[0];
+            $tokentab = explode('=',$token);
+            $tokenVal = $tokentab[1];
+            echo json_encode($tokenVal); 
+        ?>;
+
+        let autorization = 'Bearer ' + token;
+        // alert('Authorization : ' + autorization);
+
+        let idUser = 0;
+
+        user.addEventListener("click", (event) => {
+            console.log('event : ', event);
+            idUser = event.target.dataset.client;
+            userId.value = '' + idUser;
+            b_userId.hidden = true;   
+
+            // alert('id : ' + idUser);
+
+            var setting = {
+                type: "GET",
+                url: "http://localhost:4000/admin/facture/haveInvoice/" + idUser,
+                headers: {
+                    "Authorization": autorization
+                },
+            }
+            $.ajax(setting)
+                .done((data) => {
+                    if (data.result == false) {
+                        oldIndex.hidden = false;
+                    } else {
+                        oldIndex.hidden = true;
+                    }
+                    console.log(data);
+                }).fail((data) => {
+                    console.log('error ' + JSON.stringify(data));
+                });
+        });
     </script>
 
     <script>
-        let user_id = document.getElementById("userId");
+        let b_date = document.getElementById("b_date");
         let date_creation = document.getElementById("date");
-        let oldIndex = document.getElementById("b_oldIndex");
-
-        // var users = new Array(<?php echo json_encode($users); ?>);
+    
         var users = <?php echo json_encode($users); ?>;
         var date = new Date(<?php echo json_encode($date); ?>);
         let formatDate = date.getFullYear();
@@ -249,54 +283,10 @@
             formatDate = formatDate + "-" + date.getDate();
         }
 
-        // alert(formatDate.toString());
         date_creation.value = '' + formatDate.toString();
-        // window.alert(users);
-        // window.alert(date);
-
-        date_creation.hidden = true;
-                
+        //date_creation.hidden = true;    
+        b_date.hidden = true;       
         // *********************************************************
-        let fac = document.getElementById('index');
-        console.log('fac : ' + fac);
-        fac.addEventListener("click", (event) => {
-            console.log('index : ' + JSON.stringify(event));
-            fetch('http://localhost:8080/holmetech/api/personnels/1')
-            .then( (response) => response.json())
-            .then(data => {
-                let haveOldIndex;
 
-                console.log("person : " + data);
-                haveOldIndex = true;
-                if (haveOldIndex == true) {
-                    oldIndex.hidden = true;
-                } else {
-                    oldIndex.hidden = false;
-                }
-            }).catch(error => {console.error('error : ' + error);});
-            $('#mediumModal').modal("show");
-        })
-
-        const theme = document.querySelectorAll('.index'); // ici je prend tout les elements qui ont la classe theme
-
-        // ici item represente chacun de mes elements de theme
-        theme.forEach( (item ) => {
-            item.addEventListener('click', (event) => {
-                console.log('value ' + event.target); //event.target.id me permet de recuperer chaque id de mes elements
-                console.log(event.target); //event.target.id me permet de recuperer chaque id de mes elements
-                // let index = $('.index', this).text();
-                // let index = $(this).find('.index').text();
-
-                console.log('index : ' + event.target.textContent);
-                const str = event.target.textContent;
-                let index = str.split(' ');
-                let user_index = index[2];
-                let id = users[user_index]._id;
-                console.log(id);
-                user_id.value = id;
-                user_id.hidden = true;
-            });
-        });
-        // *********************************************************
     </script>
 @stop

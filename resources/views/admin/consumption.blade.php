@@ -292,6 +292,7 @@
         let invoices = new Array();
         let invoice_search = new Array();
         let users = new Array();
+        let option_search = "";
 
         let page_size = 0;
         let size = 0;
@@ -310,12 +311,33 @@
         })
         .then( (response) => response.json())
         .then(data => {
-            invoices = data;
+            console.log('Invoices', data);
+            invoices = data.result;
         }).catch(error => {console.error('error : ' + error);});
 
-        console.log("Invoices : " + JSON.stringify(invoices));
+        console.log("Invoices : ", invoices);
         // getInvoice(2,1);
-        function getInvoice(page_size, size) {
+        if (size == 0) {
+            size = 5;
+        }
+
+        if(option_search != "") {
+            if (option_search == "month") {
+                getInvoiceByMonth(page_size, size)
+            } else if (option_search == "year") {
+                getInvoiceByYear(page_size, size)
+            } else if (option_search == "username") {
+                getInvoiceByUsername(page_size, size)
+            } else if (option_search == "idCompteur") {
+                getInvoiceByIdCompteur(page_size, size)
+            }
+        } else {
+            if (page_size != 0) {
+                allInvoice(page_size, size) 
+            }
+        }
+
+        function allInvoice(page_size, size) {
             let page_en_cours = page_size;
             let previous_page = 1;
             let next_page = 1;
@@ -360,11 +382,214 @@
                     fetch('http://localhost:4000/client/auth/' + idClient)
                     .then( (response) => response.json())
                     .then(data => {
-                        users.push(data);
+                        users.push(data.result);
+                    }).catch(error => {console.error('error : ' + error);});
+                }
+            );
+        }
+
+        function getInvoiceByMonth(page_size, size) {
+            let page_en_cours = page_size;
+            let previous_page = 1;
+            let next_page = 1;
+            let arrLength = invoices.length;
+            let size_final = size * page_size;
+            size_final = size * page_size;
+            console.log("length : " + arrLength);
+
+            if(arrLength < size){
+                size = arrLength;
+            }else {
+                page = arrLength / size;
+            }
+
+            if (page_en_cours > 1) {
+                previous_page = page_en_cours - 1;
+            }
+
+            if(arrLength < size_final){
+                size_final = arrLength;
+                next_page = page - 1;
+            } else {
+                if(page_size == size) {
+                    next_page = page;
+                }
+            }
+
+            if (size == size_final){
+                for(let i = 0; i < size; i++){
+                    invoice_search.push(invoices[i]);
+                }
+            }else {
+                for(let i = size; i < size_final; i++){
+                    invoice_search.push(invoices[i]);
+                }
+            }
+
+            invoice_search.forEach(
+                (bill) => {
+                    let idClient = bill.idClient;
+                    alert('idclient : ' + idClient);
+                    fetch('http://localhost:4000/client/auth/' + idClient)
+                    .then( (response) => response.json())
+                    .then(data => {
+                        users.push(data.result);
+                    }).catch(error => {console.error('error : ' + error);});
+                }
+            );
+        }
+
+        function getInvoiceByYear(page_size, size) {
+            let page_en_cours = page_size;
+            let previous_page = 1;
+            let next_page = 1;
+            let arrLength = invoices.length;
+            let size_final = size * page_size;
+            size_final = size * page_size;
+            console.log("length : " + arrLength);
+
+            if(arrLength < size){
+                size = arrLength;
+            }else {
+                page = arrLength / size;
+            }
+
+            if (page_en_cours > 1) {
+                previous_page = page_en_cours - 1;
+            }
+
+            if(arrLength < size_final){
+                size_final = arrLength;
+                next_page = page - 1;
+            } else {
+                if(page_size == size) {
+                    next_page = page;
+                }
+            }
+
+            if (size == size_final){
+                for(let i = 0; i < size; i++){
+                    invoice_search.push(invoices[i]);
+                }
+            }else {
+                for(let i = size; i < size_final; i++){
+                    invoice_search.push(invoices[i]);
+                }
+            }
+
+            invoice_search.forEach(
+                (bill) => {
+                    let idClient = bill.idClient;
+                    alert('idclient : ' + idClient);
+                    fetch('http://localhost:4000/client/auth/' + idClient)
+                    .then( (response) => response.json())
+                    .then(data => {
+                        users.push(data.result);
+                    }).catch(error => {console.error('error : ' + error);});
+                }
+            );
+        }
+
+        function getInvoiceByUsername(page_size, size) {
+            let page_en_cours = page_size;
+            let previous_page = 1;
+            let next_page = 1;
+            let arrLength = invoices.length;
+            let size_final = size * page_size;
+            size_final = size * page_size;
+            console.log("length : " + arrLength);
+
+            if(arrLength < size){
+                size = arrLength;
+            }else {
+                page = arrLength / size;
+            }
+
+            if (page_en_cours > 1) {
+                previous_page = page_en_cours - 1;
+            }
+
+            if(arrLength < size_final){
+                size_final = arrLength;
+                next_page = page - 1;
+            } else {
+                if(page_size == size) {
+                    next_page = page;
+                }
+            }
+
+            if (size == size_final){
+                for(let i = 0; i < size; i++){
+                    invoice_search.push(invoices[i]);
+                }
+            }else {
+                for(let i = size; i < size_final; i++){
+                    invoice_search.push(invoices[i]);
+                }
+            }
+
+            invoice_search.forEach(
+                (bill) => {
+                    let idClient = bill.idClient;
+                    alert('idclient : ' + idClient);
+                    fetch('http://localhost:4000/client/auth/' + idClient)
+                    .then( (response) => response.json())
+                    .then(data => {
+                        users.push(data.result);
+                    }).catch(error => {console.error('error : ' + error);});
+                }
+            );
+        }
+
+        function getInvoiceByIdCompteur(page_size, size) {
+            let page_en_cours = page_size;
+            let previous_page = 1;
+            let next_page = 1;
+            let arrLength = invoices.length;
+            let size_final = size * page_size;
+            size_final = size * page_size;
+            console.log("length : " + arrLength);
+
+            if(arrLength < size){
+                size = arrLength;
+            }else {
+                page = arrLength / size;
+            }
+
+            if (page_en_cours > 1) {
+                previous_page = page_en_cours - 1;
+            }
+
+            if(arrLength < size_final){
+                size_final = arrLength;
+                next_page = page - 1;
+            } else {
+                if(page_size == size) {
+                    next_page = page;
+                }
+            }
+
+            if (size == size_final){
+                for(let i = 0; i < size; i++){
+                    invoice_search.push(invoices[i]);
+                }
+            }else {
+                for(let i = size; i < size_final; i++){
+                    invoice_search.push(invoices[i]);
+                }
+            }
+
+            invoice_search.forEach(
+                (bill) => {
+                    let idClient = bill.idClient;
+                    alert('idclient : ' + idClient);
+                    fetch('http://localhost:4000/client/auth/' + idClient)
+                    .then( (response) => response.json())
+                    .then(data => {
+                        users.push(data.result);
                     }).catch(error => {console.error('error : ' + error);});
                 }
             );
         }
     </script>
-
 @stop
