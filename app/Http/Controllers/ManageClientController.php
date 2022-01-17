@@ -44,7 +44,7 @@ class ManageClientController extends Controller
 
         return view('Client/dashboard',['informations' => $informations, 'res' => $response]);
     }
-    
+
     // setting of user
     public function setting(){
 
@@ -74,10 +74,10 @@ class ManageClientController extends Controller
         $informations = json_decode($response, true);
 
         curl_close($curl);
-        
+
         return view('Client/user',['data' => $informations['result']]);
     }
-    
+
     // setting of user
     public function invoicePaid(){
 
@@ -110,7 +110,7 @@ class ManageClientController extends Controller
 
         return view('Client/paidInvoices',['data' => $informations]);
     }
-    
+
     // budget of user
     public function budget(){
 
@@ -143,7 +143,7 @@ class ManageClientController extends Controller
 
         return view('Client/budget',['data' => $response]);
     }
-    
+
     public function budget_detail(){
 
         $alltoken = $_COOKIE['token'];
@@ -174,7 +174,7 @@ class ManageClientController extends Controller
 
         return view('Client/budget_detail',['data' => $informations]);
     }
-    
+
     public function invoiceUnpaid(){
 
         $alltoken = $_COOKIE['token'];
@@ -224,7 +224,7 @@ class ManageClientController extends Controller
                 'photo.max' => 'The :attribute must not sized over 5Mo',
             ]
         );
- 
+
         if ($validator->fails()) {
 
             return back()->withErrors($validator)->withInput(['tab'=>'update_form']);
@@ -233,7 +233,7 @@ class ManageClientController extends Controller
 
             if($request->file()) {
                 $photo =  $request->file('photo')->getClientOriginalName();
-                $photoPath = $request->photo->storeAs('/customers',$photo);   
+                $photoPath = $request->photo->storeAs('/customers',$photo);
             }else{
                 $photo = "";
                 $photoPath = Session::get('photo');
@@ -245,7 +245,7 @@ class ManageClientController extends Controller
             $email = $request->input('email');
             $phone = $request->input('phone');
             $identifier = $request->input('identifier');
-            
+
 
             $url = "http://localhost:4000/client/auth/update";
             $alltoken = $_COOKIE['token'];
@@ -255,7 +255,7 @@ class ManageClientController extends Controller
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
-            
+
             $data = array(
                 'name' => $name,
                 'birthday' => $birthdate,
@@ -266,7 +266,7 @@ class ManageClientController extends Controller
             $data_json = json_encode($data);
 
             //print_r($data_json);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -275,26 +275,26 @@ class ManageClientController extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
 
             // print_r($response);
-            
+
             if ($response->status == 200){
                 $request->session()->put('name',$name);
                 $request->session()->put('photo',$photoPath);
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
                 return back()->withInput(['tab'=>'update_form']);
-                
+
             }else{
                 Session::flash('message', ucfirst($response->error));
                 Session::flash('alert-class', 'alert-danger');
                 return back()->withInput(['tab'=>'update_form']);
             }
         }
-        
+
     }
 
     public function changePassword(Request $request){
@@ -319,7 +319,7 @@ class ManageClientController extends Controller
 
             $newpassword = md5(sha1($request->input('newpassword')));
             $oldpassword = md5(sha1($request->input('oldpassword')));
-            
+
             $url = "http://localhost:4000/client/auth/updatePassword";
             $alltoken = $_COOKIE['token'];
             $alltokentab = explode(';', $alltoken);
@@ -335,7 +335,7 @@ class ManageClientController extends Controller
             $data_json = json_encode($data);
 
             // print_r($data_json);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -344,17 +344,17 @@ class ManageClientController extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
 
             // print_r($response);
-            
+
             if ($response->status == 200){
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
                 return redirect()->back()->withInput(['tab'=>'password_form']);
-                
+
             }else{
                 Session::flash('message', ucfirst($response->error));
                 Session::flash('alert-class', 'alert-danger');
@@ -370,9 +370,9 @@ class ManageClientController extends Controller
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/one/'.$invoice_id,
             CURLOPT_RETURNTRANSFER => true,
@@ -384,7 +384,7 @@ class ManageClientController extends Controller
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $response = curl_exec($curl);
         curl_close($curl);
         $invoice = json_decode($response, true);
@@ -406,7 +406,7 @@ class ManageClientController extends Controller
         $response2 = curl_exec($curl2);
         curl_close($curl2);
         $client = json_decode($response2, true);
-        
+
         $curl3 = curl_init();
         curl_setopt_array($curl3, array(
             CURLOPT_URL => 'http://localhost:4000/admin/auth/'.$invoice['result']['idAdmin'],
@@ -424,13 +424,13 @@ class ManageClientController extends Controller
         $admin = json_decode($response3, true);
 
         echo($admin['result']['phone']);
-        
+
         $pdf = PDF::loadView('facturePdf/generator', ['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
-        
+
         return $pdf->download('facture-'. $client['result']['name'].'-'.date('F').'.pdf');
         // return view('facturePdf/generator',['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
     }
-    
+
     public function overview($invoice_id){
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
@@ -438,9 +438,9 @@ class ManageClientController extends Controller
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-        
+
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://localhost:4000/admin/facture/one/'.$invoice_id,
             CURLOPT_RETURNTRANSFER => true,
@@ -452,7 +452,7 @@ class ManageClientController extends Controller
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
         ));
-        
+
         $response = curl_exec($curl);
         curl_close($curl);
         $invoice = json_decode($response, true);
@@ -472,7 +472,7 @@ class ManageClientController extends Controller
         $response2 = curl_exec($curl2);
         curl_close($curl2);
         $client = json_decode($response2, true);
-        
+
         // print_r($client);
         $curl3 = curl_init();
         curl_setopt_array($curl3, array(
@@ -490,18 +490,18 @@ class ManageClientController extends Controller
         curl_close($curl3);
         $admin = json_decode($response3, true);
         // echo($admin['result']['phone']);
-        
+
         // $pdf = PDF::loadView('facturePdf/generator', ['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
-        
+
         // return $pdf->download('facture-'. $client['result']['name'].'-'.date('F').'.pdf');
         return view('Client/getFacture',['invoice' => $invoice, 'client' => $client, 'admin' => $admin]);
     }
-    
+
     public function paidFac(Request $request){
 
             $modalId = $request->input('modalId');
             $montant = $request->input('montant');
-            
+
 
             $url = "http://localhost:4000/client/facture/paid/".$modalId;
             echo $url;
@@ -512,14 +512,14 @@ class ManageClientController extends Controller
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
-            
+
             $data = array(
                 'montant' => $montant,
             );
             $data_json = json_encode($data);
 
             //print_r($data_json);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -528,27 +528,27 @@ class ManageClientController extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            curl_close($ch); 
+            curl_close($ch);
 
             $response = json_decode($response);
 
             // print_r($response);
-            
+
             if ($response->status == 200){
                 Session::flash('message', 'Action Successfully done!');
                 Session::flash('alert-class', 'alert-success');
                 return redirect()->back();
-                
+
             }else{
                 Session::flash('message', ucfirst($response->error));
                 Session::flash('alert-class', 'alert-danger');
                 return redirect()->back();
             }
-        
+
     }
 
 
-    
+
 
 
 }

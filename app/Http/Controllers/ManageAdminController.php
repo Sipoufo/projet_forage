@@ -188,7 +188,7 @@ class ManageAdminController extends Controller
         //     $image = $value['profileImage'];
         //     return Storage::url($image);
         // }
-        // return Storage::url() http://127.0.0.1:8000/storage/customers/cathedraledouala.jpg
+        // return Storage::url() http://127.0.0.1:8000/storage/cathedraledouala.jpg
         return view('admin/customer',['customers' => $response]);
     }
 
@@ -225,7 +225,6 @@ class ManageAdminController extends Controller
             'confirmpassword' => 'bail|required|same:password',
             'image' => 'bail|image|mimes:jpeg,jpg,png|max:2000',
             ],
-
             $messages = [
                 'required' => 'The :attribute is required',
                 'phone.digits' => '9 digits needed',
@@ -255,11 +254,9 @@ class ManageAdminController extends Controller
             $birthdate = $request->input('birthdate');
             $email = $request->input('email');
             $phone = $request->input('phone');
-            if($request->input('home')){
-                $home = $request->input('home');
-                $lat = $request->input('lat');
-                $lng = $request->input('lng');
-            }
+            $home = $request->input('home');
+            $lat = $request->input('lat');
+            $lng = $request->input('lng');
             $identifier = $request->input('identifier');
             $password = md5(sha1($request->input('password')));
 
@@ -274,7 +271,7 @@ class ManageAdminController extends Controller
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
-            if($request->input('home')){
+            if($lat && $lng){
                 $data = array(
                     'name' => $firstname.' '.$lastname,
                     'birthday' => $birthdate,
@@ -285,7 +282,7 @@ class ManageAdminController extends Controller
                     "longitude" => $lng,
                     "latitude" => $lat,
                     "IdCompteur" => $identifier,
-                    "profileImage" => $photoPath,
+                    "profileImage" => $photo,
                 );
             }else {
                 $data = array(
@@ -294,6 +291,7 @@ class ManageAdminController extends Controller
                     'phone' => $phone,
                     'password' => $password,
                     'email' => $email,
+                    "description" => $home,
                     "IdCompteur" => $identifier,
                     "profileImage" => $photoPath,
                 );
