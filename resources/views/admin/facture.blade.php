@@ -183,7 +183,7 @@
                                             {{method_field('post')}}
                                             <div class="form-group mb-3" id="b_userId">
                                                 <div class="input-group">User Id</div>
-                                                <input type="text" class="form-control" placeholder="user Id" id="userId" required id="userId">                  
+                                                <input type="text" class="form-control" placeholder="user Id" name="userId" id="userId" required>                  
                                             </div>
                                             <div class="form-group mb-3" id="b_date">
                                                 <div class="input-group">Date</div>

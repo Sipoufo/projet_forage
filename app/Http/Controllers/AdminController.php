@@ -3468,76 +3468,51 @@ class AdminController extends Controller{
             $response = curl_exec($curl);
             curl_close($curl);
             $response = json_decode($response, true);
-            //print_r($response);
+            print_r($response);
             if(array_key_exists('result', $response)) {
 
                 if(!empty($response['result'])){
 
-
                     $newIndex = $_POST['newIndex'];
-                    $penalty = $_POST['penalty'];
-                    $observation = $_POST['observation'];
-                    $dateSpicy = $_POST['dateSpicy'];
-                    $dataPaid = $_POST['dataPaid'];
-                    $idClient = $_POST['idClient'];
-                    $amountPaid = $_POST['amountPaid'];
+                    $date = $_POST['date'];
+                    $idClient = $_POST['userId'];
                     $oldIndex = $_POST['oldIndex'];
                     // echo $idClient;
+
+                    //echo 'OldIndex '.$oldIndex;
+                    //echo 'idClient '.$idClient;
+                    //echo 'newIndex '.$newIndex;
 
                     // je definie l'url de connexion.
                     $url = "http://localhost:4000/admin/facture/".$idClient;
                     // je definie la donnée de ma facture.
-                    if(!empty($observation)){
-                        $facture = array(
-                            'newIndex' => $newIndex,
-                            'observation' => $observation,
-                            'penalite' => $penalty,
-                            'dataPaid' => $dataPaid,
-                            'montantVerse' => $amountPaid,
-                            'dateReleveNewIndex' => $dateSpicy,
-                            'oldIndex' => $oldIndex,
-                        );
-                    }else {
-                        $facture = array(
-                            'newIndex' => $newIndex,
-                            'penalite' => $penalty,
-                            'dataPaid' => $dataPaid,
-                            'montantVerse' => $amountPaid,
-                            'dateReleveNewIndex' => $dateSpicy,
-                            'oldIndex' => $oldIndex,
-                        );
-                    }
+                    $facture = array(
+                        'newIndex' => $newIndex,
+                        'oldIndex' => $oldIndex,
+                        'dateReleveNewIndex' => $date
+                    );
 
                     // j'encode cette donnée là'.
                     $data_json = json_encode($facture);
-                    //var_dump($data_json);
-                    // Initialisez une session CURL.
+                    var_dump($data_json);
+                    
                     $ch = curl_init();
-
-                    // Je definie les propriétés de connexion
-                    //CURLOPT_URL : permet de definir l'url
                     curl_setopt($ch, CURLOPT_URL, $url);
-
-                    $response = json_decode($response);
-
-                    //CURLOPT_POST : si la requête doit utiliser le protocole POST pour sa résolution (boolean)
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: '.$Authorization));
                     curl_setopt($ch, CURLOPT_POST, 1);
-
-                    //j'insere la donnée à etre envoyé
                     curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
-                    //enfin d'avoir un retour sur l'etat de la requette on a CURLOPT_RETURNTRANSFER = true
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $response  = curl_exec($ch);
-                    //var_dump($response);
                     curl_close($ch);
 
+                    // dump($response);
+                    // print_r($response);
                     $response = json_decode($response);
 
                     if ($response->status == 200){
                         Session::flash('message', 'Action Successfully done!');
                         Session::flash('alert-class', 'alert-success');
                         return redirect()->back();
-
                     }else{
                         Session::flash('message', ucfirst($response->error));
                         Session::flash('alert-class', 'alert-danger');
@@ -3545,14 +3520,13 @@ class AdminController extends Controller{
                     }
 
                 }else {
-                    // echo "Je passe ffffffffjjksksllslslls";
-                    $messageErr = 'Please entrer the static informations in ';
+                    $messageErr = 'Please entrer the static informations in the system';
                     Session::flash('messageErr', $messageErr);
                     Session::flash('alert-class', 'alert-danger');
                     return redirect()->back();
                 }
             }else {
-                $messageErr = 'Please entrer the static informations in ';
+                $messageErr = 'Please entrer the static informations in the system';
                 Session::flash('messageErr', $messageErr);
                 Session::flash('alert-class', 'alert-danger');
                 return redirect()->back();
