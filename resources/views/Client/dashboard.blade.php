@@ -273,7 +273,7 @@
                                     Date Released
                                     <div class="text-white-50 small">
                                         <?php
-                                            $date = $informations['result']['factureInvoice'][$i]['dateFacturation'];
+                                            $date = $informations['result']['factureInvoice'][$i]['dateReleveNewIndex'];
                                             echo (substr($date, 0, 11));
                                         ?>
                                     </div>

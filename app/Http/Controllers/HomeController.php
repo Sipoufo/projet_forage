@@ -225,6 +225,7 @@ class HomeController extends Controller
         $re = curl_exec($ch);
         curl_close($ch);
         $res = json_decode($re);
+        echo $re;
         $resu = $res->result;
 
 

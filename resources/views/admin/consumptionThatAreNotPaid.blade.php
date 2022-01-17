@@ -171,7 +171,7 @@
                     <tbody>
                         @foreach($invoices as $invoice)
                         <tr>
-                            <td>{{$client[$loop ->index]->name}}</td>
+                            <td>{{$client[$loop ->index]}}</td>
                             <td style="text-align: center">{{$invoice -> consommation}} m<sup>3</sup></td>
                             <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
                             <td style="text-align: center">{{$invoice -> montantImpaye}} FCFA</td>

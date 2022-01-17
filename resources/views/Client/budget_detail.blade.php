@@ -149,7 +149,7 @@
                                     <td><?= $data['result'][$i]['prixUnitaire'] ?></td>
                                     <td><?= $data['result'][$i]['fraisEntretien'] ?></td>
                                     <td><?= $data['result'][$i]['montantConsommation'] ?></td>
-                                    <td><?= $data['result'][$i]['penalite'] ?></td>
+                                    <td><?= $data['result'][$i]['penalty'][0]['montant'] ?></td>
                                     <?php
                                         if ($data['result'][$i]['facturePay'] == true) {
                                             ?>
