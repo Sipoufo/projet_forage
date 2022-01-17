@@ -172,7 +172,6 @@
                     $status = 0;
                 }
 
-
                 if($info['profileImage'] != "noPath"){
                     $image = url('storage/'.$info['profileImage']);
                 }else{
