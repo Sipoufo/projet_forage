@@ -3498,33 +3498,28 @@ class AdminController extends Controller{
 
                     // je definie l'url de connexion.
                     $url = "http://localhost:4000/admin/facture/".$idClient;
-                    // je definie la donnée de ma facture.
-                    $facture = array(
+                
+                    $data1 = array(
                         'newIndex' => $newIndex,
                         'oldIndex' => $oldIndex,
                         'dateReleveNewIndex' => $date
                     );
+                    $data_json1 = json_encode($data1);
 
-                    
-                    // j'encode cette donnée là'.
-                    $data_json = json_encode($facture);
-                    var_dump($data_json);
-                    dump($facture);
-                    
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: '.$Authorization));
-                    curl_setopt($ch, CURLOPT_POST, 1);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $response  = curl_exec($ch);
-                    curl_close($ch);
+                    $ch1 = curl_init();
+                    curl_setopt($ch1, CURLOPT_URL, $url);
+                    curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+                    curl_setopt($ch1, CURLOPT_POST, 1);
+                    curl_setopt($ch1, CURLOPT_POSTFIELDS,$data_json1);
+                    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+                    $response1  = curl_exec($ch1);
+                    curl_close($ch1);
+                    $response1 = json_decode($response1,true);
+                    // $data1= $response1['result']['docs'];
+                    // dump($response1['status']);
+                    // dump($response1);
 
-                    // dump($response);
-                    // print_r($response);
-                    $response = json_decode($response);
-
-                    if ($response->status == 200){
+                    if ($response1['status'] == 200){
                         Session::flash('message', 'Action Successfully done!');
                         Session::flash('alert-class', 'alert-success');
                         return redirect()->back();

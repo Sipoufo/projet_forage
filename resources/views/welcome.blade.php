@@ -55,7 +55,7 @@
                         <div class="row">
                             <div class="col-lg-6 d-none d-lg-block bg-login-image" style="z-index: 0"></div>
                             <div class="col-lg-6" style="z-index: 0">
-                                <div class="d-none d-lg-block position-absolute ml-5"><img src="images/icons/logo1.png" style="width:80%"></div>
+                                <div class="position-absolute ml-5 w-100"><img src="images/icons/logo1.png" style="width:80%"></div>
                                 <div class="p-5">
                                     <div class="text-center mt-5">
                                         <h1 class="h4 text-gray-900 mb-4">Sign In</h1>
