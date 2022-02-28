@@ -309,7 +309,7 @@
                                   <?php $localisation = $data['localisation']; ?>
                                   <div class="input-group mt-3">
                                       <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
-                                      <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="<?php if(array_key_exists('description', $localisation)){echo $localisation['description'];} ?>" required>
+                                      <input type="text" class="form-control" placeholder="home location" id="home" name="home" value="<?php if(array_key_exists('description', $localisation)){echo $localisation['description'];} ?>">
                                   </div>
 
                                   <div class="input-group mt-3">

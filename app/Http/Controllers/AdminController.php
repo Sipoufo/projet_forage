@@ -745,14 +745,26 @@ class AdminController extends Controller{
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
-            $data = array(
-                'name' => $name,
-                'birthday' => $birthdate,
-                'phone' => $phone,
-                'email' => $email,
-                "profileImage" => $photoPath,
-                "description" => $home,
-            );
+            if(!empty($home)){
+                $data = array(
+                    'name' => $name,
+                    'birthday' => $birthdate,
+                    'phone' => $phone,
+                    'email' => $email,
+                    "profileImage" => $photoPath,
+                    "description" => $home,
+                );
+            }else{
+                $data = array(
+                    'name' => $name,
+                    'birthday' => $birthdate,
+                    'phone' => $phone,
+                    'email' => $email,
+                    "profileImage" => $photoPath,
+                );
+            }
+
+
             $data_json = json_encode($data);
 
             // print_r($data_json);
@@ -2481,7 +2493,7 @@ class AdminController extends Controller{
         $invoicesWithPaginator = array();
         $client = array();
 
-        if ($response -> status == 200) 
+        if ($response -> status == 200)
         {
             foreach($response -> result as $key => $value){
                 //$invoices = $value;
@@ -2533,9 +2545,9 @@ class AdminController extends Controller{
                 $response = json_decode($response);
                 dump($response);
                 // $i=0;
-                
+
                 $user = $response -> result -> name;
-           
+
                 array_push($client,$user);
             }
 
@@ -2601,10 +2613,10 @@ class AdminController extends Controller{
         $i=0;
         $invoices = array();
         $invoicesWithPaginator = array();
-            
+
         $client = array();
 
-        if ($response -> status == 200) 
+        if ($response -> status == 200)
         {
             foreach($response -> result as $key => $value){
                 //$invoices = $value;
@@ -2625,7 +2637,7 @@ class AdminController extends Controller{
         } else {
             $arrLength = count($invoices);
             //echo $arrLength;
-    
+
             if($arrLength < $size){
                 $size = $arrLength;
                 $page_en_cours = 1;
@@ -2633,22 +2645,22 @@ class AdminController extends Controller{
                 $page = $arrLength / $size;
                 $next_page = $page_en_cours + 1;
             }
-    
+
             for($i = 0; $i < $size; $i++){
                 //$invoicesWithPaginator = $invoices[$i];
                 array_push($invoicesWithPaginator,$invoices[$i]);
             }
-    
+
             //dump($invoicesWithPaginator);
-    
+
             if (gettype($invoices) != "array") {
                 $invoices = array();
             }
-    
+
             //dump($invoices);
-    
+
             foreach($invoicesWithPaginator as $invoice){
-    
+
                 dump($invoice);
                 print_r($invoice);
                 $idClient = $invoice  -> idClient;
@@ -2664,19 +2676,19 @@ class AdminController extends Controller{
                     CURLOPT_CUSTOMREQUEST => 'GET',
                     CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
                 ));
-    
+
                 $response = curl_exec($url);
                 $response = json_decode($response);
-    
+
                 $i=0;
-    
+
                 foreach($response as $key => $value){
                     if($i >= 1){
                         array_push($client,$value);
                     }
                     $i = $i + 1;
                 }
-    
+
             }
             return view('admin/consumptionThatArePaid',[
                 'invoices' => $invoicesWithPaginator,
@@ -3498,7 +3510,7 @@ class AdminController extends Controller{
 
                     // je definie l'url de connexion.
                     $url = "http://localhost:4000/admin/facture/".$idClient;
-                
+
                     $data1 = array(
                         'newIndex' => $newIndex,
                         'oldIndex' => $oldIndex,
