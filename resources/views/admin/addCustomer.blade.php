@@ -114,7 +114,7 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            Add a customer 
+            Add a customer
         </div>
     <div class="card-body">
         <div class="container">
@@ -128,46 +128,31 @@
                     </button>
                 </div>
             @endif
-            
+
              <form method="post" action="/admin/customer/addCustomer/store" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
                 @csrf
                 <div class="input-group mt-3">
                     <span class="text-danger text-lg mr-2" style="margin-top: 10px;">*</span>
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-address-book'></i></span></div>
-                    <input type="text" class="form-control @error('firstname') is-invalid @enderror" placeholder="first name" id="firstname" name="firstname" value="{{ old('firstname') }}" required>
-                        @error('firstname')
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="full name" id="name" name="name" value="{{ old('name') }}" required>
+                        @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror                          
-                </div>
-                
-                <div class="input-group mt-3">
-                    <span class="text-danger text-lg mr-2" style="margin-top: 10px;">*</span>
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-address-book'></i></span></div>
-                    <input type="text" class="form-control @error('lastname') is-invalid @enderror" placeholder="last name" id="lastname" name="lastname" value="{{ old('lastname') }}" required>
-                        @error('lastname')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror                       
+                        @enderror
                 </div>
 
                 <div class="input-group mt-3">
                     <span class="text-danger text-lg mr-2" style="margin-top: 10px;">*</span>
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-birthday-cake'></i></span></div>
-                    <input type="date" class="form-control" id="birth_date" name="birthdate" value="{{ old('birthdate') }}" required>                         
-                </div>
-                 
-                <div class="input-group mt-3">
-                    <span class="text-danger text-lg mr-2" style="margin-top: 10px;">*</span>
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">@</span></div>
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="{{ old('email') }}">                    
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="{{ old('email') }}">
                      @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
-                     @enderror  
+                     @enderror
                 </div>
-                
+
                 <div class="input-group mt-3">
                     <span class="text-danger text-lg mr-2" style="margin-top: 10px;">*</span>
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-phone-volume'></i></span></div>
-                    <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="{{ old('phone') }}" required>                
+                    <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="{{ old('phone') }}" required>
                     @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -175,7 +160,7 @@
 
                 <div class="input-group mt-3 pl-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
-                    <input type="text" class="form-control" placeholder="description of the location" id="home" name="home" value="{{ old('home') }}">                
+                    <input type="text" class="form-control" placeholder="description of the location" id="home" name="home" value="{{ old('home') }}">
                 </div>
 
                 <div class="input-group mt-3 pl-3">
@@ -186,28 +171,28 @@
                       </label>
                     </div>
                     <input type="hidden" name="lat" id="lat"  value="">
-                    <input type="hidden" name="lng" id="lng"  value="">        
+                    <input type="hidden" name="lng" id="lng"  value="">
                 </div>
-  
+
                 <div class="input-group mt-3">
                     <span class="text-danger text-lg mr-2" style="margin-top: 10px;">*</span>
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-water'></i></span></div>
-                    <input type="text" class="form-control" placeholder="Water meter identifier" id="identifier" name="identifier" value="{{ old('identifier') }}" required>                  
+                    <input type="text" class="form-control" placeholder="Water meter identifier" id="identifier" name="identifier" value="{{ old('identifier') }}" required>
                 </div>
-                  
+
                 <div class="input-group mt-3">
                     <span class="text-danger text-lg mr-2" style="margin-top: 10px;">*</span>
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter the password" id="password" name="password" value="{{ old('password') }}" required>                  
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter the password" id="password" name="password" value="{{ old('password') }}" required>
                     @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <div class="input-group mt-3">
                     <span class="text-danger text-lg mr-2" style="margin-top: 10px;">*</span>
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-lock'></i></span></div>
-                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="{{ old('confirmpassword') }}" required>                  
+                    <input type="password" class="form-control @error('confirmpassword') is-invalid @enderror" placeholder="Confirm the password" id="confirmpassword" name="confirmpassword" value="{{ old('confirmpassword') }}" required>
                     @error('confirmpassword')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -215,10 +200,10 @@
 
                 <div class="input-group mt-3 pl-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-image'></i></span></div>
-                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image">    
+                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image">
                     @error('image')
                             <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror              
+                    @enderror
                 </div>
 
                 <div class="row float-right mt-3">
@@ -229,7 +214,7 @@
                         <button class="btn btn-secondary ml-2" type="button">Cancel</button>
                     </a>
                 </div>
-                
+
             </form>
         </div>
     </div>
@@ -237,7 +222,7 @@
 
 <script>
     $( "#setLocation" ).on( "click", function() {
-    
+
         if($("#setLocation").is(':checked'))
 
             // checked
@@ -249,7 +234,7 @@
 
            function errorPosition(error) {
               var info = "Error while getting your location : ";
-              
+
               switch(error.code) {
                   case error.TIMEOUT:
                       info += "Timeout !";

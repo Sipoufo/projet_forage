@@ -131,8 +131,6 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::post('/admin/administrator/addAdministrator/store',[ManageAdminController::class, 'storeAdministrators']);
 
-
-
 		Route::get('/admin/facture',[AdminController::class, 'allClient']);
 
 		Route::post('/admin/facture/addInvoice',[AdminController::class, 'addOneInvoice'])->name('addOneInvoice');
@@ -173,8 +171,6 @@ Route::group(['middleware' => 'checksession'], function () {
 		Route::get('/admin/detail-consumption/{invoice_id}/edit',[AdminController::class, 'detailInvoive'])->name('detailInvoive');
 
         Route::get('/admin/customer/blockedCustomer',[ManageAdminController::class, 'blockedCustomers']);
-
-		Route::post('/admin/customer/addCustomer/store',[ManageAdminController::class, 'storeCustomers']);
 
 		Route::post('/admin/facture/{invoice_id}',[AdminController::class, 'updateInvoice'])->name('updateInvoice');
 

@@ -43,8 +43,7 @@ class ManageAdminController extends Controller
     public function storeAdministrators(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'firstname' => 'bail|required',
-            'lastname' =>  'bail|required',
+            'name' => 'bail|required',
             'email' => 'bail|required|email',
             'phone' => 'bail|required|digits:9',
             'password' => 'bail|required|regex:/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,15}$/',
@@ -76,9 +75,7 @@ class ManageAdminController extends Controller
                 $photoPath = "noPath";
             }
 
-            $firstname = $request->input('firstname');
-            $lastname = $request->input('lastname');
-            $birthdate = $request->input('birthdate');
+            $name = $request->input('name');
             $email = $request->input('email');
             $phone = $request->input('phone');
             $home = $request->input('home');
@@ -96,17 +93,28 @@ class ManageAdminController extends Controller
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
-            $data = array(
-                'name' => $firstname.' '.$lastname,
-                'birthday' => $birthdate,
-                'phone' => $phone,
-                'password' => $password,
-                'email' => $email,
-                "description" => $home,
-                "longitude" => $lng,
-                "latitude" => $lat,
-                "profileImage" => $photoPath,
-            );
+            if($lat && $lng){
+                $data = array(
+                    'name' => $name,
+                    'phone' => $phone,
+                    'password' => $password,
+                    'email' => $email,
+                    "description" => $home,
+                    "longitude" => $lng,
+                    "latitude" => $lat,
+                    "profileImage" => $photoPath,
+                );
+            }else {
+                $data = array(
+                    'name' => $name,
+                    'phone' => $phone,
+                    'password' => $password,
+                    'email' => $email,
+                    "description" => $home,
+                    "profileImage" => $photoPath,
+                );
+            }
+
             $data_json = json_encode($data);
 
             $ch = curl_init();
@@ -217,8 +225,7 @@ class ManageAdminController extends Controller
     public function storeCustomers(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'firstname' => 'bail|required',
-            'lastname' =>  'bail|required',
+            'name' => 'bail|required',
             'email' => 'bail|required|email',
             'phone' => 'bail|required|digits:9',
             'password' => 'bail|required|regex:/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,15}$/',
@@ -249,9 +256,7 @@ class ManageAdminController extends Controller
                 $photoPath = "noPath";
             }
 
-            $firstname = $request->input('firstname');
-            $lastname = $request->input('lastname');
-            $birthdate = $request->input('birthdate');
+            $name = $request->input('name');
             $email = $request->input('email');
             $phone = $request->input('phone');
             $home = $request->input('home');
@@ -273,8 +278,7 @@ class ManageAdminController extends Controller
 
             if($lat && $lng){
                 $data = array(
-                    'name' => $firstname.' '.$lastname,
-                    'birthday' => $birthdate,
+                    'name' => $name,
                     'phone' => $phone,
                     'password' => $password,
                     'email' => $email,
@@ -286,8 +290,7 @@ class ManageAdminController extends Controller
                 );
             }else {
                 $data = array(
-                    'name' => $firstname.' '.$lastname,
-                    'birthday' => $birthdate,
+                    'name' => $name,
                     'phone' => $phone,
                     'password' => $password,
                     'email' => $email,
@@ -422,7 +425,6 @@ class ManageAdminController extends Controller
 
 
             $name = $request->input('name');
-            $birthdate = $request->input('birthdate');
             $email = $request->input('email');
             $phone = $request->input('phone');
 
@@ -437,7 +439,6 @@ class ManageAdminController extends Controller
 
             $data = array(
                 'name' => $name,
-                'birthday' => $birthdate,
                 'phone' => $phone,
                 'email' => $email,
                 "profileImage" => $photoPath,
@@ -700,7 +701,6 @@ class ManageAdminController extends Controller
 
 
             $name = $request->input('name');
-            $birthdate = $request->input('birthdate');
             $email = $request->input('email');
             $phone = $request->input('phone');
             $home = $request->input('home');
@@ -718,7 +718,6 @@ class ManageAdminController extends Controller
 
             $data = array(
                 'name' => $name,
-                'birthday' => $birthdate,
                 'phone' => $phone,
                 'email' => $email,
                 "description" => $home,

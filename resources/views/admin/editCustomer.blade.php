@@ -145,11 +145,6 @@
                 </div>
 
                 <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-birthday-cake'></i></span></div>
-                    <input type="date" class="form-control" id="birth_date" name="birthdate" value="<?= $data['birthday']?>" required>
-                </div>
-
-                <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">@</span></div>
                     <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="<?= $data['email']?>">
                      @error('email')

@@ -114,7 +114,7 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            Edit an administrator 
+            Edit an administrator
         </div>
     <div class="card-body">
         <div class="container">
@@ -128,7 +128,7 @@
                     </button>
                 </div>
             @endif
-            
+
              <form method="post" action="/admin/administrator/saveAdmin/<?= $data['_id']?>" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -137,25 +137,20 @@
                     <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="name" id="name" name="name" value="<?= $data['name']?>" required>
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror                          
+                        @enderror
                 </div>
 
                 <div class="input-group mt-3">
-                    <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-birthday-cake'></i></span></div>
-                    <input type="date" class="form-control" id="birth_date" name="birthdate" value="<?= $data['birthday']?>" required>                         
-                </div>
-                 
-                <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase">@</span></div>
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="<?= $data['email']?>">                    
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="email" name="email" id="email" value="<?= $data['email']?>">
                      @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
-                     @enderror  
+                     @enderror
                 </div>
-                
+
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-phone-volume'></i></span></div>
-                    <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="<?= $data['phone']?>" required>                
+                    <input type="number" class="form-control @error('phone') is-invalid @enderror" placeholder="phone number" id="phone" name="phone" value="<?= $data['phone']?>" required>
                     @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -163,15 +158,15 @@
 
                 <div class="input-group mt-3">
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class=' fas fa-image'></i></span></div>
-                    <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo">    
+                    <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo">
                     @error('photo')
                             <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror              
+                    @enderror
                 </div>
 
                 <input type="hidden" name="profileImage" id="profileImage" value="<?= $data['profileImage']?>"/>
 
-                <div class="row float-right mt-3"> 
+                <div class="row float-right mt-3">
                     <a href="/admin/administrator">
                         <button class="btn btn-secondary" type="button">Cancel</button>
                     </a>
@@ -179,7 +174,7 @@
                         <button class="btn btn-primary ml-2" name="submit" type="submit">Proceed</button>
                     </a>
                 </div>
-                
+
             </form>
         </div>
     </div>
