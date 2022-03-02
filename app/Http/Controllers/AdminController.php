@@ -245,12 +245,12 @@ class AdminController extends Controller{
 
         $data = json_decode($response);
 
-        if($data['status'] == 200){
+        if($data->status == 200){
             Session::flash('message', 'Action Successfully done!');
             Session::flash('alert-class', 'alert-success');
             return redirect()->back();
         }else{
-            Session::flash('message', ucfirst($response->error));
+            Session::flash('message', ucfirst($data->error));
             Session::flash('alert-class', 'alert-danger');
             return redirect()->back();
         }

@@ -194,6 +194,8 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/admin/manage_products/remove',[AdminController::class, 'adminRemove'])->name('adminRemove');
 
+        Route::get('/admin/products_types',[AdminController::class, 'productsType'])->name('productsType');
+
 		Route::post('/admin/products_types/create',[AdminController::class, 'createType'])->name('createType');
 
 		Route::match(['get','delete'],'/admin/products_types/delete/{id}',[AdminController::class, 'deleteType'])->name('deleteType');
