@@ -131,6 +131,8 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::post('/admin/administrator/addAdministrator/store',[ManageAdminController::class, 'storeAdministrators']);
 
+        Route::match(['get','put'],'/admin/customer/block/{id}/{status}',[ManageAdminController::class, 'blockCustomer'])->name('blockCustomer');
+
 		Route::get('/admin/facture',[AdminController::class, 'allClient']);
 
 		Route::post('/admin/facture/addInvoice',[AdminController::class, 'addOneInvoice'])->name('addOneInvoice');
@@ -192,10 +194,6 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/admin/manage_products/remove',[AdminController::class, 'adminRemove'])->name('adminRemove');
 
-		Route::match(['get','put'],'/admin/manage_products/remove/removed',[AdminController::class, 'removeProduct'])->name('removeProduct');
-
-		Route::get('/admin/products_types',[AdminController::class, 'productsType'])->name('productsType');
-
 		Route::post('/admin/products_types/create',[AdminController::class, 'createType'])->name('createType');
 
 		Route::match(['get','delete'],'/admin/products_types/delete/{id}',[AdminController::class, 'deleteType'])->name('deleteType');
@@ -232,9 +230,7 @@ Route::group(['middleware' => 'checksession'], function () {
 
         Route::match(['get','put'],'/admin/customer/account/update/{id}',[ManageAdminController::class, 'updateAccount'])->name('updateAccount');
 
-		Route::get('/admin/map', function() {
-		    return view('admin/maps');
-		});
+        Route::get('/admin/map',[AdminController::class, 'map'])->name('map');
 
 		Route::match(['get','put'],'/admin/customer/delete/{id}',[ManageAdminController::class, 'deleteCustomer'])->name('deleteCustomer');
 

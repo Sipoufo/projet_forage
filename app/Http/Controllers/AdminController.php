@@ -3555,6 +3555,10 @@ class AdminController extends Controller{
             }
     }
 
+    public function map(){
+        return view('admin/maps');
+    }
+
     public function createInvoice() {
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
