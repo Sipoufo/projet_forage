@@ -2506,7 +2506,7 @@ class AdminController extends Controller{
 
         if (gettype($invoices) === 'array') {
             $arrLength = count($invoices);
-            echo $arrLength;
+            // echo $arrLength;
 
             if($arrLength < $size){
                 $size = $arrLength;
@@ -2543,7 +2543,7 @@ class AdminController extends Controller{
 
                 $response = curl_exec($url);
                 $response = json_decode($response);
-                dump($response);
+                // dump($response);
                 // $i=0;
 
                 $user = $response -> result -> name;
@@ -2551,7 +2551,7 @@ class AdminController extends Controller{
                 array_push($client,$user);
             }
 
-            dump($client);
+            // dump($client);
 
             return view('admin/consumptionThatAreNotPaid',[
                 'invoices' => $invoicesWithPaginator,
