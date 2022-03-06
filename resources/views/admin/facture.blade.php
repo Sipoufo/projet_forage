@@ -156,7 +156,11 @@
                 <section class="card mr-2 mb-2" style="border-radius: 10px; border-color: black; border-style: solid; width: 300px;">
                     <section class="d-flex justify-content-between">
                         <section>
-                            <img src="{{url('storage/'.$user->profileImage)}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
+                            @if ($user->profileImage != "noPath")
+                                <img src="{{url('storage/'.$user->profileImage)}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
+                            @else 
+                                <img src="/img/undraw_profile.svg" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
+                            @endif
                         </section>
                         <section class="mr-2">
                             <h5>{{$user->name}}</h5>
