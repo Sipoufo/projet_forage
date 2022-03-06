@@ -155,7 +155,7 @@ class ManageAdminController extends Controller
             $name = $_POST['name'];
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://localhost:4000/client/searchByName/'.$name,
+                CURLOPT_URL => "http://localhost:4000/admin/auth/getAdmin",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -170,10 +170,37 @@ class ManageAdminController extends Controller
             curl_close($curl);
             $response = json_decode($response);
 
-            return view('admin/administrator',['administrators' => $response]);
+            $result = $response -> result;
+            $length = count($result);
+
+            $customers = array();
+
+            for($i = 0; $i < $length; $i++) {
+                $user = $result[$i];
+                $username = $user -> name;
+                if(strpos($username, $name) !== false){
+                    //echo "Word Found!";
+                    array_push($customers, $user);
+                } else{
+                    //echo "Word Not Found!";
+                }
+            }
+
+            $array = array(
+                "status" => "200",
+                "result" => json_decode(json_encode($customers), true),
+            );
+            
+            //dump($array);
+            return view('admin/administrator',['administrators' => $array]);
         }
         else {
-            return view('admin/administrator',['administrators' => null]);
+            $array = array(
+                "status" => "404",
+                "result" => null,
+            );
+            //dump($array);
+            return view('admin/administrator',['administrators' => $array]);
         }
     }
     
@@ -520,7 +547,7 @@ class ManageAdminController extends Controller
             $name = $_POST['name'];
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://localhost:4000/client/searchByName/'.$name,
+                CURLOPT_URL => "http://localhost:4000/admin/auth/getClient",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -534,11 +561,35 @@ class ManageAdminController extends Controller
             $response = curl_exec($curl);
             curl_close($curl);
             $response = json_decode($response);
+            $result = $response -> result;
+            $length = count($result);
 
-            return view('admin/customer',['customers' => $response]);
+            $customers = array();
+
+            for($i = 0; $i < $length; $i++) {
+                $user = $result[$i];
+                $username = $user -> name;
+                if(strpos($username, $name) !== false){
+                    //echo "Word Found!";
+                    array_push($customers, $user);
+                } else{
+                    //echo "Word Not Found!";
+                }
+            }
+            $array = array(
+                "status" => "200",
+                "result" => json_decode(json_encode($customers), true),
+            );
+            //dump($array);
+            return view('admin/customer',['customers' => $array]);
         }
         else {
-            return view('admin/customer',['customers' => null]);
+            $array = array(
+                "status" => "404",
+                "result" => null,
+            );
+            //dump($array);
+            return view('admin/customer',['customers' => $array]);
         }
     }
     
