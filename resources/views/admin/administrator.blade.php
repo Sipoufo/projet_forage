@@ -115,132 +115,152 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Administrators</h1> 
-         @if(Session::has('profile'))
-            @if(Session::get('profile') == "superAdmin")
-            <a href="/admin/administrator/addAdministrator" class="btn btn-primary"> Add an administrator </a>
-          @endif
-        @endif
+        <div class="d-flex">
+            @if(Session::has('profile'))
+                @if(Session::get('profile') == "superAdmin")
+                <a href="/admin/administrator/addAdministrator" class="btn btn-primary"> Add an administrator </a>
+            @endif
+            @endif
+            <form action="/admin/find" class="ml-3" novalidate method="post" enctype="multipart/form-data" class="form-horizontal row-border">
+                <div class="col-sm-12">
+                    <div class="row">
+                        @csrf
+                        <div class="col-9">
+                            <input type="text" class="form-control form-control-user" id="name" name="name" placeholder="Name of user">
+                        </div>
+                        <div class="col-2">
+                            <button class="btn-sm btn-success h-100" type="submit" name="search" id="search"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
     </div>
 
-    <?php if($administrators['status'] == 200){ 
+    <?php 
+        if ($administrators != null) {
+            if($administrators['status'] == 200){ 
 
-            $informations = $administrators['result']; 
-            ?>
+                    $informations = $administrators['result']; 
+                    ?>
 
-    <div class="container">
-      <table class="table table-striped table-light table-hover table-sm table-responsive-lg text-center">
-        <thead style="background-color:#4e73df;color:white;">
-          <tr>
-            <th>Photo</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            @if(Session::has('profile'))
-                @if(Session::get('profile') == "superAdmin")
-                    <th>Active/Blocked</th>
-                @endif
-            @endif
-            <th>Registered_at</th>
-            <th>Actions</th> 
-          </tr>
-        </thead>
-        <tbody>
-
-            <?php
-
-                foreach($informations as $key => $info) { 
-                    $name = $info['name'];
-                    $email = $info['email'];
-                    $phone = $info['phone'];
-                    $registered_at = date('d-m-Y H:i:s', strtotime($info['createdAt'])); 
-
-                    if($info['profileImage'] != "noPath"){
-                        $image = url('storage/'.$info['profileImage']);
-                    }else{
-                        $image = "/img/undraw_profile.svg";
-                    }
-
-                    $status = $info['status'];
-                    if(empty($status)){
-                        $status = 0;
-                    } 
-
-                    $delete = $info['isDelete'];
-                    
-            ?>
-          <tr style="background-color:white;color:black;">
-            <td><img class="img-profile" src='<?= $image ?>' height="40" width="40"/></td>
-            <td><?= $name ?></td>
-            <td><?= $email ?></td>
-            <td><?= $phone ?></td>
-            @if(Session::has('profile'))
-                @if(Session::get('profile') == "superAdmin")
-                    <td>
-                       <?php
-
-                        if($delete){
-                            $state = 'Deleted';
-                        }elseif($status == 1){
-                            $class='btn-success';
-                            $state = 'Active';
-                        }
-                        else{
-                            $class='btn-warning';
-                            $state = 'Blocked';
-                        }
-
-                        if($delete == 1){ ?>
-
-                            <span class="text"><?= $state ?></span>
-
-                  <?php }else{ ?>
-
-                        <a href="/admin/administrator/block/<?= $info['_id']?>/<?= $status ?>">
-                        <button class="btn btn-sm btn-space <?= $class ?> rounded-pill"><?= $state ?></button>
-                        </a>
-
-                  <?php }?>
-
-                    </td>
-                @endif
-            @endif
-            <td><?= $registered_at ?></td>
-            <td>
+            <div class="container">
+            <table class="table table-striped table-light table-hover table-sm table-responsive-lg text-center">
+                <thead style="background-color:#4e73df;color:white;">
+                <tr>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
                     @if(Session::has('profile'))
-                
-                        @if(Session::get('profile') != "superAdmin")
-
-                            {{ _('No action') }}
-                    
-                        @else
-                            @if($delete)
-                                {{ _('Deleted') }}
-        
-                            @else
-                            
-                            <a href="/admin/administrator/edit/<?= $info['_id']?>" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                                <span class="icon">
-                                    <i class="fas fa-edit"></i>
-                                </span>
-                            </a>
-
-                            <a href="/admin/administrator/delete/<?= $info['_id']?>" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
-                                <span class="icon">
-                                    <i class="fas fa-trash"></i>
-                                </span>
-                            </a>
-
-                            
-                            @endif
+                        @if(Session::get('profile') == "superAdmin")
+                            <th>Active/Blocked</th>
                         @endif
                     @endif
-            </td>
-          </tr>
-          <?php } ?>    
-        </tbody>
-      </table>
-    </div>
-    <?php } ?> 
+                    <th>Registered_at</th>
+                    <th>Actions</th> 
+                </tr>
+                </thead>
+                <tbody>
+
+                    <?php
+
+                        foreach($informations as $key => $info) { 
+                            $name = $info['name'];
+                            $email = $info['email'];
+                            $phone = $info['phone'];
+                            $registered_at = date('d-m-Y H:i:s', strtotime($info['createdAt'])); 
+
+                            if($info['profileImage'] != "noPath"){
+                                $image = url('storage/'.$info['profileImage']);
+                            }else{
+                                $image = "/img/undraw_profile.svg";
+                            }
+
+                            $status = $info['status'];
+                            if(empty($status)){
+                                $status = 0;
+                            } 
+
+                            $delete = $info['isDelete'];
+                            
+                    ?>
+                <tr style="background-color:white;color:black;">
+                    <td><img class="img-profile" src='<?= $image ?>' height="40" width="40"/></td>
+                    <td><?= $name ?></td>
+                    <td><?= $email ?></td>
+                    <td><?= $phone ?></td>
+                    @if(Session::has('profile'))
+                        @if(Session::get('profile') == "superAdmin")
+                            <td>
+                            <?php
+
+                                if($delete){
+                                    $state = 'Deleted';
+                                }elseif($status == 1){
+                                    $class='btn-success';
+                                    $state = 'Active';
+                                }
+                                else{
+                                    $class='btn-warning';
+                                    $state = 'Blocked';
+                                }
+
+                                if($delete == 1){ ?>
+
+                                    <span class="text"><?= $state ?></span>
+
+                        <?php }else{ ?>
+
+                                <a href="/admin/administrator/block/<?= $info['_id']?>/<?= $status ?>">
+                                <button class="btn btn-sm btn-space <?= $class ?> rounded-pill"><?= $state ?></button>
+                                </a>
+
+                        <?php }?>
+
+                            </td>
+                        @endif
+                    @endif
+                    <td><?= $registered_at ?></td>
+                    <td>
+                            @if(Session::has('profile'))
+                        
+                                @if(Session::get('profile') != "superAdmin")
+
+                                    {{ _('No action') }}
+                            
+                                @else
+                                    @if($delete)
+                                        {{ _('Deleted') }}
+                
+                                    @else
+                                    
+                                    <a href="/admin/administrator/edit/<?= $info['_id']?>" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                        <span class="icon">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </a>
+
+                                    <a href="/admin/administrator/delete/<?= $info['_id']?>" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                                        <span class="icon">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                    </a>
+
+                                    
+                                    @endif
+                                @endif
+                            @endif
+                    </td>
+                </tr>
+                <?php } ?>    
+                </tbody>
+            </table>
+            </div>
+            <?php }
+        } 
+    ?> 
 
 
 @stop

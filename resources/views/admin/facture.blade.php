@@ -141,7 +141,7 @@
                     <input type="text" class="form-control form-control-user" id="name" name="name" placeholder="Name of user">
                 </div>
                 <div class="col-2">
-                    <button class="btn-sm btn-success" type="submit" name="search" id="search"><i class="fas fa-search"></i></button>
+                    <button class="btn-sm btn-success h-100" type="submit" name="search" id="search"><i class="fas fa-search"></i></button>
                 </div>
             </div>
 
@@ -151,64 +151,70 @@
 </div>
 <div class="container-fluid" id="users">
     <section class="d-flex">
-        @foreach($users as $user)
-            <section class="card mr-2 mb-2" style="border-radius: 10px; border-color: black; border-style: solid; width: 300px;">
-                <section class="d-flex justify-content-between">
-                    <section>
-                        <img src="{{$user ->profileImage}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
-                    </section>
-                    <section class="mr-2">
-                        <h5>{{$user->name}}</h5>
-                        <span>{{$user->IdCompteur}}</span> 
-                        <section class="d-flex justify-content-end mt-2 mb-2">
-                            <button type="button" class="btn btn-primary index" style="border-radius: 10px;" id="index" role="button" data-toggle="modal" data-target="#modal-{{ $user->_id }}" target="invoice" data-client="{{$user-> _id}}">Add Invoice</span>
+        @if ($users != null)
+            @foreach($users as $user)
+                <section class="card mr-2 mb-2" style="border-radius: 10px; border-color: black; border-style: solid; width: 300px;">
+                    <section class="d-flex justify-content-between">
+                        <section>
+                            <img src="{{url('storage/'.$user->profileImage)}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
                         </section>
+                        <section class="mr-2">
+                            <h5>{{$user->name}}</h5>
+                            <span>{{$user->IdCompteur}}</span> 
+                            <section class="d-flex justify-content-end mt-2 mb-2">
+                                <button type="button" class="btn btn-primary index" style="border-radius: 10px;" id="index" role="button" data-toggle="modal" data-target="#modal-{{ $user->_id }}" target="invoice" data-client="{{$user-> _id}}">Add Invoice</span>
+                            </section>
 
-                        <!-- medium modal -->
-                        <div class="modal fade" tabindex="-1" id="modal-{{ $user->_id }}" role="dialog" aria-labelledby="mediumModalLabel" data-backdrop="static"
-                            aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <section>
-                                            Add Invoice
-                                        </section>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form data-toggle="validator" action="{{route('addOneInvoice')}}" method="post" class="col-lg-8 offset-lg-2">
-                                            @csrf
-                                            {{method_field('post')}}
-                                            <div class="form-group mb-3" id="b_userId">
-                                                <div class="input-group">User Id</div>
-                                                <input type="text" class="form-control" placeholder="user Id" name="userId" id="userId" required>                  
-                                            </div>
-                                            <div class="form-group mb-3" id="b_date">
-                                                <div class="input-group">Date</div>
-                                                <input type="date" class="form-control" placeholder="Date" id="date" name="date" required>                  
-                                            </div>
-                                            <div class="form-group mb-3">
-                                                <div class="input-group">New index</div>
-                                                <input type="number" class="form-control" placeholder="new index" id="newIndex" name="newIndex" required>                  
-                                            </div>
-                                            <div class="form-group mb-3" id="b_oldIndex">
-                                                <div class="input-group">Old index</div>
-                                                <input type="number" class="form-control" placeholder="old index" id="oldIndex" name="oldIndex" value="0">                  
-                                            </div>
-                                            <div class="row form-group float-right">
-                                                <button type="submit" class="btn btn-primary" id="addInvoice" name="addInvoice"> Add</button>
-                                            </div>
-                                        </form>
+                            <!-- medium modal -->
+                            <div class="modal fade" tabindex="-1" id="modal-{{ $user->_id }}" role="dialog" aria-labelledby="mediumModalLabel" data-backdrop="static"
+                                aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <section>
+                                                Add Invoice
+                                            </section>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form data-toggle="validator" action="{{route('addOneInvoice')}}" method="post" class="col-lg-8 offset-lg-2">
+                                                @csrf
+                                                {{method_field('post')}}
+                                                <div class="form-group mb-3" id="b_userId">
+                                                    <div class="input-group">User Id</div>
+                                                    <input type="text" class="form-control" placeholder="user Id" name="userId" id="userId" required>                  
+                                                </div>
+                                                <div class="form-group mb-3" id="b_date">
+                                                    <div class="input-group">Date</div>
+                                                    <input type="date" class="form-control" placeholder="Date" id="date" name="date" required>                  
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <div class="input-group">New index</div>
+                                                    <input type="number" class="form-control" placeholder="new index" id="newIndex" name="newIndex" required>                  
+                                                </div>
+                                                <div class="form-group mb-3" id="b_oldIndex">
+                                                    <div class="input-group">Old index</div>
+                                                    <input type="number" class="form-control" placeholder="old index" id="oldIndex" name="oldIndex" value="0">                  
+                                                </div>
+                                                <div class="row form-group float-right">
+                                                    <button type="submit" class="btn btn-primary" id="addInvoice" name="addInvoice"> Add</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </section>
                     </section>
                 </section>
-            </section>
-        @endforeach
+            @endforeach
+        @else
+            <div class="alert alert-danger alert-dismissible fade show">
+                Aucune facture trouvées avec cette utilisateur
+            </div>
+        @endif
     </section>
 </div>
 

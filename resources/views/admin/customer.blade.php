@@ -121,9 +121,25 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-right justify-content-between mb-4">
-        <a href="/admin/customer/addCustomer" class="btn btn-primary"> Add a customer </a>
+        <div>
+            <a href="/admin/customer/addCustomer" class="btn btn-primary"> Add a customer </a>
+            <a href="/admin/customer/blockedCustomer" class="btn ml-3 btn-warning"><i class="fas fa-exclamation-triangle mr-2"></i>Blocked</a>
+        </div>
         <h1 class="h3 mb-0 text-gray-800">Customers</h1>
-        <a href="/admin/customer/blockedCustomer" class="btn btn-warning"><i class="fas fa-exclamation-triangle mr-2"></i>Blocked</a>
+        <form action="/admin/search/customer" novalidate method="post" enctype="multipart/form-data" class="form-horizontal row-border">
+            <div class="col-sm-12">
+                <div class="row">
+                    @csrf
+                    <div class="col-9">
+                        <input type="text" class="form-control form-control-user" id="name" name="name" placeholder="Name of user">
+                    </div>
+                    <div class="col-2">
+                        <button class="btn-sm btn-success h-100" type="submit" name="search" id="search"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
     </div>
 
 
@@ -144,122 +160,126 @@
         <!-- Basic Card Example -->
 
         <?php
-        if($customers['status'] == 200){
+        if ($customers != null) {
+            if($customers['status'] == 200){
 
-            $informations = $customers['result'];
+                $informations = $customers['result'];
 
-            foreach($informations as $key => $info) {
-                $location = $info['localisation'];
-                $description = $location['description'];
-
-                if($description != ""){
+                foreach($informations as $key => $info) {
+                    $location = $info['localisation'];
                     $description = $location['description'];
-                }else{
-                    $description = "Not set";
-                }
 
-                $status = $info['status'];
-                $delete = $info['isDelete'];
+                    if($description != ""){
+                        $description = $location['description'];
+                    }else{
+                        $description = "Not set";
+                    }
 
-                if($status == 1){
-                    $card='bg-success';
-                    $class='btn-success';
-                    $state = 'Active';
-                    $badge = 'badge-success';
-                }
+                    $status = $info['status'];
+                    $delete = $info['isDelete'];
 
-                if(empty($status)){
-                    $status = 0;
-                }
+                    if($status == 1){
+                        $card='bg-success';
+                        $class='btn-success';
+                        $state = 'Active';
+                        $badge = 'badge-success';
+                    }
 
-                if($info['profileImage'] != "noPath"){
-                    $image = url('storage/'.$info['profileImage']);
-                }else{
-                    $image = "/img/undraw_profile.svg";
-                }
+                    if(empty($status)){
+                        $status = 0;
+                    }
 
-                if(!$delete && $status==1){
+                    if($info['profileImage'] != "noPath"){
+                        $image = url('storage/'.$info['profileImage']);
+                    }else{
+                        $image = "/img/undraw_profile.svg";
+                    }
 
-            ?>
+                    if(!$delete && $status==1){
+
+                ?>
 
 
-            <div class="col-md-6 col-lg-4">
-                    <div class="card shadow mb-4" style="width:18rem;">
-                        <div class="card-header py-3 <?= $card ?>">
+                <div class="col-md-6 col-lg-4">
+                        <div class="card shadow mb-4" style="width:18rem;">
+                            <div class="card-header py-3 <?= $card ?>">
 
-                            <div class="row">
+                                <div class="row">
 
-                                <img class="img-profile rounded-circle float-left" src='<?= $image ?>' width="50" height="50"/>
+                                    <img class="img-profile rounded-circle float-left" src='<?= $image ?>' width="50" height="50"/>
 
-                                <div class="ml-2" style="position:absolute;left:60;margin:auto;top:30;">
-                                    <h6 class="font-weight-bold text-white" style="font-size:18px;"><?=$info['name']?></h6>
+                                    <div class="ml-2" style="position:absolute;left:60;margin:auto;top:30;">
+                                        <h6 class="font-weight-bold text-white" style="font-size:18px;"><?=$info['name']?></h6>
+                                    </div>
+
                                 </div>
 
                             </div>
 
-                        </div>
+                            <div class="card-body ">
+                                <hr>
 
-                        <div class="card-body ">
-                            <hr>
+                                <div class="text-center">
 
-                            <div class="text-center">
-
-                                <table>
-                                    <tr>
-                                        <td>Number: </td>
-                                        <td><?= $info['phone'] ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Address: </td>
-                                        <td><?= $description ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Meter ID: </td>
-                                        <td><?= $info['IdCompteur'] ?></td>
-                                    </tr>
-                                </table>
-
-                            </div>
-
-                            <hr>
-                        </div>
-
-                        <div class="card-footer <?= $card?>" >
-
-                                <a href="/admin/customer/block/<?= $info['_id']?>/<?= $status ?>" class="btn <?= $class ?>">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                    </span>
-                                    <span class="text" style="margin:auto;"><?= $state ?></span>
-                                </a>
-
-                                <div class="float-right">
-
-                                    <a href="locationModal" id="toLocation" locate="<?= $info['_id'] ?>" desc="<?= $info['localisation']['description'] ? $info['localisation']['description'] : ""?>" data-toggle="modal" data-target="#locationModal" class="btn <?= $card ?> locationModal" data-bs-toggle="tooltip" data-bs-placement="bottom" title="location">
-                                        <span class="icon"  style="color:white;">
-                                            <i class="fas fa-globe"></i></i>
-                                        </span>
-                                    </a>
-
-                                    <a href="/admin/customer/edit/<?= $info['_id'] ?>" class="btn <?= $card ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                                        <span class="icon"  style="color:white;">
-                                            <i class="fas fa-edit"></i>
-                                        </span>
-                                    </a>
-
-                                    <a href="/admin/customer/delete/<?= $info['_id'] ?>" class="btn <?= $card ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
-                                        <span class="icon"  style="color:white;">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                    </a>
+                                    <table>
+                                        <tr>
+                                            <td>Number: </td>
+                                            <td><?= $info['phone'] ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Address: </td>
+                                            <td><?= $description ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Meter ID: </td>
+                                            <td><?= $info['IdCompteur'] ?></td>
+                                        </tr>
+                                    </table>
 
                                 </div>
+
+                                <hr>
+                            </div>
+
+                            <div class="card-footer <?= $card?>" >
+
+                                    <a href="/admin/customer/block/<?= $info['_id']?>/<?= $status ?>" class="btn <?= $class ?>">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </span>
+                                        <span class="text" style="margin:auto;"><?= $state ?></span>
+                                    </a>
+
+                                    <div class="float-right">
+
+                                        <a href="locationModal" id="toLocation" locate="<?= $info['_id'] ?>" desc="<?= $info['localisation']['description'] ? $info['localisation']['description'] : ""?>" data-toggle="modal" data-target="#locationModal" class="btn <?= $card ?> locationModal" data-bs-toggle="tooltip" data-bs-placement="bottom" title="location">
+                                            <span class="icon"  style="color:white;">
+                                                <i class="fas fa-globe"></i></i>
+                                            </span>
+                                        </a>
+
+                                        <a href="/admin/customer/edit/<?= $info['_id'] ?>" class="btn <?= $card ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                            <span class="icon"  style="color:white;">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </a>
+
+                                        <a href="/admin/customer/delete/<?= $info['_id'] ?>" class="btn <?= $card ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
+                                            <span class="icon"  style="color:white;">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </a>
+
+                                    </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-     <?php
+        <?php
+                    }
                 }
             }
+        } else {
+           
         }
      ?>
 

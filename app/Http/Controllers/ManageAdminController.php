@@ -142,6 +142,41 @@ class ManageAdminController extends Controller
 
     }
 
+    public function findAdmin(){
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $users = array();
+
+    	if (isset($_POST['search'])) {
+            $name = $_POST['name'];
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://localhost:4000/client/searchByName/'.$name,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $response = json_decode($response);
+
+            return view('admin/administrator',['administrators' => $response]);
+        }
+        else {
+            return view('admin/administrator',['administrators' => null]);
+        }
+    }
+    
     public function paidInvoice(Request $request){
         $id = $request->input('id');
 
@@ -173,7 +208,6 @@ class ManageAdminController extends Controller
 
             return redirect()->back();
     }
-
 
     public function viewCustomers(){
 
@@ -473,6 +507,41 @@ class ManageAdminController extends Controller
         }
     }
 
+    public function searchCustomer(){
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $users = array();
+
+    	if (isset($_POST['search'])) {
+            $name = $_POST['name'];
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://localhost:4000/client/searchByName/'.$name,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $response = json_decode($response);
+
+            return view('admin/customer',['customers' => $response]);
+        }
+        else {
+            return view('admin/customer',['customers' => null]);
+        }
+    }
+    
     public function updateAccount($id, Request $request){
 
         $identifier = $request->input('identifier');
