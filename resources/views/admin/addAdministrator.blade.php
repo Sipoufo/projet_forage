@@ -168,7 +168,7 @@
                 <div class="input-group mt-3">
                     <span class="text-danger text-lg mr-2" style="margin-top: 10px;">*</span>
                     <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-home'></i></span></div>
-                    <input type="text" class="form-control" placeholder="description of the location" id="home" name="home" value="{{ old('home') }}" required>
+                    <input type="text" class="form-control" placeholder="description of the location" id="home" name="home" value="{{ old('home') }}">
                 </div>
 
                 <div class="input-group mt-3">

@@ -93,6 +93,10 @@ class ManageAdminController extends Controller
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
+            if(empty($home)){
+                $home = "";
+            }
+
             if($lat && $lng){
                 $data = array(
                     'name' => $name,
@@ -275,6 +279,10 @@ class ManageAdminController extends Controller
             $tokentab = explode('=',$token);
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
+
+            if(empty($home)){
+                $home = "";
+            }
 
             if($lat && $lng){
                 $data = array(
