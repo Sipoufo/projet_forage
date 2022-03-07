@@ -731,7 +731,6 @@ class AdminController extends Controller{
 
 
             $name = $request->input('name');
-            $birthdate = $request->input('birthdate');
             $email = $request->input('email');
             $phone = $request->input('phone');
             $home = $request->input('home');
@@ -751,7 +750,6 @@ class AdminController extends Controller{
 
             $data = array(
                 'name' => $name,
-                'birthday' => $birthdate,
                 'phone' => $phone,
                 'email' => $email,
                 "profileImage" => $photoPath,

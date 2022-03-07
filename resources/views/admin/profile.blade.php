@@ -149,7 +149,7 @@
                         $photo = '/img/undraw_profile.svg'
                     @endphp
                 @endif
-                  <img src="{{$photo}}" class="rounded-circle" alt="<?= $data['profile']?>"> </div>
+                <img src="{{$photo}}" class="rounded-circle" alt="<?= $data['profile']?>" style="transform: scale(1.1);"> </div>
               <div class="profile-usertitle">
                   <div class="profile-usertitle-name"> <?= $data['name']?> </div>
                   <div class="profile-usertitle-job"> <?= $data['profile']?> </div>
@@ -224,15 +224,6 @@
                               <hr>
                               <div class="row">
                                 <div class="col-sm-3">
-                                  <h6 class="mb-0">Birthday</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                  <?= $data['birthday']?>
-                                </div>
-                              </div>
-                              <hr>
-                              <div class="row">
-                                <div class="col-sm-3">
                                   <h6 class="mb-0">Home</h6>
                                 </div>
                                 <?php $localisation = $data['localisation'] ;?>
@@ -266,11 +257,6 @@
                                           @error('name')
                                               <div class="invalid-feedback">{{ $message }}</div>
                                           @enderror
-                                  </div>
-
-                                  <div class="input-group mt-3">
-                                      <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-birthday-cake'></i></span></div>
-                                      <input type="date" class="form-control" id="birth_date" name="birthdate" value="<?= $data['birthday']?>" required>
                                   </div>
 
                                   <div class="input-group mt-3">
