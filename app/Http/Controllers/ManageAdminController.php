@@ -724,6 +724,10 @@ class ManageAdminController extends Controller
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
+            if(empty($home)){
+                $home = "";
+            }
+
             $data = array(
                 'name' => $name,
                 'phone' => $phone,

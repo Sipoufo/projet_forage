@@ -745,25 +745,18 @@ class AdminController extends Controller{
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
 
-            if(!empty($home)){
-                $data = array(
-                    'name' => $name,
-                    'birthday' => $birthdate,
-                    'phone' => $phone,
-                    'email' => $email,
-                    "profileImage" => $photoPath,
-                    "description" => $home,
-                );
-            }else{
-                $data = array(
-                    'name' => $name,
-                    'birthday' => $birthdate,
-                    'phone' => $phone,
-                    'email' => $email,
-                    "profileImage" => $photoPath,
-                );
+            if(empty($home)){
+                $home = "";
             }
 
+            $data = array(
+                'name' => $name,
+                'birthday' => $birthdate,
+                'phone' => $phone,
+                'email' => $email,
+                "profileImage" => $photoPath,
+                "description" => $home,
+            );
 
             $data_json = json_encode($data);
 
