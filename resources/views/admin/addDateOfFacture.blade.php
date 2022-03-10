@@ -125,7 +125,7 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
                 <section  class="form-group mb-3 d-flex justify-content-center align-items-center text-center">
                     <input type="number" class="form-control mr-2" id="day" name="day" placeholder="day"
                     required style="height: 80px; width: 200px; font-size: x-large;border-radius: 15px;" min="1" max="31">
-                    <span class="mr-2 mt-auto" style="font-size: 60px; align-items: center;">:</span>
+                    <span class="mr-2 mt-auto" id="span_day" style="font-size: 60px; align-items: center;">:</span>
                     <input type="number" class="form-control mr-2" id="month" name="month" min="1" max="12"
                     required style="height: 80px; width: 200px; font-size: x-large;border-radius: 15px;" placeholder="month">
                     <span class="mr-2" style="font-size: 60px; align-items: center;">:</span>
@@ -136,7 +136,20 @@ class="d-sm-flex align-items-center justify-content-between mb-4"
                     <button type="submit" class="btn btn-primary" name="submit" style="font-size: x-large;">submit</button>
                 </section>
             </form>
+            <script>
+                let month = document.getElementById('month');
+                let year = document.getElementById('year');
+                let day = document.getElementById('day');
+                let span_day = document.getElementById('span_day');
+                let date = new Date();
+                year.value = date.getFullYear();
+                month.value = date.getMonth() + 1;
+                day.value = date.getDate();
+                day.hidden = true;
+                span_day.hidden = true;
+            </script>
         </section>
     </div>
 </div>
 @stop
+

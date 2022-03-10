@@ -115,9 +115,12 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		//Admin route
 
+		Route::match(['post','get'],'/admin/find', [ManageAdminController::class, 'findAdmin']);
 		Route::get('/admin/home',[HomeController::class, 'adminHome'])->name('adminHome');
 
 		Route::get('/admin/customer',[ManageAdminController::class, 'viewCustomers']);
+		
+		Route::match(['get','post'],'/admin/search/customer',[ManageAdminController::class, 'searchCustomer']);
 
 		Route::get('/admin/customer/addCustomer',[ManageAdminController::class, 'addCustomers']);
 

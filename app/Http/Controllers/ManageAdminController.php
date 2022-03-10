@@ -146,6 +146,68 @@ class ManageAdminController extends Controller
 
     }
 
+    public function findAdmin(){
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $users = array();
+
+    	if (isset($_POST['search'])) {
+            $name = $_POST['name'];
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "http://localhost:4000/admin/auth/getAdmin",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $response = json_decode($response);
+
+            $result = $response -> result;
+            $length = count($result);
+
+            $customers = array();
+
+            for($i = 0; $i < $length; $i++) {
+                $user = $result[$i];
+                $username = $user -> name;
+                if(strpos($username, $name) !== false){
+                    //echo "Word Found!";
+                    array_push($customers, $user);
+                } else{
+                    //echo "Word Not Found!";
+                }
+            }
+
+            $array = array(
+                "status" => "200",
+                "result" => json_decode(json_encode($customers), true),
+            );
+            
+            //dump($array);
+            return view('admin/administrator',['administrators' => $array]);
+        }
+        else {
+            $array = array(
+                "status" => "404",
+                "result" => null,
+            );
+            //dump($array);
+            return view('admin/administrator',['administrators' => $array]);
+        }
+    }
+    
     public function paidInvoice(Request $request){
         $id = $request->input('id');
 
@@ -177,7 +239,6 @@ class ManageAdminController extends Controller
 
             return redirect()->back();
     }
-
 
     public function viewCustomers(){
 
@@ -481,6 +542,65 @@ class ManageAdminController extends Controller
         }
     }
 
+    public function searchCustomer(){
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $users = array();
+
+    	if (isset($_POST['search'])) {
+            $name = $_POST['name'];
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "http://localhost:4000/admin/auth/getClient",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array('Authorization: '.$Authorization),
+            ));
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $response = json_decode($response);
+            $result = $response -> result;
+            $length = count($result);
+
+            $customers = array();
+
+            for($i = 0; $i < $length; $i++) {
+                $user = $result[$i];
+                $username = $user -> name;
+                if(strpos($username, $name) !== false){
+                    //echo "Word Found!";
+                    array_push($customers, $user);
+                } else{
+                    //echo "Word Not Found!";
+                }
+            }
+            $array = array(
+                "status" => "200",
+                "result" => json_decode(json_encode($customers), true),
+            );
+            //dump($array);
+            return view('admin/customer',['customers' => $array]);
+        }
+        else {
+            $array = array(
+                "status" => "404",
+                "result" => null,
+            );
+            //dump($array);
+            return view('admin/customer',['customers' => $array]);
+        }
+    }
+    
     public function updateAccount($id, Request $request){
 
         $identifier = $request->input('identifier');

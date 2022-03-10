@@ -95,8 +95,6 @@ class AdminController extends Controller{
         return view('admin/consumption');
     }
 
-
-
     public function adminSearchInvoiceByCustumer(){
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
@@ -108,10 +106,10 @@ class AdminController extends Controller{
         $date = session()->get('dateOfInvoices');
 
     	if (isset($_POST['search'])) {
-            $name = $_POST['search'];
+            $name = $_POST['name'];
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://localhost:4000/admin/facture/factureByYear/'.$name,
+                CURLOPT_URL => 'http://localhost:4000/client/facture/getFactureWithMonth/true',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -125,11 +123,26 @@ class AdminController extends Controller{
             $response = curl_exec($curl);
             curl_close($curl);
             $response = json_decode($response);
-            array_push($users, $response);
+
+            if ($response != null) {
+                $status = $response -> status;
+     
+                if ($status == 200) {
+                   $result = $response -> result; 
+                   $length = count($result);
+                   for($i = 0; $i > $length; $i++) {
+                    array_push($users, $result[$i]);
+                   }
+                } else {
+                    $users = null;
+                }
+            }
+            //array_push($users, $response);
         }
 
         return view('admin/facture',['users' => $users, 'date' => $date]);
     }
+
     public function adminStatus(){
         $url = "http://localhost:4000/admin/facture/".date("Y")."/".date("m")."/100/1";
         // $url = "http://localhost:4000/facture/".date("m")."/".date("Y")."/100/1";
@@ -2514,7 +2527,7 @@ class AdminController extends Controller{
 
             //dump($invoicesWithPaginator);
 
-            //dump($invoices);
+            // dump($invoices);
 
             foreach($invoicesWithPaginator as $invoice){
 
@@ -2554,15 +2567,15 @@ class AdminController extends Controller{
                 'next_page' => $next_page
             ]);
         } else {
-            return view('admin/consumptionThatAreNotPaid',[
-                'invoices' => $invoicesWithPaginator,
-                'client' => $client,
-                'page' => $page,
-                'size' => $size,
-                'page_en_cours' => $page_en_cours,
-                'previous_page' => $previous_page,
-                'next_page' => $next_page
-            ]);
+            // return view('admin/consumptionThatAreNotPaid',[
+            //     'invoices' => $invoicesWithPaginator,
+            //     'client' => $client,
+            //     'page' => $page,
+            //     'size' => $size,
+            //     'page_en_cours' => $page_en_cours,
+            //     'previous_page' => $previous_page,
+            //     'next_page' => $next_page
+            // ]);
         }
     }
 
@@ -3607,7 +3620,7 @@ class AdminController extends Controller{
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
             // echo 'Bearer '.$tokenVal;
-            // dump('Bearer '.$tokenVal);
+            //dump('Bearer '.$day);
             $url = curl_init();
             curl_setopt_array($url, array(
                 CURLOPT_URL => 'http://localhost:4000/admin/facture/doInvoiceWithDate/'.$date,
