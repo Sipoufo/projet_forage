@@ -149,7 +149,7 @@
                         $photo = '/img/undraw_profile.svg'
                     @endphp
                 @endif
-                <img src="{{$photo}}" class="rounded-circle" alt="<?= $data['profile']?>" style="transform: scale(1.1);"> </div>
+                <img src="{{$photo}}"  alt="<?= $data['profile']?>" style="border-radius: 25px; transform: scale(1.1);"> </div>
               <div class="profile-usertitle">
                   <div class="profile-usertitle-name"> <?= $data['name']?> </div>
                   <div class="profile-usertitle-job"> <?= $data['profile']?> </div>
