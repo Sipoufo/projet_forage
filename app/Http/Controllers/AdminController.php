@@ -2536,7 +2536,7 @@ class AdminController extends Controller{
 
             //dump($invoicesWithPaginator);
 
-            //dump($invoices);
+            // dump($invoices);
 
             foreach($invoicesWithPaginator as $invoice){
 
@@ -2576,15 +2576,15 @@ class AdminController extends Controller{
                 'next_page' => $next_page
             ]);
         } else {
-            return view('admin/consumptionThatAreNotPaid',[
-                'invoices' => $invoicesWithPaginator,
-                'client' => $client,
-                'page' => $page,
-                'size' => $size,
-                'page_en_cours' => $page_en_cours,
-                'previous_page' => $previous_page,
-                'next_page' => $next_page
-            ]);
+            // return view('admin/consumptionThatAreNotPaid',[
+            //     'invoices' => $invoicesWithPaginator,
+            //     'client' => $client,
+            //     'page' => $page,
+            //     'size' => $size,
+            //     'page_en_cours' => $page_en_cours,
+            //     'previous_page' => $previous_page,
+            //     'next_page' => $next_page
+            // ]);
         }
     }
 
