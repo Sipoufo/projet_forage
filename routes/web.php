@@ -116,10 +116,11 @@ Route::group(['middleware' => 'checksession'], function () {
 		//Admin route
 
 		Route::match(['post','get'],'/admin/find', [ManageAdminController::class, 'findAdmin']);
+
 		Route::get('/admin/home',[HomeController::class, 'adminHome'])->name('adminHome');
 
 		Route::get('/admin/customer',[ManageAdminController::class, 'viewCustomers']);
-		
+
 		Route::match(['get','post'],'/admin/search/customer',[ManageAdminController::class, 'searchCustomer']);
 
 		Route::get('/admin/customer/addCustomer',[ManageAdminController::class, 'addCustomers']);
@@ -187,8 +188,6 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/admin/allPaidInvoices',[AdminController::class, 'allPaidInvoices'])->name('allPaidInvoices');
 
-
-
 		Route::get('/admin/status',[AdminController::class, 'adminStatus'])->name('adminStatus');
 
 		Route::get('/admin/manage_products',[AdminController::class, 'manageProducts'])->name('manageProducts');
@@ -230,6 +229,8 @@ Route::group(['middleware' => 'checksession'], function () {
 		Route::get('/admin/administrator/edit/{id}',[ManageAdminController::class, 'editAdmin'])->name('editAdmin');
 
 		Route::match(['get','put'],'/admin/customer/saveCustomer/{id}',[ManageAdminController::class, 'saveCustomer'])->name('saveCustomer');
+
+        Route::match(['get','put'],'/admin/customer/edit/resetPasswd/{id}',[ManageAdminController::class, 'resetPasswd'])->name('resetPasswd');
 
 		Route::match(['get','put'],'/admin/administrator/saveAdmin/{id}',[ManageAdminController::class, 'saveAdmin'])->name('saveAdmin');
 

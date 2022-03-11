@@ -114,10 +114,13 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            Edit a customer
+            <!-- Edit a customer -->
             <div class="float-right">
                 <a href="" class="btn btn-primary" data-toggle="modal" data-target="#accountModal">Edit Customer Account</a>
             </div>
+
+            <a href="/admin/customer/edit/resetPasswd/<?= $data['_id']?>" class="btn btn-primary">Reset Password</a>
+
         </div>
 
     <div class="card-body">
@@ -132,6 +135,8 @@
                     </button>
                 </div>
             @endif
+
+
 
              <form method="post" action="/admin/customer/saveCustomer/<?= $data['_id']?>" class="col-lg-8 offset-lg-2" enctype="multipart/form-data">
                 @csrf

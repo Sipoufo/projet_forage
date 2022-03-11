@@ -194,7 +194,7 @@ class ManageAdminController extends Controller
                 "status" => "200",
                 "result" => json_decode(json_encode($customers), true),
             );
-            
+
             //dump($array);
             return view('admin/administrator',['administrators' => $array]);
         }
@@ -207,7 +207,7 @@ class ManageAdminController extends Controller
             return view('admin/administrator',['administrators' => $array]);
         }
     }
-    
+
     public function paidInvoice(Request $request){
         $id = $request->input('id');
 
@@ -600,7 +600,7 @@ class ManageAdminController extends Controller
             return view('admin/customer',['customers' => $array]);
         }
     }
-    
+
     public function updateAccount($id, Request $request){
 
         $identifier = $request->input('identifier');
@@ -922,6 +922,42 @@ class ManageAdminController extends Controller
             Session::flash('alert-class', 'alert-danger');
             return redirect()->back();
         }
+    }
+
+    public function resetPasswd($id){
+
+        $passwd = md5(sha1('forage@2021'));
+        $url = "".$id;
+        $alltoken = $_COOKIE['token'];
+        $alltokentab = explode(';', $alltoken);
+        $token = $alltokentab[0];
+        $tokentab = explode('=',$token);
+        $tokenVal = $tokentab[1];
+        $Authorization = 'Bearer '.$tokenVal;
+        $passwd = json_encode($passwd);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$passwd);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($response);
+
+        if ($response->status == 200){
+            Session::flash('message', 'Action Successfully done!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back();
+
+        }else{
+            Session::flash('message', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back();
+        }
+
     }
 
 
