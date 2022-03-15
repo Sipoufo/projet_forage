@@ -26,7 +26,7 @@ Route::post('/login',[HomeController::class, 'login']);
 
 Route::get('/forgot_password',[HomeController::class, 'forgot_password']);
 
-Route::post('/reset',[HomeController::class, 'reset']);
+Route::match(['get','post'],'/reset',[HomeController::class, 'reset']);
 
 
 

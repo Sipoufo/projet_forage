@@ -33,6 +33,16 @@
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
+
+                        @if(Session::has('message'))
+                            <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
+                                {{ Session::get('message') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+
                         <!-- Nested Row within Card Body -->
                         <div class="row">
                             <div class="col-lg-6 d-none d-lg-block bg-password-image"></div>
@@ -44,6 +54,7 @@
                                             and we'll send you a message with default password! You would have to change it</p>
                                     </div>
                                     <form action="/reset" method="post" class="user">
+                                        @csrf
                                         <div class="form-group">
                                             <input type="number" name="phone" class="form-control form-control-user" placeholder="Phone number" required/>
                                         </div>

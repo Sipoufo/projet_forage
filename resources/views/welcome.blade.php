@@ -35,18 +35,6 @@
 
             <div class="col-xl-10 col-lg-12 col-md-9">
 
-                @if(Session::has('position'))
-                
-                        <div class="alert alert-danger alert-dismissible fade show">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            {{ Session::get('position') }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>  
-                    
-                @endif
-
                 {{-- <div class="d-none d-lg-block position-absolute" style="left: 40%; z-index: 1;"><img src="images/icons/Logo.png" class="rounded-circle" alt="" style="width: 60%"></div>
                 <div class="d-block d-lg-none position-absolute" style="left: 28%; z-index: 1;"><img src="images/icons/Logo.png" class="rounded-circle" alt="" style="width: 63%"></div> --}}
                 <div class="card o-hidden border-0 shadow-lg my-5">
@@ -74,11 +62,11 @@
                                         <div class="form-group">
                                             <input type="password" name="password" class="form-control form-control-user" placeholder="Password" value="{{ old('password') }}" required/>
                                         </div>
-                                        
+
                                         <input type="submit" name="submit" value="Login" class="btn btn-primary btn-user btn-solid btn-block"/>
 
                                         <hr>
-                                        
+
                                         <p style="font-size:18px;" class="text-center"><b>Welcome to K-FOURRAGE</b></p>
 
                                         <p class="text-center">We are at your service</p>

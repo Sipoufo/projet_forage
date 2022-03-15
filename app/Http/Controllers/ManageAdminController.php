@@ -927,20 +927,26 @@ class ManageAdminController extends Controller
     public function resetPasswd($id){
 
         $passwd = md5(sha1('forage@2021'));
-        $url = "".$id;
+
+        $url = "http://localhost:4000/login/passwordUserReset/".$id;
+
         $alltoken = $_COOKIE['token'];
         $alltokentab = explode(';', $alltoken);
         $token = $alltokentab[0];
         $tokentab = explode('=',$token);
         $tokenVal = $tokentab[1];
         $Authorization = 'Bearer '.$tokenVal;
-        $passwd = json_encode($passwd);
+
+        $data = array(
+            'newPassword' => $passwd,
+        );
+        $data = json_encode($data);
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$passwd);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
         curl_close($ch);
