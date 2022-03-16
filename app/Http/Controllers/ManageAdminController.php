@@ -94,7 +94,7 @@ class ManageAdminController extends Controller
             $Authorization = 'Bearer '.$tokenVal;
 
             if(empty($home)){
-                $home = "";
+                $home = " ";
             }
 
             if($lat && $lng){
@@ -340,9 +340,9 @@ class ManageAdminController extends Controller
             $tokentab = explode('=',$token);
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
-
             if(empty($home)){
-                $home = "";
+                dump($home);
+                $home = " ";
             }
 
             if($lat && $lng){
@@ -355,7 +355,7 @@ class ManageAdminController extends Controller
                     "longitude" => $lng,
                     "latitude" => $lat,
                     "IdCompteur" => $identifier,
-                    "profileImage" => $photo,
+                    "profileImage" => $photoPath,
                 );
             }else {
                 $data = array(
@@ -832,8 +832,8 @@ class ManageAdminController extends Controller
             $email = $request->input('email');
             $phone = $request->input('phone');
             $home = $request->input('home');
-            $longitude = $request->input('lng');
-            $latitude = $request->input('lat');
+            // $longitude = $request->input('lng');
+            // $latitude = $request->input('lat');
 
 
             $url = "http://localhost:4000/admin/manageCompte/admin/update/".$id;
@@ -845,7 +845,7 @@ class ManageAdminController extends Controller
             $Authorization = 'Bearer '.$tokenVal;
 
             if(empty($home)){
-                $home = "";
+                $home = " ";
             }
 
             $data = array(
@@ -854,8 +854,6 @@ class ManageAdminController extends Controller
                 'email' => $email,
                 "description" => $home,
                 "profileImage" => $photoPath,
-                "longitude" => $longitude,
-                "latitude" => $latitude,
             );
             $data_json = json_encode($data);
 
@@ -946,7 +944,7 @@ class ManageAdminController extends Controller
         curl_close($ch);
 
         $response = json_decode($response);
-
+        dump($response);
         if ($response->status == 200){
             Session::flash('message', 'Action Successfully done!');
             Session::flash('alert-class', 'alert-success');

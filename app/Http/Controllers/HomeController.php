@@ -38,11 +38,11 @@ class HomeController extends Controller
 	            $len = strlen($header);
 	            $header = explode(':', $header, 2);
 	              if (count($header) < 2) // ignore invalid headers
-	                  return $len;
+	                    return $len;
 
 	            $headers[strtolower(trim($header[0]))][] = trim($header[1]);
 	            return $len;
-	          }
+	        }
 	    );
 	    $response  = curl_exec($ch);
 	    curl_close($ch);

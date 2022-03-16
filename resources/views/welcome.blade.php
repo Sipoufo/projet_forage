@@ -84,9 +84,9 @@
                                         <p class="text-center">We are at your service</p>
                                     </form>
                                     <hr>
-                                    <div class="text-center">
+                                    {{-- <div class="text-center">
                                         <a class="small" href="/forgot_password">Forgot Password?</a>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
