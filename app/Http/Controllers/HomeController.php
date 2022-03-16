@@ -108,8 +108,47 @@ class HomeController extends Controller
 		return view('forgotPassword');
 	}
 
-	public function reset(){
-		//
+	public function reset(Request $request){
+
+		$phone = $request->input('phone');
+
+        $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "http://localhost:4000/login/userInfo/".$phone,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+            ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+
+        if ($response->status == 200){
+
+            $name = $response->result;
+
+            $to = 'sipoufoknj@gmail.com';
+            $subject = 'Reset Customer\'s Password ';
+            $message = 'Dear Administrator </br> Mr/Mrs/M'.$name.' whose the phone number is '.$phone.' wants to change his password. </br>
+            His default password is forage@2021 </br> Best Regards.';
+            mail($to, $subject, $message);
+
+            Session::flash('message', 'Your request is being taking in charge!');
+            Session::flash('alert-class', 'alert-success');
+            return redirect()->back();
+
+        }else{
+            Session::flash('message', ucfirst($response->error));
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->back();
+        }
+
+
 	}
 
     public function adminHome()
