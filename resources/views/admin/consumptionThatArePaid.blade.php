@@ -189,33 +189,34 @@
                                     <i class="far fa-eye" style="font-size: 20px;">
                                     </i> T
                                 </button>
+                                   <!-- medium modal -->
+                                    <div class="modal fade" tabindex="-1" id="modal-penalty-{{ $invoice->_id }}" role="dialog" aria-labelledby="mediumPenaltyModalLabel" data-backdrop="static" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <section>
+                                                        Penalty
+                                                    </section>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <?php
+                                                    $penalty = $invoice->penalty;
+                                                    $length = count($penalty);
+                                                    for ($i = 0; $i < $length; $i++) {
+                                                        echo nl2br('Montant: '.$penalty[$i] -> montant.'<br/>');
+                                                        echo nl2br('Date: '.$penalty[$i] -> date);
+                                                    }
+                                                    ?>
 
-                                <!-- medium modal -->
-                                <div class="modal fade" tabindex="-1" id="modal-penalty-{{ $invoice->_id }}" role="dialog" aria-labelledby="mediumPenaltyModalLabel" data-backdrop="static"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <section>
-                                                    Penalty
-                                                </section>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                @foreach($invoice -> penalty as $value)
-                                                    <div class="d-flex flex">
-                                                        <p>{{$value}}</p>
-                                                    </div>
-                                                @endforeach
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- medium modal -->
-                                <div class="modal fade" tabindex="-1" id="modal-tranche-{{ $invoice->_id }}" role="dialog" aria-labelledby="mediumTrancheModalLabel" data-backdrop="static"
+                                    <div class="modal fade" tabindex="-1" id="modal-tranche-{{ $invoice->_id }}" role="dialog" aria-labelledby="mediumTrancheModalLabel" data-backdrop="static"
                                     aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -228,15 +229,18 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                @foreach($invoice -> tranche as $value)
-                                                    <div class="d-flex flex">
-                                                        <p>{{$value}}</p>
-                                                    </div>
-                                                @endforeach
+                                                <?php
+                                                    $tranche = $invoice->tranche;
+                                                    $length = count($tranche);
+                                                    for ($i = 0; $i < $length; $i++) {
+                                                        echo nl2br('Montant: '.$tranche[$i] -> montant.'<br/>');
+                                                        echo nl2br('Date: '.$tranche[$i] -> date);
+                                                    }
+                                                    ?>
+
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
                             </td>
                         </tr>
