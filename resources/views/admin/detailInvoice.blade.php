@@ -173,7 +173,7 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Date of spicy</div>
-                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= date('d-m-Y ', strtotime($invoice  -> dateReleveOldIndex))?>" required>                  
+                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= date('d-m-Y ', strtotime($invoice  -> dateReleveNewIndex))?>" required>                  
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -238,7 +238,7 @@
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3" hidden>
                             <div class="input-group">Id Invoice</div>
                             <input type="text" class="form-control" placeholder="idInvoice" id="idInvoice" name="idInvoice" value="<?= $invoice ?>" required>                  
                         </div>

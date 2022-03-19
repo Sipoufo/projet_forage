@@ -12,7 +12,7 @@ use PDF;
 class AdminController extends Controller{
 
     public function adminConsumption(){
-    	return view('admin/consumption');
+        return view('admin/consumption');
     }
 
     public function update_aduan(Request $request){
@@ -58,7 +58,7 @@ class AdminController extends Controller{
                     'dateReleveNewIndex' => $dateReleveNewIndex,
                     'oldIndex' => $oldIndex,
                 );
-                dump($facture);
+                // dump($facture);
 
                 $data_json = json_encode($facture);
                 $ch = curl_init();
@@ -126,13 +126,13 @@ class AdminController extends Controller{
 
             if ($response != null) {
                 $status = $response -> status;
-     
+
                 if ($status == 200) {
-                   $result = $response -> result; 
-                   $length = count($result);
-                   for($i = 0; $i > $length; $i++) {
-                    array_push($users, $result[$i]);
-                   }
+                    $result = $response -> result; 
+                    $length = count($result);
+                    for($i = 0; $i > $length; $i++) {
+                        array_push($users, $result[$i]);
+                    }
                 } else {
                     $users = null;
                 }
@@ -3497,7 +3497,7 @@ class AdminController extends Controller{
             $response = curl_exec($curl);
             curl_close($curl);
             $response = json_decode($response, true);
-            print_r($response);
+            // print_r($response);
             if(array_key_exists('result', $response)) {
 
                 if(!empty($response['result'])){
@@ -3521,7 +3521,8 @@ class AdminController extends Controller{
                         'dateReleveNewIndex' => $date
                     );
                     $data_json1 = json_encode($data1);
-
+                    
+                    dump($data_json1);
                     $ch1 = curl_init();
                     curl_setopt($ch1, CURLOPT_URL, $url);
                     curl_setopt($ch1, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
@@ -3533,7 +3534,6 @@ class AdminController extends Controller{
                     $response1 = json_decode($response1,true);
                     // $data1= $response1['result']['docs'];
                     // dump($response1['status']);
-                    // dump($response1);
 
                     if ($response1['status'] == 200){
                         Session::flash('message', 'Action Successfully done!');
@@ -3549,7 +3549,7 @@ class AdminController extends Controller{
                     $messageErr = 'Please entrer the static informations in the system';
                     Session::flash('messageErr', $messageErr);
                     Session::flash('alert-class', 'alert-danger');
-                    // return redirect()->back();
+                    return redirect()->back();
                 }
             }else {
                 $messageErr = 'Please entrer the static informations in the system';
@@ -3590,9 +3590,6 @@ class AdminController extends Controller{
 
         $response = curl_exec($url);
         $response = json_decode($response);
-
-        // dump($response);
-        $users = array();
 
         if($response->status == 200){
             $users = $response->result;
@@ -3642,8 +3639,7 @@ class AdminController extends Controller{
 
             if($response->status == 200){
                 $users = $response->result;
-                return view('admin/facture',['users' => $users, 'date' => $date]
-            );
+                return view('admin/facture',['users' => $users, 'date' => $date]);
 
             }else{
                 echo 'error';
