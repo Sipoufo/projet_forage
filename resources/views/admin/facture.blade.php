@@ -121,7 +121,7 @@
 @endif
 @if(Session::has('messageErr'))
     <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">
-        {{ Session::get('messageErr') }}
+        {{ Session::get('messageErr') }}<a href='/admin/profile#settings'> the general settings</a>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -150,134 +150,89 @@
 
 </div>
 <div class="container-fluid" id="users">
-    <section class="d-flex">
-        @if ($users != null)
-            @foreach($users as $user)
-                <section class="card mr-2 mb-2" style="border-radius: 10px; border-color: black; border-style: solid; width: 300px;">
-                    <section class="d-flex justify-content-between">
-                        <section>
-                            @if ($user->profileImage != "noPath")
-                                <img src="{{url('storage/'.$user->profileImage)}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
-                            @else 
-                                <img src="/img/undraw_profile.svg" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 90px; width: 90px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
-                            @endif
-                        </section>
-                        <section class="mr-2">
-                            <h5>{{$user->name}}</h5>
-                            <span>{{$user->IdCompteur}}</span> 
-                            <section class="d-flex justify-content-end mt-2 mb-2">
-                                <button type="button" class="btn btn-primary index" style="border-radius: 10px;" id="index" role="button" data-toggle="modal" data-target="#modal-{{ $user->_id }}" target="invoice" data-client="{{$user-> _id}}">Add Invoice</span>
-                            </section>
+    <section class="row">
 
-                            <!-- medium modal -->
-                            <div class="modal fade" tabindex="-1" id="modal-{{ $user->_id }}" role="dialog" aria-labelledby="mediumModalLabel" data-backdrop="static"
-                                aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <section>
-                                                Add Invoice
-                                            </section>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form data-toggle="validator" action="{{route('addOneInvoice')}}" method="post" class="col-lg-8 offset-lg-2">
-                                                @csrf
-                                                {{method_field('post')}}
-                                                <div class="form-group mb-3" id="b_userId">
-                                                    <div class="input-group">User Id</div>
-                                                    <input type="text" class="form-control" placeholder="user Id" name="userId" id="userId" required>                  
-                                                </div>
-                                                <div class="form-group mb-3" id="b_date">
-                                                    <div class="input-group">Date</div>
-                                                    <input type="date" class="form-control" placeholder="Date" id="date" name="date" required>                  
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <div class="input-group">New index</div>
-                                                    <input type="number" class="form-control" placeholder="new index" id="newIndex" name="newIndex" required>                  
-                                                </div>
-                                                <div class="form-group mb-3" id="b_oldIndex">
-                                                    <div class="input-group">Old index</div>
-                                                    <input type="number" class="form-control" placeholder="old index" id="oldIndex" name="oldIndex" value="0">                  
-                                                </div>
-                                                <div class="row form-group float-right">
-                                                    <button type="submit" class="btn btn-primary" id="addInvoice" name="addInvoice"> Add</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+        <?php if($users != null){
+                foreach ($users as $user){
+            ?>
+                <div class="col-md-4 col-lg-3 mb-2">
+                    <div class="w-75 d-inline-block" style="height:145px;border-radius: 10px; border-color: black; width: 350px;border-style: solid;background-color: rgba(0,0,255,.1)">
+                        <div class="row">
+                            <div class="col-4">
+                                @if ($user->profileImage != "noPath")
+                                    <img src="{{url('storage/'.$user->profileImage)}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 50px; width: 50px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
+                                @else
+                                    <img src="/img/undraw_profile.svg" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 50px; width: 50px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
+                                @endif
                             </div>
-                        </section>
-                    </section>
-                </section>
-            @endforeach
-        @else
-            <div class="alert alert-danger alert-dismissible fade show">
-                Aucune facture trouvées avec cette utilisateur
-            </div>
-        @endif
+                            <div class="col-8 justify-content-end mt-2 ">
+                                <h5 class="ml-2">{{$user->name}}</h5>
+                                <h6 class="ml-2">{{$user->IdCompteur}}</h6>
+                                <a href="#addInvoiceModal" style="border-radius: 10px; color:white" user=<?= $user->_id ?> data-toggle="modal" data-target="#addInvoiceModal" class="btn btn-sm bg-primary addInvoiceModal ml-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add Invoice">
+                                    Add Invoice
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <?php   }
+            }else{
+        ?>
+        <?php } ?>
     </section>
 </div>
 
-<script src="vendor/jquery/jquery.min.js"></script>
+<div class="modal fade" tabindex="-1" id="addInvoiceModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Invoice </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form data-toggle="validator" action="{{route('addOneInvoice')}}" method="post" class="col-lg-8 offset-lg-2">
+                    @csrf
+                    {{method_field('post')}}
+                    <div class="form-group mb-3" id="b_userId" hidden>
+                        <div class="input-group">User Id</div>
+                        <input type="text" class="form-control" placeholder="user Id" name="userId" id="userId">
+                    </div>
+                    <div class="form-group mb-3" id="b_date" hidden>
+                        <div class="input-group">Date</div>
+                        <input type="date" class="form-control" placeholder="Date" id="date" name="date">
+                    </div>
+                    <div class="form-group mb-3">
+                        <div class="input-group">New index</div>
+                        <input type="number" class="form-control" placeholder="new index" id="newIndex" name="newIndex" required>
+                    </div>
+                    <div class="form-group mb-3" id="b_oldIndex">
+                        <div class="input-group">Old index</div>
+                        <input type="number" class="form-control" placeholder="old index" id="oldIndex" name="oldIndex" value="0">
+                    </div>
+                    <div class="row form-group float-right">
+                        <button type="submit" class="btn btn-primary" id="addInvoice" name="addInvoice"> Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script>
-        let user = document.getElementById('index');
-        let oldIndex = document.getElementById("b_oldIndex");
-        let b_userId = document.getElementById("b_userId");
-        let userId = document.getElementById("userId");
 
-        let token = <?php 
-            $alltoken = $_COOKIE['token'];
-            $alltokentab = explode(';', $alltoken);
-            $token = $alltokentab[0];
-            $tokentab = explode('=',$token);
-            $tokenVal = $tokentab[1];
-            echo json_encode($tokenVal); 
-        ?>;
 
-        let autorization = 'Bearer ' + token;
-        // alert('Authorization : ' + autorization);
+<script src="{{asset('js/jquery-3.6.0.min.js')}}"></script>
 
-        let idUser = 0;
+<script>
+    $("body").on('click','.addInvoiceModal',function(event){
 
-        user.addEventListener("click", (event) => {
-            console.log('event : ', event);
-            idUser = event.target.dataset.client;
-            userId.value = '' + idUser;
-            b_userId.hidden = true;   
+        event.preventDefault();
 
-            // alert('id : ' + idUser);
+        var id = $(this).attr('user');
 
-            var setting = {
-                type: "GET",
-                url: "http://localhost:4000/admin/facture/haveInvoice/" + idUser,
-                headers: {
-                    "Authorization": autorization
-                },
-            }
-            $.ajax(setting)
-                .done((data) => {
-                    if (data.result == false) {
-                        oldIndex.hidden = false;
-                    } else {
-                        oldIndex.hidden = true;
-                    }
-                    console.log(data);
-                }).fail((data) => {
-                    console.log('error ' + JSON.stringify(data));
-                });
-        });
-    </script>
-
-    <script>
         let b_date = document.getElementById("b_date");
-        let date_creation = document.getElementById("date");
-    
-        var users = <?php echo json_encode($users); ?>;
+
         var date = new Date(<?php echo json_encode($date); ?>);
         let formatDate = date.getFullYear();
 
@@ -292,11 +247,14 @@
         } else {
             formatDate = formatDate + "-" + date.getDate();
         }
+        //b_date.hidden = true;
 
-        date_creation.value = '' + formatDate.toString();
-        //date_creation.hidden = true;    
-        b_date.hidden = true;       
-        // *********************************************************
+        $('#userId').val(id);
+        $('#date').val('' + formatDate.toString());
 
-    </script>
+    });
+
+
+</script>
+
 @stop

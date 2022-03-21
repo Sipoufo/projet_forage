@@ -118,14 +118,14 @@
     </div>
     <div class="card-body">
         <div class="container">
-            
+
             <?php if (isset($messageOK)){?>
-                    <div class="alert alert-success alert-dismissible fade show"><i class="fas fa-check-circle"></i> <?= $messageOK ?> 
+                    <div class="alert alert-success alert-dismissible fade show"><i class="fas fa-check-circle"></i> <?= $messageOK ?>
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                     </div>
             <?php } ?>
             <?php if (isset($messageErr)){?>
-                    <div class="alert alert-danger alert-dismissible fade show"><i class="fas fa-exclamation-triangle"></i><?= $messageErr ?> 
+                    <div class="alert alert-danger alert-dismissible fade show"><i class="fas fa-exclamation-triangle"></i><?= $messageErr ?>
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                     </div>
             <?php } ?>
@@ -135,23 +135,23 @@
                 {{csrf_field()}}
                 <div class="form-group mb-3">
                     <div class="input-group">Personnel</div>
-        
+
                     <select name="idClient" id="idClient" class="form-control" disabled>
                         <option value={{$client -> _id}}>{{ $client -> name }}</option>
                     </select>
                 </div>
-            
+
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">New index</div>
-                            <input type="number" class="form-control" placeholder="new index" id="newIndex" name="newIndex" value="<?= $invoice  -> newIndex?>" required>                  
+                            <input type="number" class="form-control" placeholder="new index" id="newIndex" name="newIndex" value="<?= $invoice  -> newIndex?>" required>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Old index</div>
-                            <input type="number" disabled class="form-control" placeholder="old index" id="oldIndex" name="oldIndex" value="<?= $invoice  -> oldIndex?>" required>                  
+                            <input type="number" disabled class="form-control" placeholder="old index" id="oldIndex" name="oldIndex" value="<?= $invoice  -> oldIndex?>" required>
                         </div>
                     </div>
                 </div>
@@ -159,13 +159,13 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Consumption</div>
-                            <input type="number" disabled class="form-control" placeholder="consumption" id="consumption" name="consumption" value="<?= $invoice  -> consommation?>" required>                  
+                            <input type="number" disabled class="form-control" placeholder="consumption" id="consumption" name="consumption" value="<?= $invoice  -> consommation?>" required>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Surplus</div>
-                            <input type="number" class="form-control" placeholder="surplus" id="surplus" name="surplus" value="<?= $invoice  -> surplus?>" required>                  
+                            <input type="number" class="form-control" placeholder="surplus" id="surplus" name="surplus" value="<?= $invoice  -> surplus?>" required>
                         </div>
                     </div>
                 </div>
@@ -173,13 +173,13 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Date of spicy</div>
-                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= date('d-m-Y ', strtotime($invoice  -> dateReleveNewIndex))?>" required>                  
+                            <input type="text" disabled class="form-control" id="dateSpicy" name="dateSpicy" placeholder="Date of spicy" value="<?= date('d-m-Y ', strtotime($invoice  -> dateReleveNewIndex))?>" required>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <div class="input-group">Date Limit of paiement</div>
-                            <input type="text" disabled class="form-control" id="dataPaid" name="dataPaid" placeholder="Date of payement" value="<?= date('d-m-Y ', strtotime($invoice  -> dataLimitePaid))?>" required>                  
+                            <input type="text" disabled class="form-control" id="dataPaid" name="dataPaid" placeholder="Date of payement" value="<?= date('d-m-Y ', strtotime($invoice  -> dataLimitePaid))?>" required>
                         </div>
                     </div>
                 </div>
@@ -187,23 +187,23 @@
                     <div class="col-lg-4">
                         <div class="form-group mb-3">
                             <div class="input-group">Amount</div>
-                            <input type="number" disabled class="form-control" placeholder="consumption" id="consumption" name="consumption" value="<?= $invoice  -> montantConsommation?>" required>                  
+                            <input type="number" disabled class="form-control" placeholder="consumption" id="consumption" name="consumption" value="<?= $invoice  -> montantConsommation?>" required>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group mb-3">
                             <div class="input-group">Paid</div>
-                            <input type="number" class="form-control" placeholder="money who give" id="amountPaid" name="amountPaid" value="<?= $invoice  -> montantVerse?>" required>                  
+                            <input type="number" class="form-control" placeholder="money who give" id="amountPaid" name="amountPaid" value="<?= $invoice  -> montantVerse?>" required disabled>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group mb-3">
                             <div class="input-group">UnPaid</div>
-                            <input type="number" disabled class="form-control" id="oldIndex" name="oldIndex"  value="<?= $invoice  -> montantImpaye?>" required>                  
+                            <input type="number" disabled class="form-control" id="oldIndex" name="oldIndex"  value="<?= $invoice  -> montantImpaye?>" required>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="d-flex flex justify-content-between">
                     <div class="float-left">
                         @if($invoice  -> facturePay == false)
@@ -230,7 +230,7 @@
                 {{csrf_field()}}
                 <div class="form-group mb-3">
                     <div class="input-group">Personnel</div>
-        
+
                     <select name="idClient" id="idClient" class="form-control" disabled>
                         <option value={{$client -> _id}}>{{ $client -> name }}</option>
                     </select>
@@ -240,20 +240,20 @@
                     <div class="col-lg-12">
                         <div class="form-group mb-3" hidden>
                             <div class="input-group">Id Invoice</div>
-                            <input type="text" class="form-control" placeholder="idInvoice" id="idInvoice" name="idInvoice" value="<?= $invoice ?>" required>                  
+                            <input type="text" class="form-control" placeholder="idInvoice" id="idInvoice" name="idInvoice" value="<?= $invoice ?>" required>
                         </div>
                     </div>
                 </div>
-            
+
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group mb-3">
                             <div class="input-group">Enter Amount Paid</div>
-                            <input type="number" class="form-control" placeholder="amount" id="amount" name="amount" required>                  
+                            <input type="number" class="form-control" placeholder="amount" id="amount" name="amount" required>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="d-flex flex justify-content-end">
                     <button class="btn btn-primary" id="connect" name="connect" type="submit">Paid Invoice</button>
                     <button class="btn btn-secondary ml-2 back" id="showDetail" type="button">Cancel</button>

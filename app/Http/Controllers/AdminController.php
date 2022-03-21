@@ -2453,6 +2453,8 @@ class AdminController extends Controller
                 $i = $i + 1;
             }
         }
+
+
         return view('admin/consumption', [
             'invoices' => $invoicesWithPaginator,
             'client' => $client,
@@ -3499,7 +3501,7 @@ class AdminController extends Controller
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response, true);
-        print_r($response);
+        //print_r($response);
         if (array_key_exists('result', $response)) {
 
             if (!empty($response['result'])) {
@@ -3530,16 +3532,11 @@ class AdminController extends Controller
                 curl_close($ch1);
                 $response1 = json_decode($response1, true);
 
+                //dump($data_json1);
                 if ($response1['status'] == 200) {
-                    Session::flash('message', 'Action Successfully done!');
+                    Session::flash('message', 'Invoice created!');
                     Session::flash('alert-class', 'alert-success');
 
-                    $alltoken = $_COOKIE['token'];
-                    $alltokentab = explode(';', $alltoken);
-                    $token = $alltokentab[0];
-                    $tokentab = explode('=', $token);
-                    $tokenVal = $tokentab[1];
-                    $Authorization = 'Bearer ' . $tokenVal;
                     $url = curl_init();
                     curl_setopt_array($url, array(
                         CURLOPT_URL => 'http://localhost:4000/admin/facture/doInvoiceWithDate/' . $date,
@@ -3557,6 +3554,8 @@ class AdminController extends Controller
                     $data = json_decode($data);
                     $users = array();
                     $users = $data->result;
+                    // echo $date;
+                    // dump($users);
                     return view('admin/facture', ['users' => $users, 'date' => $date]);
                 } else {
                     Session::flash('message', ucfirst($response->error));
@@ -3564,14 +3563,14 @@ class AdminController extends Controller
                     return redirect()->back();
                 }
             } else {
-                $messageErr = 'Please entrer the static informations in the system';
+                $messageErr = "Please entrer the static informations in the ";
                 Session::flash('messageErr', $messageErr);
                 Session::flash('alert-class', 'alert-danger');
-                // return redirect()->back();
+                return redirect()->back();
             }
         } else {
-            $messageErr = 'Please entrer the static informations in the system';
-            Session::flash('messageErr', $messageErr);
+            $message = "Something wrong happened";
+            Session::flash('message', $message);
             Session::flash('alert-class', 'alert-danger');
             return redirect()->back();
         }

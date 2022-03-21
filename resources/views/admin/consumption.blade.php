@@ -114,7 +114,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Consumption</h1> 
+        <h1 class="h3 mb-0 text-gray-800">Consumption</h1>
     </div>
 
     <div class="flex d-flex justify-content-between mb-1">
@@ -135,7 +135,7 @@
         <form action="{{url('/admin/search_invoices')}}" method="post" role="form">
             @csrf
             <div class="flex d-flex align-items-center">
-                search By : 
+                search By :
                 <select class="form-control ml-2" name="type" id="type" style="width: 100px;">
                 <option value="month">Month</option>
                 <option value="year">Year</option>
@@ -164,7 +164,7 @@
                         <th style="text-align: center">Amount</th>
                         <th style="text-align: center">Paid</th>
                         <th style="text-align: center">UnPaid</th>
-                        <th style="text-align: center">Date Of Paiement</th>
+                        <th style="text-align: center">Limit Of Paiement</th>
                         <th style="text-align: right">Action</th>
                     </tr>
                     </thead>
@@ -177,11 +177,11 @@
                             <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
                             <td style="text-align: center">{{$invoice -> montantVerse}} FCFA</td>
                             <td style="text-align: center">{{$invoice -> montantImpaye}} FCFA</td>
-                            <td style="text-align: center">{{date('d-m-Y H:i:s', strtotime($invoice -> updatedAt))}}</td>
+                            <td style="text-align: center">{{date('d-m-Y H:i:s', strtotime($invoice -> dataLimitePaid))}}</td>
                             <td style="text-align: right">
                                 <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-primary pull-right">
                                     <i class="fa fa-pencil-alt" style="font-size: 20px;">
-                                    </i> 
+                                    </i>
                                 </a>
                                 <button type="button" class="btn btn-xs btn-primary pull-right" role="button" data-toggle="modal" data-target="#modal-penalty-{{ $invoice->_id }}">
                                     <i class="far fa-eye" style="font-size: 20px;">
@@ -206,9 +206,9 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                @foreach($invoice -> penalty as $value)
+                                                @foreach($invoice->penalty as $value)
                                                     <div class="d-flex flex">
-                                                        <p>{{$value}}</p>
+                                                        <p>{{$value->montant}}</p>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -280,13 +280,13 @@
     </div>
 
     <script type="text/javascript">
-        let token = <?php 
+        let token = <?php
             $alltoken = $_COOKIE['token'];
             $alltokentab = explode(';', $alltoken);
             $token = $alltokentab[0];
             $tokentab = explode('=',$token);
             $tokenVal = $tokentab[1];
-            echo json_encode($tokenVal); 
+            echo json_encode($tokenVal);
         ?>;
 
         let invoices = new Array();
@@ -299,7 +299,7 @@
         let year = new Date().getFullYear();
         let autorization = 'Bearer ' + token;
         //alert('au : ' + autorization);
-        
+
         const header = new Headers();
         header.append('Content-Type', 'application/json');
         header.append('Authorization', autorization);
@@ -333,7 +333,7 @@
             }
         } else {
             if (page_size != 0) {
-                allInvoice(page_size, size) 
+                allInvoice(page_size, size)
             }
         }
 
