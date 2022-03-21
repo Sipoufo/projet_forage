@@ -232,7 +232,7 @@
                                             <div class="modal-body">
                                                 @foreach($invoice -> tranche as $value)
                                                     <div class="d-flex flex">
-                                                        <p>{{$value}}</p>
+                                                        <p>{{$value->montant}}</p>
                                                     </div>
                                                 @endforeach
                                             </div>

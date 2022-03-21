@@ -1,6 +1,19 @@
 @extends('admin.layouts.skeleton')
 @section('title', 'Invoice')
 @section('nav')
+<style>
+    .person-img {
+        border-radius: 50%;
+        border-style: solid;
+        margin-bottom: 1rem;
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border: 4px solid var(--clr-grey-8);
+        box-shadow: var(--dark-shadow);
+        transform: translateY(-30px)
+    }
+</style>
         <li class="nav-item">
             <a class="nav-link" href="/admin/home">
             <i class="fas fa-home"></i>
@@ -149,26 +162,26 @@
     </form>
 
 </div>
-<div class="container-fluid" id="users">
+<div class="container-fluid mt-5" id="users">
     <section class="row">
 
         <?php if($users != null){
                 foreach ($users as $user){
             ?>
-                <div class="col-md-4 col-lg-3 mb-2">
-                    <div class="w-75 d-inline-block" style="height:145px;border-radius: 10px; border-color: black; width: 350px;border-style: solid;background-color: rgba(0,0,255,.1)">
+                <div class="col-md-6 col-lg-4 mb-2">
+                    <div class="w-75 d-inline-block" style="height:200px;border-radius: 10px; border-color: black;border-style: solid;background-color: rgba(0,0,255,.1)">
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-12 d-flex justify-content-center">
                                 @if ($user->profileImage != "noPath")
-                                    <img src="{{url('storage/'.$user->profileImage)}}" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 50px; width: 50px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
+                                    <img src="{{url('storage/'.$user->profileImage)}}" class="mt-2 mb-2 person-img" alt="illisible">
                                 @else
-                                    <img src="/img/undraw_profile.svg" class="mt-2 mb-2" alt="illisible" style="position: relative; height: 50px; width: 50px; border-radius: 50%; margin-right: .5rem;margin-left: .5rem;background-color: gainsboro;">
+                                    <img src="/img/undraw_profile.svg" class="mt-2 mb-2 person-img" alt="illisible">
                                 @endif
                             </div>
-                            <div class="col-8 justify-content-end mt-2 ">
-                                <h5 class="ml-2">{{$user->name}}</h5>
-                                <h6 class="ml-2">{{$user->IdCompteur}}</h6>
-                                <a href="#addInvoiceModal" style="border-radius: 10px; color:white" user=<?= $user->_id ?> data-toggle="modal" data-target="#addInvoiceModal" class="btn btn-sm bg-primary addInvoiceModal ml-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add Invoice">
+                            <div class="col-12">
+                                <h5 class="ml-2 d-flex justify-content-center">{{$user->name}}</h5>
+                                <h6 class="ml-2 d-flex justify-content-center">{{$user->IdCompteur}}</h6>
+                                <a href="#addInvoiceModal" class="d-inline-flex btn btn-primary ml-4" style="border-radius: 10px; color:white" user=<?= $user->_id ?> data-toggle="modal" data-target="#addInvoiceModal" class="btn btn-sm bg-primary addInvoiceModal ml-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add Invoice">
                                     Add Invoice
                                 </a>
                             </div>
