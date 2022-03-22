@@ -3558,7 +3558,7 @@ class AdminController extends Controller
                     // dump($users);
                     return view('admin/facture', ['users' => $users, 'date' => $date]);
                 } else {
-                    Session::flash('message', ucfirst($response->error));
+                    Session::flash('message', ucfirst($response1['error']));
                     Session::flash('alert-class', 'alert-danger');
                     return redirect()->back();
                 }
