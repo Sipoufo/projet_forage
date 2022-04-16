@@ -1,10 +1,16 @@
 @extends('admin.layouts.skeleton')
 @section('title', 'Customer')
 <style>
- /* .btn:hover{
-    background-color: #e7e7e7;
- } */
-
+    .person-img {
+        border-radius: 50%;
+        border-style: solid;
+        margin-bottom: 1rem;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border: 4px solid var(--clr-grey-8);
+        box-shadow: var(--dark-shadow);
+    }
 </style>
 @section('nav')
         <li class="nav-item">
@@ -206,7 +212,7 @@
 
                                 <div class="row">
 
-                                    <img class="img-profile rounded-circle float-left" src='<?= $image ?>' width="50" height="50"/>
+                                    <img class="person-img float-left" src='<?= $image ?>' width="50" height="50"/>
 
                                     <div class="ml-2" style="position:absolute;left:60;margin:auto;top:30;">
                                         <h6 class="font-weight-bold text-white" style="font-size:18px;"><?=$info['name']?></h6>

@@ -341,7 +341,7 @@ class ManageAdminController extends Controller
             $tokenVal = $tokentab[1];
             $Authorization = 'Bearer '.$tokenVal;
             if(empty($home)){
-                dump($home);
+                //dump($home);
                 $home = " ";
             }
 
@@ -602,10 +602,9 @@ class ManageAdminController extends Controller
     }
 
     public function updateAccount($id, Request $request){
-
+        dump($id);
         $identifier = $request->input('identifier');
         $recent = $request->input('recentIndex');
-        $old = $request->input('oldIndex');
 
         $url = "http://localhost:4000/admin/facture/invoicePreCreate/".$id;
         $alltoken = $_COOKIE['token'];
@@ -618,14 +617,13 @@ class ManageAdminController extends Controller
         $data = array(
             'IdCompteur' => $identifier,
             'newIndex' => $recent,
-            'oldIndex' => $old,
         );
 
         $data_json = json_encode($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'authorization: '.$Authorization));
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
@@ -950,7 +948,7 @@ class ManageAdminController extends Controller
         curl_close($ch);
 
         $response = json_decode($response);
-        dump($response);
+        //dump($response);
         if ($response->status == 200){
             Session::flash('message', 'Action Successfully done!');
             Session::flash('alert-class', 'alert-success');

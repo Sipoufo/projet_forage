@@ -16,18 +16,18 @@
 
         <!-- Nav Item - consumption -->
         <li class="nav-item ">
-          <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities2é" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
-              <i class="fas fa-file-invoice-dollar"></i>
-              <span>Budget</span>
-          </a>
-          <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
-              <div class="bg-white py-2 collapse-inner rounded">
-                  <h6 class="collapse-header">Budget</h6>
-                  <a class="collapse-item" href="/budget-stat" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">statistics</a>
-                  <a class="collapse-item" href="/budget-detail" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Details</a>
-              </div>
-          </div>
-      </li>
+            <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities2é" aria-expanded="true" aria-controls="collapseUtilities1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Budget</span>
+            </a>
+            <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities1" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Budget</h6>
+                    <a class="collapse-item" href="/budget-stat" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices paid">statistics</a>
+                    <a class="collapse-item" href="/budget-detail" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Invoices unpaid">Details</a>
+                </div>
+            </div>
+        </li>
 
         <!-- Nav Item - Invoice -->
         <li class="nav-item">
@@ -182,15 +182,6 @@
                               <hr>
                               <div class="row">
                                 <div class="col-sm-3">
-                                  <h6 class="mb-0">Birthday</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                  <?= $data['birthday']?>
-                                </div>
-                              </div>
-                              <hr>
-                              <div class="row">
-                                <div class="col-sm-3">
                                   <h6 class="mb-0">Registered at</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
@@ -221,11 +212,6 @@
                                           @error('name')
                                               <div class="invalid-feedback">{{ $message }}</div>
                                           @enderror
-                                  </div>
-
-                                  <div class="input-group mt-3">
-                                      <div class="input-group-prepend"><span class="input-group-text" aria-label="arobase"><i class='fas fa-birthday-cake'></i></span></div>
-                                      <input type="date" class="form-control" id="birth_date" name="birthdate" value="<?= $data['birthday']?>" required>
                                   </div>
 
                                   <div class="input-group mt-3">

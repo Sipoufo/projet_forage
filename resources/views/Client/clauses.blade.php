@@ -129,7 +129,6 @@
             <li>Postal address</li>
             <li>E-mail adresse</li>
             <li>Phone number</li>
-            <li>Age/date of birth</li>
             <li>Geolocation data</li>
           </ul>
         </div>

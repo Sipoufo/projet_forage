@@ -202,11 +202,11 @@
                                 <form data-toggle="validator" action="{{route('addOneInvoice')}}" method="post" class="col-lg-8 offset-lg-2">
                                     @csrf
                                     {{method_field('post')}}
-                                    <div class="form-group mb-3" id="b_userId">
+                                    <div class="form-group mb-3" id="b_userId" hidden>
                                         <div class="input-group">User Id</div>
                                         <input type="text" class="form-control" value="{{$user->_id}}" placeholder="user Id" name="userId" id="userId">
                                     </div>
-                                    <div class="form-group mb-3" id="b_date">
+                                    <div class="form-group mb-3" id="b_date" hidden>
                                         <div class="input-group">Date</div>
                                         <input type="date" class="form-control" value="<?= $date?>" placeholder="Date" id="date" name="date">
                                     </div>

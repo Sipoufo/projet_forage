@@ -215,7 +215,10 @@
                             Payment Date
                             <div class="text-white-50 small">
                                 <?php
-                                    $date = $informations['result']['facturePaid'][$i]['dateFacturation'];
+                                    $date = null;
+                                    if(array_key_exists('dateFacturation', $informations['result']['facturePaid'][$i])) {
+                                        $date = $informations['result']['facturePaid'][$i]['dateFacturation'];
+                                    }
                                     echo (substr($date, 0, 11));
                                 ?>
                             </div>
