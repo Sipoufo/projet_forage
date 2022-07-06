@@ -48,7 +48,7 @@ Route::group(['middleware' => 'checksession'], function () {
 
 		Route::get('/invoices_paid',[ManageClientController::class, 'invoicePaid'])->name('userEditProfile');
 
-		Route::get('/unpaid_invoices',[ManageClientController::class, 'invoiceUnPaid'])->name('userEditProfile');
+		Route::get('/unpaid_invoices',[ManageClientController::class, 'invoiceUnPaid'])->name('unpaid_invoices');
 
 		Route::match(['get','put'],'/paidfact',[ManageClientController::class, 'paidFac']);
 
