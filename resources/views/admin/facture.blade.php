@@ -240,30 +240,31 @@
 <script>
     $("body").on('click','.addInvoiceModal',function(event){
 
-        event.preventDefault();
+        //event.preventDefault();
 
         var id = $(this).attr('user');
+        console.log(id);
 
-        let b_date = document.getElementById("b_date");
+        // let b_date = document.getElementById("b_date");
 
-        var date = new Date(<?php echo json_encode($date); ?>);
-        let formatDate = date.getFullYear();
+        // var date = new Date(<?php echo json_encode($date); ?>);
+        // let formatDate = date.getFullYear();
 
-        if(date.getMonth() + 1 < 10) {
-            formatDate = formatDate + "-0" + (date.getMonth() + 1);
-        } else {
-            formatDate = formatDate + "-" + (date.getMonth() + 1);
-        }
+        // if(date.getMonth() + 1 < 10) {
+        //     formatDate = formatDate + "-0" + (date.getMonth() + 1);
+        // } else {
+        //     formatDate = formatDate + "-" + (date.getMonth() + 1);
+        // }
 
-        if (date.getDate() < 10 ) {
-            formatDate = formatDate + "-0" + date.getDate();
-        } else {
-            formatDate = formatDate + "-" + date.getDate();
-        }
-        //b_date.hidden = true;
+        // if (date.getDate() < 10 ) {
+        //     formatDate = formatDate + "-0" + date.getDate();
+        // } else {
+        //     formatDate = formatDate + "-" + date.getDate();
+        // }
+        // //b_date.hidden = true;
 
-        $('#userId').val(id);
-        $('#date').val('' + formatDate.toString());
+        // $('#userId').val(id);
+        // $('#date').val('' + formatDate.toString());
 
     });
 
