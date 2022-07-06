@@ -48,7 +48,7 @@ class UtilisateurController extends Controller
         //enfin d'avoir un retour sur l'etat de la requette on a CURLOPT_RETURNTRANSFER = true
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        var_dump($response);
+        //($response);
         curl_close($ch);
     }
 
@@ -76,7 +76,7 @@ class UtilisateurController extends Controller
         curl_close($ch);
         
         $response = json_decode($invoices);
-        var_dump($response);
+        //var_dump($response);
 
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
@@ -94,7 +94,7 @@ class UtilisateurController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
-        var_dump($response);
+        //var_dump($response);
         curl_close($ch);
     }
 

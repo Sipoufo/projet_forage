@@ -202,15 +202,11 @@ aria-hidden="true">
             <div class="modal-body">
                 <form method="post" action="/admin/customer/account/update/<?= $data['_id']?>" class="user">
                     @csrf
-                    @method('PUT')
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Water meter identifier" id="identifier" name="identifier" value="<?= $data['IdCompteur']?>" required>
                     </div>
                     <div class="form-group">
                         <input type="number" class="form-control" placeholder="Recent Index" id="recentIndex" name="recentIndex" value="" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Old Index" id="oldIndex" name="oldIndex" value="" required>
                     </div>
                     <hr>
                     <div class="row float-right mt-3">

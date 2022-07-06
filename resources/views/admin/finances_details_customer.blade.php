@@ -465,8 +465,8 @@
                       <div class="widget-49">
                           <div class="widget-49-title-wrapper">
                               <div class="widget-49-date-primary">
-                                  <span class="widget-49-date-day"><?= date('d', strtotime($fact['createdAt']))?></span>
-                                  <span class="widget-49-date-month"><?= substr(date('F', strtotime($fact['createdAt'])), 0,3 ) ?></span>
+                                  <span class="widget-49-date-day"><?= date('d', strtotime($fact['dateReleveNewIndex']))?></span>
+                                  <span class="widget-49-date-month"><?= substr(date('F', strtotime($fact['dateReleveNewIndex'])), 0,3 ) ?></span>
                               </div>
                               <div class="widget-49-meeting-info">
                                   <span class="widget-49-pro-title"><?= $userdata['name']?></span>
@@ -512,8 +512,8 @@
                 <div class="widget-49">
                     <div class="widget-49-title-wrapper">
                         <div class="widget-49-date-primary">
-                            <span class="widget-49-date-day"><?= date('d', strtotime($fact['createdAt']))?></span>
-                            <span class="widget-49-date-month"><?= substr(date('F', strtotime($fact['createdAt'])), 0,3 ) ?></span>
+                            <span class="widget-49-date-day"><?= date('d', strtotime($fact['dateReleveNewIndex']))?></span>
+                            <span class="widget-49-date-month"><?= substr(date('F', strtotime($fact['dateReleveNewIndex'])), 0,3 ) ?></span>
                         </div>
                         <div class="widget-49-meeting-info">
                             <span class="widget-49-pro-title"><?= $userdata['name']?></span>
@@ -598,7 +598,7 @@ data: [
 
             foreach($facturesYear as $fact){
 
-                if(date('F', strtotime($date)) == date('F', strtotime($fact['createdAt']))){
+                if(date('F', strtotime($date)) == date('F', strtotime($fact['dateReleveNewIndex']))){
                   $data += $fact['consommation'];
                 }
             }
@@ -626,7 +626,7 @@ data: [
 
                   foreach($factures as $fact){
 
-                      if(date('F', strtotime($date)) == date('F', strtotime($fact['createdAt']))){
+                      if(date('F', strtotime($date)) == date('F', strtotime($fact['dateReleveNewIndex']))){
                         $data += $fact['consommation'];
                       }
                   }

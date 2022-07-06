@@ -163,7 +163,7 @@
                         <th style="text-align: center">Consumption</th>
                         <th style="text-align: center">Amount</th>
                         <th style="text-align: center">Paid</th>
-                        <th style="text-align: center">Date Of Paiement</th>
+                        <th style="text-align: center">Limite of paiement</th>
                         <th style="text-align: right">Action</th>
                     </tr>
                     </thead>
@@ -175,7 +175,7 @@
                             <td style="text-align: center">{{$invoice -> consommation}} m<sup>3</sup></td>
                             <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
                             <td style="text-align: center">{{$invoice -> montantVerse}} FCFA</td>
-                            <td style="text-align: center">{{date('d-m-Y H:i:s', strtotime($invoice -> updatedAt))}}</td>
+                            <td style="text-align: center">{{date('d-m-Y H:i:s', strtotime($invoice -> dataLimitePaid))}}</td>
                             <td style="text-align: right">
                                 <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-primary pull-right">
                                     <i class="fa fa-pencil-alt" style="font-size: 20px;">

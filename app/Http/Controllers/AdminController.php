@@ -3407,7 +3407,7 @@ class AdminController extends Controller
             //enfin d'avoir un retour sur l'etat de la requette on a CURLOPT_RETURNTRANSFER = true
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response  = curl_exec($ch);
-            var_dump($response);
+            //var_dump($response);
             curl_close($ch);
 
             $messageErr = null;
@@ -3558,7 +3558,7 @@ class AdminController extends Controller
                     // dump($users);
                     return view('admin/facture', ['users' => $users, 'date' => $date]);
                 } else {
-                    Session::flash('message', ucfirst($response->error));
+                    Session::flash('message', ucfirst($response1['error']));
                     Session::flash('alert-class', 'alert-danger');
                     return redirect()->back();
                 }

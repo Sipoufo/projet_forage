@@ -161,7 +161,7 @@
                                 <th style="text-align: center">Consumption</th>
                                 <th style="text-align: center">Amount</th>
                                 <th style="text-align: center">UnPaid</th>
-                                <th style="text-align: center">Date of paiement</th>
+                                <th style="text-align: center">Limite of paiement</th>
                                 <th style="text-align: right">Action</th>
                             </tr>
                         </thead>
@@ -173,7 +173,7 @@
                                 <td style="text-align: center">{{$invoice -> consommation}} m<sup>3</sup></td>
                                 <td style="text-align: center">{{$invoice -> montantConsommation}}</td>
                                 <td style="text-align: center">{{$invoice -> montantImpaye}} FCFA</td>
-                                <td style="text-align: center">{{date('d-m-Y H:i:s', strtotime($invoice -> updatedAt))}}</td>
+                                <td style="text-align: center">{{date('d-m-Y H:i:s', strtotime($invoice -> dataLimitePaid))}}</td>
                                 <td style="text-align: right">
                                     <a href="{{ url('/admin/detail-consumption/'.$invoice->_id.'/edit') }}" class="btn btn-xs btn-primary pull-right">
                                         <i class="fa fa-pencil-alt" style="font-size: 20px;">
@@ -230,7 +230,7 @@
                                             <div class="modal-body">
                                                 @foreach($invoice -> tranche as $value)
                                                     <div class="d-flex flex">
-                                                        <p>{{$value}}</p>
+                                                        <p>{{$value->montant}}</p>
                                                     </div>
                                                 @endforeach
                                                 <?php
