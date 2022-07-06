@@ -169,7 +169,7 @@ Route::group(['middleware' => 'checksession'], function () {
 		Route::get('/admin/consumption-that-are-paid/page/{page_size}/size/{size}',[AdminController::class, 'searchAllPaid'])->name('searchAllPaid');
 
 
-		Route::get('/admin/consumption-that-are-unpaid',[AdminController::class, 'allUnPaidInvoices'])->name('allUnPaidInvoices');
+		Route::get('/admin/consumption-that-are-unpaid',[AdminController::class, 'allUnPaidInvoices'])->name('ConsumptionUnPaidInvoices');
 
 		Route::get('/admin/consumption-that-are-unpaid/page/{page_size}/size/{size}',[AdminController::class, 'searchAllUnPaid'])->name('searchAllUnPaid');
 
